@@ -1,0 +1,78 @@
+﻿@model BookingPlatform.Models.BookingModel
+@using BookingPlatform.Constants;
+
+@{
+    ViewBag.Title = Strings.Public.PageTitle;
+    Layout = "~/Views/Shared/_BookingLayout.cshtml";
+
+    Html.EnableClientValidation();
+    Html.EnableUnobtrusiveJavaScript();
+}
+
+<h1>@Strings.Public.PageTitle</h1>
+<hr />
+@using (Html.BeginForm(FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <h2>@Strings.Public.Event</h2>
+
+    @Html.DropDownListFor(m => m.EventId, Model.EventList)
+    @Html.ValidationMessageFor(m => m.EventId)
+
+    <h2>@Strings.Public.Date</h2>
+    
+    <p>Calendar goes here...</p>
+
+    <h2>@Strings.Public.PersonalInformation</h2>
+
+    @Html.LabelFor(m => m.FirstName, Strings.Public.InputLabelFirstName)
+    @Html.TextBoxFor(m => m.FirstName)
+    @Html.ValidationMessageFor(m => m.FirstName)
+
+    @Html.LabelFor(m => m.LastName, Strings.Public.InputLabelLastName)
+    @Html.TextBoxFor(m => m.LastName)
+    @Html.ValidationMessageFor(m => m.LastName)
+
+    @Html.LabelFor(m => m.School, Strings.Public.InputLabelSchool)
+    @Html.TextBoxFor(m => m.School)
+    @Html.ValidationMessageFor(m => m.School)
+
+    @Html.LabelFor(m => m.Address, Strings.Public.InputLabelAddress)
+    @Html.TextBoxFor(m => m.Address)
+    @Html.ValidationMessageFor(m => m.Address)
+
+    @Html.LabelFor(m => m.ZipCode, Strings.Public.InputLabelZipCode)
+    @Html.TextBoxFor(m => m.ZipCode)
+    @Html.ValidationMessageFor(m => m.ZipCode)
+
+    @Html.LabelFor(m => m.Town, Strings.Public.InputLabelTown)
+    @Html.TextBoxFor(m => m.Town)
+    @Html.ValidationMessageFor(m => m.Town)
+
+    <h2>@Strings.Public.ContactInformation</h2>
+
+    @Html.LabelFor(m => m.Email, Strings.Public.InputLabelEmail)
+    @Html.TextBoxFor(m => m.Email)
+    @Html.ValidationMessageFor(m => m.Email)
+
+    @Html.LabelFor(m => m.Phone, Strings.Public.InputLabelPhone)
+    @Html.TextBoxFor(m => m.Phone)
+    @Html.ValidationMessageFor(m => m.Phone)
+
+    <h2>@Strings.Public.AdditionalInformation</h2>
+
+    @Html.LabelFor(m => m.NumberOfKids, Strings.Public.InputLabelNumberOfKids)
+    @Html.TextBoxFor(m => m.NumberOfKids, new { placeholder = Strings.Public.InputDescriptionNumberOfKids })
+    @Html.ValidationMessageFor(m => m.NumberOfKids)
+
+    @Html.LabelFor(m => m.Grade, Strings.Public.InputLabelGrade)
+    @Html.TextBoxFor(m => m.Grade, new { placeholder = Strings.Public.InputDescriptionGrade })
+    @Html.ValidationMessageFor(m => m.Grade)
+
+    @Html.LabelFor(m => m.Notes, Strings.Public.InputLabelNotes)
+    @Html.TextAreaFor(m => m.Notes, new { rows = 5 })
+    @Html.ValidationMessageFor(m => m.Notes)
+
+    <input type="submit" value="@Strings.Public.Submit" />
+}

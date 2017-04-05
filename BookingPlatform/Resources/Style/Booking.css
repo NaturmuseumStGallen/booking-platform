@@ -1,0 +1,70 @@
+﻿* {
+    font-family: 'Arial', sans-serif;
+    font-size: 17px;
+    font-weight: normal;
+}
+
+body {
+    max-width: 965px;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+h1, h2 {
+    font-family: 'Arial Rounded MT', sans-serif;
+    font-size: 24px;
+    margin-bottom: 5px;
+    margin-top: 25px;
+}
+
+hr {
+    background-color: #dededf;
+    border: none;
+    color: #dededf;
+    height: 1px;
+}
+
+input, select, textarea {
+    display: block;
+}
+
+input[type=submit] {
+    cursor: pointer;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    max-width: 200px;
+}
+
+input[type=text], select {
+    max-width: 350px;
+    width: 100%;
+}
+
+input[placeholder] {
+    font-style: italic;
+}
+
+label {
+    display: block;
+    margin-top: 10px;
+}
+
+h2 + label {
+    margin-top: 0;
+}
+
+span.field-validation-error {
+    color: red;
+    font-style: italic;
+}
+
+span.input-description {
+    color: gray;
+    font-style: italic;
+}
+
+textarea {
+    resize: both;
+    width: 350px;
+    max-width: 100%;
+}
