@@ -1,4 +1,23 @@
-﻿/*** General Styles ***/
+﻿/*
+ * Copyright (C) 2017 Naturmuseum St. Gallen
+ *
+ * This file is part of BookingPlatform.
+ *
+ * BookingPlatform is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * BookingPlatform is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with BookingPlatform. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/*** General Styles ***/
 
 * {
     font-family: 'Arial', sans-serif;
@@ -76,16 +95,18 @@ table.calendar td {
 }
 
 table.calendar td.free {
-    background-color: limegreen;
+    background-color: rgb(75, 255, 0);
     cursor: pointer;
+    font-style: normal;
+    font-weight: bold;
 }
 
 table.calendar td.free:hover {
-    background-color: forestgreen;
+    background-color: rgb(75, 230, 0);
 }
 
 table.calendar td.booked {
-    background-color: red;
+    background-color: rgb(255, 50, 0);
     cursor: not-allowed;
 }
 
@@ -116,7 +137,7 @@ textarea {
 
 /*** Styles for Medium Screens ***/
 
-@media (max-width: 850px) and (min-width: 570px) {
+@media (max-width: 1000px) and (min-width: 570px) {
     table.calendar th, table.calendar td {
         font-size: 8pt;
     }

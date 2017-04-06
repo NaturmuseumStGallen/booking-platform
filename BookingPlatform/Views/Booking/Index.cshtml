@@ -1,4 +1,25 @@
-﻿@model BookingPlatform.Models.BookingModel
+﻿@*
+    /*
+     * Copyright (C) 2017 Naturmuseum St. Gallen
+     *
+     * This file is part of BookingPlatform.
+     *
+     * BookingPlatform is free software: you can redistribute it and/or modify
+     * it under the terms of the GNU General Public License as published by
+     * the Free Software Foundation, either version 3 of the License, or
+     * (at your option) any later version.
+     *
+     * BookingPlatform is distributed in the hope that it will be useful,
+     * but WITHOUT ANY WARRANTY; without even the implied warranty of
+     * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+     * GNU General Public License for more details.
+     *
+     * You should have received a copy of the GNU General Public License
+     * along with BookingPlatform. If not, see <http://www.gnu.org/licenses/>.
+     */
+*@
+
+@model BookingPlatform.Models.BookingModel
 @using BookingPlatform.Constants;
 
 @{
@@ -17,6 +38,7 @@
 
     <h2>@Strings.Public.Event</h2>
 
+    @Html.LabelFor(m => m.EventId, Strings.Public.InputLabelEvent)
     @Html.DropDownListFor(m => m.EventId, Model.EventList)
     @Html.ValidationMessageFor(m => m.EventId)
 
@@ -27,7 +49,7 @@
     @Html.HiddenFor(m => m.Date, new { data_booking_date = bool.TrueString })
     @Html.ValidationMessageFor(m => m.Date)
 
-    <h2>@Html.ValidationMessageFor(m => m.Date)</h2>
+    <h2>@Strings.Public.PersonalInformation</h2>
 
     @Html.LabelFor(m => m.FirstName, Strings.Public.InputLabelFirstName)
     @Html.TextBoxFor(m => m.FirstName)

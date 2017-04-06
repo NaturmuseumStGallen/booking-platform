@@ -9,6 +9,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookingPlatform.Tests", "Bo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookingPlatform.Backend", "BookingPlatform.Backend\BookingPlatform.Backend.csproj", "{0AE065B1-F087-4E2A-8C56-48BABEC2E52A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8AE204DA-E52A-4401-B0B2-9BA611D05D3A}"
+	ProjectSection(SolutionItems) = preProject
+		gpl-3.0.txt = gpl-3.0.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

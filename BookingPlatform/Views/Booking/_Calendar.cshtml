@@ -1,12 +1,28 @@
-﻿@model BookingPlatform.Models.BookingCalendarModel
-@using BookingPlatform.Backend.Booking
+﻿@*
+    /*
+     * Copyright (C) 2017 Naturmuseum St. Gallen
+     *
+     * This file is part of BookingPlatform.
+     *
+     * BookingPlatform is free software: you can redistribute it and/or modify
+     * it under the terms of the GNU General Public License as published by
+     * the Free Software Foundation, either version 3 of the License, or
+     * (at your option) any later version.
+     *
+     * BookingPlatform is distributed in the hope that it will be useful,
+     * but WITHOUT ANY WARRANTY; without even the implied warranty of
+     * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+     * GNU General Public License for more details.
+     *
+     * You should have received a copy of the GNU General Public License
+     * along with BookingPlatform. If not, see <http://www.gnu.org/licenses/>.
+     */
+*@
 
-@{ 
-    var toCssClass = new Func<AvailabilityStatus, string>((status =>
-    {
-        return status == AvailabilityStatus.Free ? "free" : (status == AvailabilityStatus.Booked ? "booked" : "not-bookable");
-    }));
-}
+@model BookingPlatform.Models.BookingCalendarModel
+@using System.Globalization
+@using BookingPlatform.Constants
+@using BookingPlatform.Backend.Booking
 
 <table class="calendar">
     <tr>
@@ -27,9 +43,14 @@
 
             @foreach (var day in Model.Days)
             {
-                <td class="@toCssClass(Model.Availability.For(day, time))" title="@day.ToLongDateString() @time.ToShortTimeString()">
-                    
-                </td>
+                var status = Model.Availability.For(day, time);
+                var date = new DateTime(day.Year, day.Month, day.Day, time.Hour, time.Minute, 0);
+                var cssClass = status == AvailabilityStatus.Free ? "free" : (status == AvailabilityStatus.Booked ? "booked" : "not-bookable");
+                var title = status == AvailabilityStatus.Free ? day.ToLongDateString() + " " + time.ToShortTimeString() : (status == AvailabilityStatus.Booked ? Strings.Public.AvailabilityBooked : Strings.Public.AvailabilityNotBookable);
+                var data_booking_date = status == AvailabilityStatus.Free ? date.ToString(new CultureInfo("en-US")) : string.Empty;
+                var onclick = status == AvailabilityStatus.Free ? "booking.selectDate(this)" : string.Empty;
+
+                <td class="@cssClass" title="@title" data-booking-date="@data_booking_date" onclick="@onclick"></td>
             }
         </tr>
     }
