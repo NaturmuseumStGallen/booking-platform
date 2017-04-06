@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 using BookingPlatform.Constants;
@@ -10,7 +11,8 @@ namespace BookingPlatform.Models
 		[MaxLength(100, ErrorMessage = Strings.Public.InputErrorMaxLength100)]
 		public string Address { get; set; }
 
-		public int? DateId { get; set; }
+		[Required(ErrorMessage = Strings.Public.InputErrorDate)]
+		public DateTime? Date { get; set; }
 
 		[Required(ErrorMessage = Strings.Public.InputErrorEmail)]
 		[EmailAddress(ErrorMessage = Strings.Public.InputErrorEmail)]
@@ -57,5 +59,7 @@ namespace BookingPlatform.Models
 		public int? ZipCode { get; set; }
 
 		public IList<SelectListItem> EventList { get; set; }
+
+		public BookingCalendarModel CalendarModel { get; set; }
 	}
 }

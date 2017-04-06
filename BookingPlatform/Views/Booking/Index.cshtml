@@ -22,9 +22,12 @@
 
     <h2>@Strings.Public.Date</h2>
     
-    <p>Calendar goes here...</p>
+    @Html.Partial("_Calendar", Model.CalendarModel)
 
-    <h2>@Strings.Public.PersonalInformation</h2>
+    @Html.HiddenFor(m => m.Date, new { data_booking_date = bool.TrueString })
+    @Html.ValidationMessageFor(m => m.Date)
+
+    <h2>@Html.ValidationMessageFor(m => m.Date)</h2>
 
     @Html.LabelFor(m => m.FirstName, Strings.Public.InputLabelFirstName)
     @Html.TextBoxFor(m => m.FirstName)

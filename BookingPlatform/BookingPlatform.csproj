@@ -90,6 +90,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
+    <Content Include="Resources\Scripts\Booking.js" />
     <Content Include="Resources\Style\Admin.css" />
     <Content Include="Resources\Style\Booking.css" />
     <Content Include="Web.config" />
@@ -102,6 +103,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\BookingCalendarModel.cs" />
     <Compile Include="Models\BookingModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -111,6 +113,7 @@
     <Content Include="Views\Shared\_BookingLayout.cshtml" />
     <Content Include="Views\Booking\Index.cshtml" />
     <Content Include="Views\Shared\_AdminLayout.cshtml" />
+    <Content Include="Views\Booking\_Calendar.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -121,6 +124,12 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Admin\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BookingPlatform.Backend\BookingPlatform.Backend.csproj">
+      <Project>{0ae065b1-f087-4e2a-8c56-48babec2e52a}</Project>
+      <Name>BookingPlatform.Backend</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

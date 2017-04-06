@@ -1,0 +1,36 @@
+﻿@model BookingPlatform.Models.BookingCalendarModel
+@using BookingPlatform.Backend.Booking
+
+@{ 
+    var toCssClass = new Func<AvailabilityStatus, string>((status =>
+    {
+        return status == AvailabilityStatus.Free ? "free" : (status == AvailabilityStatus.Booked ? "booked" : "not-bookable");
+    }));
+}
+
+<table class="calendar">
+    <tr>
+        <th></th>
+        @foreach(var day in Model.Days)
+        {
+            <th>
+                @Html.Raw(day.ToLongDateString().Replace(", ", ",<br />"))
+            </th>
+        }
+    </tr>
+    @foreach (var time in Model.Times)
+    {
+        <tr>
+            <td>
+                @Html.Raw(time.ToShortTimeString())
+            </td>
+
+            @foreach (var day in Model.Days)
+            {
+                <td class="@toCssClass(Model.Availability.For(day, time))" title="@day.ToLongDateString() @time.ToShortTimeString()">
+                    
+                </td>
+            }
+        </tr>
+    }
+</table>

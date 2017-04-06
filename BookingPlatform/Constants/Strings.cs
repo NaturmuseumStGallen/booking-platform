@@ -17,7 +17,7 @@
 			public const string PersonalInformation = "Persönliche Informationen";
 			public const string InputDescriptionGrade = "z.B. \"Mittelstufe, 5. + 6. Klasse\"";
 			public const string InputDescriptionNumberOfKids = "min. 1 bis max. 200";
-			public const string InputErrorTown = "Bitte geben Sie einen Wohnort an!";
+			public const string InputErrorDate = "Bitte wählen Sie einen Termin!";
 			public const string InputErrorEmail = "Bitte geben Sie eine gültige E-Mail-Adresse an!";
 			public const string InputErrorEvent = "Bitte wählen Sie eine Führung!";
 			public const string InputErrorGrade = "Bitte geben Sie eine Klassenbezeichnung an!";
@@ -28,6 +28,7 @@
 			public const string InputErrorNumberOfKids = "Bitte geben Sie eine gültige Anzahl Kinder an (1 - 200)!";
 			public const string InputErrorPhone = "Bitte geben Sie eine gültige Telefonnummer an!";
 			public const string InputErrorSchool = "Bitte geben Sie den Namen Ihrer Schule an!";
+			public const string InputErrorTown = "Bitte geben Sie einen Wohnort an!";
 			public const string InputLabelAddress = "Adresse";
 			public const string InputLabelEmail = "E-Mail";
 			public const string InputLabelFirstName = "Vorname";
