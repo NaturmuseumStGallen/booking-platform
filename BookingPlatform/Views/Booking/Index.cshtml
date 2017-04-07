@@ -19,8 +19,9 @@
      */
 *@
 
-@model BookingPlatform.Models.BookingModel
+@model BookingModel
 @using BookingPlatform.Constants;
+@using BookingPlatform.Models;
 
 @{
     ViewBag.Title = Strings.Public.PageTitle;
@@ -38,16 +39,19 @@
 
     <h2>@Strings.Public.Event</h2>
 
-    @Html.LabelFor(m => m.EventId, Strings.Public.InputLabelEvent)
-    @Html.DropDownListFor(m => m.EventId, Model.EventList)
+    @Html.DropDownListFor(m => m.EventId, Model.EventList, new
+    {
+        onchange = "booking.updateCalendar('" + BookingCalendarModel.Navigation.None + "')",
+        data_event_id = bool.TrueString
+    })
     @Html.ValidationMessageFor(m => m.EventId)
 
     <h2>@Strings.Public.Date</h2>
     
     @Html.Partial("_Calendar", Model.CalendarModel)
 
-    @Html.HiddenFor(m => m.Date, new { data_booking_date = bool.TrueString })
-    @Html.ValidationMessageFor(m => m.Date)
+    @Html.HiddenFor(m => m.DateTicks, new { data_booking_date_ticks = bool.TrueString })
+    @Html.ValidationMessageFor(m => m.DateTicks)
 
     <h2>@Strings.Public.PersonalInformation</h2>
 

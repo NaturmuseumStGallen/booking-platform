@@ -31,7 +31,7 @@ namespace BookingPlatform.Models
 		public string Address { get; set; }
 
 		[Required(ErrorMessage = Strings.Public.InputErrorDate)]
-		public DateTime? Date { get; set; }
+		public long? DateTicks { get; set; }
 
 		[Required(ErrorMessage = Strings.Public.InputErrorEmail)]
 		[EmailAddress(ErrorMessage = Strings.Public.InputErrorEmail)]

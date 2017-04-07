@@ -53,7 +53,6 @@ namespace BookingPlatform.Constants
 			public const string InputErrorZipCode = "Bitte geben Sie eine gültige Postleitzahl an!";
 			public const string InputLabelAddress = "Adresse";
 			public const string InputLabelEmail = "E-Mail*";
-			public const string InputLabelEvent = "Bitte wählen Sie die gewünschte Führung:";
 			public const string InputLabelFirstName = "Vorname*";
 			public const string InputLabelGrade = "Klassenbezeichnung*";
 			public const string InputLabelLastName = "Nachname*";
@@ -63,6 +62,10 @@ namespace BookingPlatform.Constants
 			public const string InputLabelSchool = "Schule*";
 			public const string InputLabelTown = "Ortschaft*";
 			public const string InputLabelZipCode = "Postleitzahl";
+			public const string NavigationPreviousMonth = "«« Einen Monat zurück";
+			public const string NavigationPreviousWeek = "« Eine Woche zurück";
+			public const string NavigationNextWeek = "Eine Woche vor »";
+			public const string NavigationNextMonth = "Einen Monat vor »»";
 			public const string Submit = "Abschicken";
 		}
 	}

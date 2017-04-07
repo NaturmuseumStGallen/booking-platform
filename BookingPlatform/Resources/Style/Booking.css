@@ -28,9 +28,48 @@
 /*** Element Styles ***/
 
 body {
-    max-width: 965px;
+    max-width: 1000px;
     margin: 0 auto;
     padding: 10px;
+}
+
+div.calendar-controls {
+    font-size: 0;
+    margin: 0 auto;
+    max-width: 50%;
+}
+
+div.control {
+    display: inline-block;
+    font-family: 'Arial Rounded MT', sans-serif;
+    font-size: 20pt;
+    text-align: center;
+    width: 25%;
+}
+
+div.control.active {
+    cursor: pointer;
+}
+
+div.control.active:hover {
+    text-decoration: underline;
+}
+
+div.control.inactive {
+    color: lightgray;
+    cursor: not-allowed;
+}
+
+div.progress-container {
+    cursor: wait;
+    text-align: center;
+    width: 100%;
+}
+
+div.progress-container progress {
+    height: 20px;
+    vertical-align: middle;
+    width: 250px;
 }
 
 h1, h2 {
@@ -133,6 +172,7 @@ textarea {
     resize: both;
     width: 350px;
     max-width: 100%;
+    min-width: 350px;
 }
 
 /*** Styles for Medium Screens ***/
@@ -141,6 +181,10 @@ textarea {
     table.calendar th, table.calendar td {
         font-size: 8pt;
     }
+
+    div.calendar-controls {
+        max-width: 100%;
+    }
 }
 
 /*** Styles for Small Screens ***/
@@ -148,5 +192,14 @@ textarea {
 @media (max-width: 570px) {
     table.calendar th, table.calendar td {
         font-size: 6pt;
+    }
+    
+    div.calendar-controls {
+        max-width: 100%;
+    }
+
+    textarea {
+        min-width: 100%;
+        width: 100%;
     }
 }

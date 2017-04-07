@@ -19,39 +19,65 @@
      */
 *@
 
-@model BookingPlatform.Models.BookingCalendarModel
-@using System.Globalization
+@model BookingCalendarModel
 @using BookingPlatform.Constants
 @using BookingPlatform.Backend.Booking
+@using BookingPlatform.Models
 
-<table class="calendar">
-    <tr>
-        <th></th>
-        @foreach(var day in Model.Days)
-        {
-            <th>
-                @Html.Raw(day.ToLongDateString().Replace(", ", ",<br />"))
-            </th>
-        }
-    </tr>
-    @foreach (var time in Model.Times)
-    {
+<div id="calendar-container">
+    <table class="calendar">
         <tr>
-            <td>
-                @Html.Raw(time.ToShortTimeString())
-            </td>
-
-            @foreach (var day in Model.Days)
+            <th></th>
+            @foreach(var day in Model.Days)
             {
-                var status = Model.Availability.For(day, time);
-                var date = new DateTime(day.Year, day.Month, day.Day, time.Hour, time.Minute, 0);
-                var cssClass = status == AvailabilityStatus.Free ? "free" : (status == AvailabilityStatus.Booked ? "booked" : "not-bookable");
-                var title = status == AvailabilityStatus.Free ? day.ToLongDateString() + " " + time.ToShortTimeString() : (status == AvailabilityStatus.Booked ? Strings.Public.AvailabilityBooked : Strings.Public.AvailabilityNotBookable);
-                var data_booking_date = status == AvailabilityStatus.Free ? date.ToString(new CultureInfo("en-US")) : string.Empty;
-                var onclick = status == AvailabilityStatus.Free ? "booking.selectDate(this)" : string.Empty;
-
-                <td class="@cssClass" title="@title" data-booking-date="@data_booking_date" onclick="@onclick"></td>
+                <th>
+                    @Html.Raw(day.ToLongDateString().Replace(", ", ",<br />"))
+                </th>
             }
         </tr>
-    }
-</table>
+        @foreach (var time in Model.Times)
+        {
+            <tr>
+                <td>
+                    @Html.Raw(time.ToShortTimeString())
+                </td>
+
+                @foreach (var day in Model.Days)
+                {
+                    var status = Model.Availability.For(day, time);
+                    var date = new DateTime(day.Year, day.Month, day.Day, time.Hour, time.Minute, 0);
+                    var cssClass = status == AvailabilityStatus.Free ? "free" : (status == AvailabilityStatus.Booked ? "booked" : "not-bookable");
+                    var title = status == AvailabilityStatus.Free ? day.ToLongDateString() + " " + time.ToShortTimeString() : (status == AvailabilityStatus.Booked ? Strings.Public.AvailabilityBooked : Strings.Public.AvailabilityNotBookable);
+                    var data_booking_date = status == AvailabilityStatus.Free ? date.Ticks.ToString() : string.Empty;
+                    var onclick = status == AvailabilityStatus.Free ? "booking.selectDate(this)" : string.Empty;
+
+                    <td class="@cssClass" title="@title" data-ticks="@data_booking_date" onclick="@onclick"></td>
+                }
+            </tr>
+        }
+    </table>
+    <div class="calendar-controls">
+       @{
+           var previousMonthTitle = Model.CanNavigateToPreviousWeek ? Strings.Public.NavigationPreviousMonth : string.Empty;
+           var previousMonthClick = Model.CanNavigateToPreviousWeek ? "booking.updateCalendar('" + BookingCalendarModel.Navigation.PreviousMonth + "')" : string.Empty;
+           var previousWeekTitle = Model.CanNavigateToPreviousMonth ? Strings.Public.NavigationPreviousWeek : string.Empty;
+           var previousWeekClick = Model.CanNavigateToPreviousWeek ? "booking.updateCalendar('" + BookingCalendarModel.Navigation.PreviousWeek + "')" : string.Empty;
+
+           @Html.Hidden("calendar-update-url", Url.Action("UpdateCalendar"))
+           @Html.Hidden("calendar-current-date-ticks", Model.CurrentDateTicks);
+        }
+
+        <div class="control @(Model.CanNavigateToPreviousWeek ? "active" : "inactive")" title="@previousMonthTitle" onclick="@previousMonthClick">
+            &laquo;&laquo;
+        </div>
+        <div class="control @(Model.CanNavigateToPreviousMonth ? "active" : "inactive")" title="@previousWeekTitle" onclick="@previousWeekClick">
+            &laquo;
+        </div>
+        <div class="control active" title="@Strings.Public.NavigationNextWeek" onclick="booking.updateCalendar('@BookingCalendarModel.Navigation.NextWeek')">
+            &raquo;
+        </div>
+        <div class="control active" title="@Strings.Public.NavigationNextMonth" onclick="booking.updateCalendar('@BookingCalendarModel.Navigation.NextMonth')">
+            &raquo;&raquo;
+        </div>
+    </div>
+</div>

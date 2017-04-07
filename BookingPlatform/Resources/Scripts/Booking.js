@@ -20,16 +20,60 @@
 var booking = booking || {};
 
 booking.selectDate = function (td) {
-    var date = $(td).attr('data-booking-date');
+    var date = $(td).attr('data-ticks');
 
-    $('[data-booking-date]').val(date);
+    $('[data-booking-date-ticks]').val(date);
 
-    if ($('.field-validation-error').is(':visible')) {
-        $('form').valid();
+    updateUserInterface();
+    validateIfNecessary();
+
+    function updateUserInterface() {
+        $('td:contains("✓")').css('background-image', 'none');
+        $('td:contains("✓")').text('');
+        $(td).css('background-image', 'repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0) 2%)');
+        $(td).text('✓');
     }
 
-    $('td:contains("X")').css('background-image', 'none');
-    $('td:contains("X")').text('');
-    $(td).css('background-image', 'repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0) 2%)');
-    $(td).text('X');
+    function validateIfNecessary() {
+        if ($('.field-validation-error').is(':visible')) {
+            $('form').valid();
+        }
+    }
+}
+
+booking.updateCalendar = function (navigation) {
+    var eventId = $('[data-event-id]').val();
+    var ticks = $('#calendar-current-date-ticks').val();
+    var params = $.param({ eventId: eventId, ticks: ticks, navigation: navigation });
+    var url = $('#calendar-update-url').val() + '?' + params;
+
+    displayProgressBar();
+
+    $('[data-booking-date-ticks]').val(null);
+    $.ajax(url).done(successHandler).fail(failureHandler);
+
+    function displayProgressBar() {
+        var height = $('#calendar-container').css('height');
+        var container = '<div class="progress-container" style="height: ' + height + '; line-height: ' + height + '">{0}</div>';
+        var progressBar = '<progress max="100"></progress>';
+
+        $('#calendar-container').html(container.replace('{0}', progressBar));
+    }
+
+    function successHandler (data, textStatus, jqXHR) {
+        $('#calendar-container').html(data);
+    }
+
+    function failureHandler (jqXHR, textStatus, errorThrown) {
+        var message = "An error occurred!\n\n";
+        var height = $('#calendar-container').css('height');
+        var container = '<div class="progress-container" style="height: ' + height + '">{0}</div>';
+        var paragraph = '<p>Failed to load calendar!<br />Please refresh or try again later...</p>';
+
+        message += "Status:\t\t\t" + textStatus + "\n";
+        message += "Error Details:\t" + errorThrown;
+
+        $('#calendar-container').html(container.replace('{0}', paragraph))
+        alert(message);
+    }
 }

@@ -25,8 +25,20 @@ namespace BookingPlatform.Models
 {
 	public class BookingCalendarModel
 	{
+		public bool CanNavigateToPreviousMonth { get; set; }
+		public bool CanNavigateToPreviousWeek { get; set; }
+		public long CurrentDateTicks { get; set; }
 		public IList<DateTime> Days { get; set; }
 		public IList<DateTime> Times { get; set; }
 		public AvailabilityProvider Availability { get; set; }
+
+		public enum Navigation
+		{
+			PreviousMonth = -2,
+			PreviousWeek = -1,
+			None = 0,
+			NextWeek = 1,
+			NextMonth = 2
+		}
 	}
 }
