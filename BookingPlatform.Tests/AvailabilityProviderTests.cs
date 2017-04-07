@@ -17,12 +17,22 @@
  * along with BookingPlatform. If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace BookingPlatform.Backend.Entities
+using System;
+using BookingPlatform.Backend.Scheduling;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace BookingPlatform.Tests
 {
-	public abstract class DateExclusion
+	[TestClass]
+	public class AvailabilityProviderTests
 	{
-		public int Id { get; set; }
-		public string Name { get; set; }
-		public bool IsWholeDay { get; set; }
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
+		public void FromMustBeSmallerThanTo()
+		{
+			var provider = new Scheduler();
+
+			provider.GetAvailabilityRange(DateTime.Now, DateTime.Now);
+		}
 	}
 }

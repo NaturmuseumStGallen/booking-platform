@@ -19,11 +19,12 @@
 
 using System;
 using System.Collections.Generic;
+using BookingPlatform.Backend.Rules;
 
-namespace BookingPlatform.Backend.Booking
+namespace BookingPlatform.Backend.DataAccess
 {
-	public interface ITimeProvider
+	public interface IRuleProvider
 	{
-		IList<DateTime> GetTimes();
+		IList<IRule> GetRules(DateTime from, DateTime to);
 	}
 }

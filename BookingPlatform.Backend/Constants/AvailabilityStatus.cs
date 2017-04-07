@@ -17,7 +17,7 @@
  * along with BookingPlatform. If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace BookingPlatform.Backend.Booking
+namespace BookingPlatform
 {
 	public enum AvailabilityStatus
 	{

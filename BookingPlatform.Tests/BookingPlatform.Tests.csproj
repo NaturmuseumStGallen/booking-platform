@@ -48,10 +48,14 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="AvailabilityProviderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BookingPlatform.Backend\BookingPlatform.Backend.csproj">
+      <Project>{0AE065B1-F087-4E2A-8C56-48BABEC2E52A}</Project>
+      <Name>BookingPlatform.Backend</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BookingPlatform\BookingPlatform.csproj">
       <Project>{D0D84318-B9BE-47B0-844C-8B8F10373E96}</Project>
       <Name>BookingPlatform</Name>

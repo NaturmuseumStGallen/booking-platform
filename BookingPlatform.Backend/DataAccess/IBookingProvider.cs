@@ -18,12 +18,13 @@
  */
 
 using System;
+using System.Collections.Generic;
+using BookingPlatform.Backend.Entities;
 
-namespace BookingPlatform.Backend.Entities
+namespace BookingPlatform.Backend.DataAccess
 {
-	public class WeeklyDateExclusion : DateExclusion
+	public interface IBookingProvider
 	{
-		public DateTime StartDate { get; set; }
-		public int WeeklyRecurrence { get; set; }
+		IList<Booking> GetBookings(DateTime from, DateTime to);
 	}
 }

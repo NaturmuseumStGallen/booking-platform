@@ -18,7 +18,6 @@
  */
 
 using System;
-using BookingPlatform.Backend.Booking;
 
 namespace BookingPlatform.Backend.Entities
 {

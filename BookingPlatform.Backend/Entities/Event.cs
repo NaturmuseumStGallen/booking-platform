@@ -17,12 +17,10 @@
  * along with BookingPlatform. If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System;
-
 namespace BookingPlatform.Backend.Entities
 {
-	public class SingleDateExclusion : DateExclusion
+	public class Event
 	{
-		public DateTime Date { get; set; }
+		public int Id { get; set; }
 	}
 }

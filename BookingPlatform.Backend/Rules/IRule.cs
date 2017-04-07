@@ -18,14 +18,13 @@
  */
 
 using System;
+using BookingPlatform.Backend.Entities;
 
-namespace BookingPlatform.Backend.Entities
+namespace BookingPlatform.Backend.Rules
 {
-	public class MonthlyDateExclusion : DateExclusion
+	public interface IRule
 	{
-		public DateTime StartDate { get; set; }
-		public int MonthlyRecurrence { get; set; }
-		public int DayOfWeek { get; set; }
-		public int WeekOfMonth { get; set; }
+		bool IsRelevant(DateTime date, Event @event);
+		AvailabilityStatus GetStatus();
 	}
 }

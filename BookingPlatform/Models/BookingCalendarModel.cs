@@ -19,7 +19,7 @@
 
 using System;
 using System.Collections.Generic;
-using BookingPlatform.Backend.Booking;
+using BookingPlatform.Backend.Scheduling;
 
 namespace BookingPlatform.Models
 {
@@ -30,7 +30,7 @@ namespace BookingPlatform.Models
 		public long CurrentDateTicks { get; set; }
 		public IList<DateTime> Days { get; set; }
 		public IList<DateTime> Times { get; set; }
-		public AvailabilityProvider Availability { get; set; }
+		public Scheduler Availability { get; set; }
 
 		public enum Navigation
 		{

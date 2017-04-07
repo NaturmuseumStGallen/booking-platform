@@ -18,16 +18,12 @@
  */
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 
-namespace BookingPlatform.Tests
+namespace BookingPlatform.Backend.DataAccess
 {
-	[TestClass]
-	public class UnitTest1
+	public interface ITimeProvider
 	{
-		[TestMethod]
-		public void TestMethod1()
-		{
-		}
+		IList<TimeSpan> GetTimes();
 	}
 }
