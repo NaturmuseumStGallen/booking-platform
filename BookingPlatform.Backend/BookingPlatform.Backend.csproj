@@ -42,6 +42,8 @@
   <ItemGroup>
     <Compile Include="Booking\AvailabilityProvider.cs" />
     <Compile Include="Booking\AvailabilityStatus.cs" />
+    <Compile Include="Booking\ITimeProvider.cs" />
+    <Compile Include="Entities\BookingDate.cs" />
     <Compile Include="Entities\DateExclusion.cs" />
     <Compile Include="Entities\MonthlyDateExclusion.cs" />
     <Compile Include="Entities\SingleDateExclusion.cs" />
