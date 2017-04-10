@@ -17,13 +17,18 @@
  * along with BookingPlatform. If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace BookingPlatform
+using System.Collections.Generic;
+
+namespace BookingPlatform.Backend.Entities
 {
-	public enum AvailabilityStatus
+	public class EventGroup
 	{
-		Undefined = 0,
-		Free = 1,
-		Booked = 2,
-		NotBookable = 3
+		public EventGroup()
+		{
+			Events = new List<Event>();
+		}
+
+		public IList<Event> Events { get; private set; }
+		public IList<Booking> Bookings { get; private set; }
 	}
 }

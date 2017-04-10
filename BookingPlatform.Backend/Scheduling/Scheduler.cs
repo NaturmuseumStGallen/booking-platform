@@ -43,7 +43,15 @@ namespace BookingPlatform.Backend.Scheduling
 			this.timeProvider = timeProvider;
 		}
 
-		public IList<BookingDate> GetAvailabilityRange(DateTime from, DateTime to, Event @event)
+		/// <summary>
+		/// Returns the range of booking dates for the specified time period and event. From and to are inclusive,
+		/// i.e. they can be the same to get the schedule for a single day.
+		/// </summary>
+		/// <param name="from">The start date of the time period.</param>
+		/// <param name="to">The end date of the time period.</param>
+		/// <param name="event">The event for which to determine the available schedule.</param>
+		/// <returns>A list of booking dates.</returns>
+		public IList<BookingDate> GetBookingDateRange(DateTime from, DateTime to, Event @event)
 		{
 			var dates = new List<BookingDate>();
 			var day = new DateTime(from.Ticks);
@@ -51,7 +59,7 @@ namespace BookingPlatform.Backend.Scheduling
 			CheckIfDatesValid(from, to);
 			InitializeProviders(from, to);
 
-			while (day < to)
+			while (day <= to)
 			{
 				foreach (var time in times)
 				{
@@ -71,7 +79,7 @@ namespace BookingPlatform.Backend.Scheduling
 
 		private void CheckIfDatesValid(DateTime from, DateTime to)
 		{
-			if (from.Date >= to.Date)
+			if (from.Date > to.Date)
 			{
 				throw new ArgumentException(nameof(from) + " must be smaller than " + nameof(to));
 			}
@@ -91,7 +99,7 @@ namespace BookingPlatform.Backend.Scheduling
 
 			foreach (var booking in bookings)
 			{
-				if (booking.EventId == @event.Id && AreSame(booking.Date, dateTime))
+				if (booking.EventId == @event.Id && booking.Date.IsSameDateAndTimeAs(dateTime))
 				{
 					return AvailabilityStatus.Booked;
 				}
@@ -99,9 +107,11 @@ namespace BookingPlatform.Backend.Scheduling
 
 			foreach (var rule in rules)
 			{
-				if (rule.IsRelevant(dateTime, @event))
+				var status = rule.GetStatus(dateTime, @event);
+
+				if (status != AvailabilityStatus.Undefined)
 				{
-					ruleResults.Add(rule.GetStatus());
+					ruleResults.Add(status);
 				}
 			}
 
@@ -111,11 +121,6 @@ namespace BookingPlatform.Backend.Scheduling
 			}
 
 			return AvailabilityStatus.Free;
-		}
-
-		private bool AreSame(DateTime a, DateTime b)
-		{
-			return a.Year == b.Year && a.Month == b.Month && a.Day == b.Day && a.Hour == b.Hour && a.Minute == b.Minute;
 		}
 
 		private AvailabilityStatus GetStrongestStatus(IList<AvailabilityStatus> states)

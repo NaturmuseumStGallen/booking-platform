@@ -18,21 +18,33 @@
  */
 
 using System;
-using BookingPlatform.Backend.Scheduling;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Linq;
+using BookingPlatform.Backend.DataAccess;
+using BookingPlatform.Backend.Entities;
 
-namespace BookingPlatform.Tests
+namespace BookingPlatform.Backend.Rules
 {
-	[TestClass]
-	public class AvailabilityProviderTests
+	public class EventGroupRule : IRule
 	{
-		[TestMethod]
-		[ExpectedException(typeof(ArgumentException))]
-		public void FromMustBeSmallerThanTo()
-		{
-			var provider = new Scheduler();
+		private EventGroup group;
+		private AvailabilityStatus status;
+		private IBookingProvider bookingProvider;
 
-			provider.GetAvailabilityRange(DateTime.Now, DateTime.Now);
+		public EventGroupRule(EventGroup group, AvailabilityStatus status)
+		{
+			this.group = group;
+			this.status = status;
+		}
+
+		public AvailabilityStatus GetStatus(DateTime date, Event @event)
+		{
+			// TODO:
+			//if (group.Events.Any(e => e.Id == @event.Id) && group.Bookings.Any(b => b.Date)
+			//{
+
+			//}
+
+			return AvailabilityStatus.Undefined;
 		}
 	}
 }

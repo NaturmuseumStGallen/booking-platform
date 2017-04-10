@@ -40,6 +40,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\EventGroup.cs" />
+    <Compile Include="Rules\EventGroupRule.cs" />
+    <Compile Include="Rules\DateRangeRule.cs" />
+    <Compile Include="Rules\WeeklyRule.cs" />
+    <Compile Include="Scheduling\DateTimeComparer.cs" />
     <Compile Include="Scheduling\Scheduler.cs" />
     <Compile Include="Constants\AvailabilityStatus.cs" />
     <Compile Include="DataAccess\IBookingProvider.cs" />

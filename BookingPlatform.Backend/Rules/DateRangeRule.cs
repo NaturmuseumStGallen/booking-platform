@@ -19,15 +19,35 @@
 
 using System;
 using BookingPlatform.Backend.Entities;
+using BookingPlatform.Backend.Scheduling;
 
 namespace BookingPlatform.Backend.Rules
 {
-	public interface IRule
+	public class DateRangeRule : IRule
 	{
+		private DateTime from;
+		private DateTime to;
+		private AvailabilityStatus status;
+
 		/// <summary>
-		/// Returns the availability status according to the specified date and event. Should return
-		/// <c>AvailabilityStatus.Undefined</c> if the rule is not relevant for the given parameters.
+		/// Defines a new date range rule that returns the specified status
+		/// for events lying in the defined date range.
 		/// </summary>
-		AvailabilityStatus GetStatus(DateTime date, Event @event);
+		public DateRangeRule(DateTime from, DateTime to, AvailabilityStatus status)
+		{
+			this.from = from;
+			this.to = to;
+			this.status = status;
+		}
+
+		public AvailabilityStatus GetStatus(DateTime date, Event @event)
+		{
+			if (from.IsSmallerThanOrEqualAs(date) && date.IsSmallerThanOrEqualAs(to))
+			{
+				return status;
+			}
+
+			return AvailabilityStatus.Undefined;
+		}
 	}
 }

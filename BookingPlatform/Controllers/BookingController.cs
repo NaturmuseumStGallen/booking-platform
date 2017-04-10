@@ -44,7 +44,7 @@ namespace BookingPlatform.Controllers
 			model.CalendarModel = new BookingCalendarModel();
 			model.CalendarModel.Days = new List<DateTime>();
 			model.CalendarModel.Times = new List<DateTime>();
-			model.CalendarModel.Availability = new Scheduler();
+			//model.CalendarModel.Availability = new Scheduler();
 			model.CalendarModel.CurrentDateTicks = DateTime.Today.Ticks;
 
 			model.CalendarModel.Days.Add(DateTime.Today);
@@ -90,7 +90,7 @@ namespace BookingPlatform.Controllers
 
 				model.Days = new List<DateTime>();
 				model.Times = new List<DateTime>();
-				model.Availability = new Scheduler();
+				//model.Availability = new Scheduler();
 
 				model.CanNavigateToPreviousWeek = true;
 				model.CanNavigateToPreviousMonth = true;
