@@ -19,8 +19,8 @@
 
 using System;
 using System.Linq;
-using BookingPlatform.Backend.DataAccess;
 using BookingPlatform.Backend.Entities;
+using BookingPlatform.Backend.Scheduling;
 
 namespace BookingPlatform.Backend.Rules
 {
@@ -28,7 +28,6 @@ namespace BookingPlatform.Backend.Rules
 	{
 		private EventGroup group;
 		private AvailabilityStatus status;
-		private IBookingProvider bookingProvider;
 
 		public EventGroupRule(EventGroup group, AvailabilityStatus status)
 		{
@@ -38,11 +37,10 @@ namespace BookingPlatform.Backend.Rules
 
 		public AvailabilityStatus GetStatus(DateTime date, Event @event)
 		{
-			// TODO:
-			//if (group.Events.Any(e => e.Id == @event.Id) && group.Bookings.Any(b => b.Date)
-			//{
-
-			//}
+			if (group.Events.Any(e => e.Id == @event.Id) && group.Bookings.Any(b => b.Date.IsSameDateAndTimeAs(date)))
+			{
+				return status;
+			}
 
 			return AvailabilityStatus.Undefined;
 		}

@@ -21,7 +21,7 @@ using System;
 
 namespace BookingPlatform.Backend.Scheduling
 {
-	public static class DateTimeComparer
+	public static class DateTimeComparison
 	{
 		/// <summary>
 		/// Compares the two <c>DateTime</c> structs and returns <c>true</c>

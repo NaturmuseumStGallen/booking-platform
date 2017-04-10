@@ -18,6 +18,8 @@
  */
 
 using System;
+using System.Collections.Generic;
+using BookingPlatform.Backend.Entities;
 using BookingPlatform.Backend.Rules;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -73,6 +75,27 @@ namespace BookingPlatform.Tests
 			Assert.IsTrue(rule.GetStatus(new DateTime(2017, 3, 21), null) == AvailabilityStatus.NotBookable);
 			Assert.IsTrue(rule.GetStatus(new DateTime(2018, 3, 20), null) == AvailabilityStatus.NotBookable);
 			Assert.IsTrue(rule.GetStatus(new DateTime(2018, 3, 21), null) == AvailabilityStatus.Undefined);
+		}
+
+		[TestMethod]
+		public void EventGroupRuleTest()
+		{
+			var date = new DateTime(2017, 4, 1, 12, 30, 0);
+			var eventGroup = new EventGroup
+			{
+				Bookings = new List<Booking> { new Booking { EventId = 4, Date = date } },
+				Events = new List<Event> { new Event { Id = 2 }, new Event { Id = 4 }, new Event { Id = 5 } }
+			};
+			var rule = new EventGroupRule(eventGroup, AvailabilityStatus.Booked);
+
+			Assert.IsTrue(rule.GetStatus(date, new Event { Id = 2 }) == AvailabilityStatus.Booked);
+			Assert.IsTrue(rule.GetStatus(date, new Event { Id = 4 }) == AvailabilityStatus.Booked);
+			Assert.IsTrue(rule.GetStatus(date, new Event { Id = 5 }) == AvailabilityStatus.Booked);
+
+			Assert.IsTrue(rule.GetStatus(date, new Event { Id = 6 }) == AvailabilityStatus.Undefined);
+			Assert.IsTrue(rule.GetStatus(new DateTime(2017, 4, 1, 12, 0, 0), new Event { Id = 2 }) == AvailabilityStatus.Undefined);
+			Assert.IsTrue(rule.GetStatus(new DateTime(2017, 4, 1, 12, 0, 0), new Event { Id = 4 }) == AvailabilityStatus.Undefined);
+			Assert.IsTrue(rule.GetStatus(new DateTime(2017, 4, 1, 12, 0, 0), new Event { Id = 5 }) == AvailabilityStatus.Undefined);
 		}
 	}
 }

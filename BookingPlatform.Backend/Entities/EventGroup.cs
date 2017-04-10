@@ -28,7 +28,7 @@ namespace BookingPlatform.Backend.Entities
 			Events = new List<Event>();
 		}
 
-		public IList<Event> Events { get; private set; }
-		public IList<Booking> Bookings { get; private set; }
+		public IList<Event> Events { get; set; }
+		public IList<Booking> Bookings { get; set; }
 	}
 }

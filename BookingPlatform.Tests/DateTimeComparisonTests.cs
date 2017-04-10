@@ -24,7 +24,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace BookingPlatform.Tests
 {
 	[TestClass]
-	public class DateTimeComparerTests
+	public class DateTimeComparisonTests
 	{
 		[TestMethod]
 		public void IsSameDateAsTest()
