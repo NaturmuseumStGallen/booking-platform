@@ -40,11 +40,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataAccess\Database.cs" />
+    <Compile Include="DataAccess\DbBookingProvider.cs" />
+    <Compile Include="DataAccess\DbRuleProvider.cs" />
+    <Compile Include="DataAccess\DbTimeProvider.cs" />
     <Compile Include="Entities\EventGroup.cs" />
     <Compile Include="Rules\EventGroupRule.cs" />
     <Compile Include="Rules\DateRangeRule.cs" />
+    <Compile Include="Rules\MinimumDateRule.cs" />
     <Compile Include="Rules\WeeklyRule.cs" />
     <Compile Include="Scheduling\DateTimeComparison.cs" />
+    <Compile Include="Scheduling\DateTimeUtility.cs" />
     <Compile Include="Scheduling\Scheduler.cs" />
     <Compile Include="Constants\AvailabilityStatus.cs" />
     <Compile Include="DataAccess\IBookingProvider.cs" />

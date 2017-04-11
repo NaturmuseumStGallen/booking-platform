@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DateTimeComparisonTests.cs" />
+    <Compile Include="DateTimeUtilityTests.cs" />
     <Compile Include="RuleTests.cs" />
     <Compile Include="SchedulerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

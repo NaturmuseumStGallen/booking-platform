@@ -20,6 +20,8 @@
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using BookingPlatform.Backend.DataAccess;
+using BookingPlatform.Backend.Entities;
 using BookingPlatform.Backend.Scheduling;
 using BookingPlatform.Models;
 
@@ -31,6 +33,9 @@ namespace BookingPlatform.Controllers
 		public ActionResult Index(int? id)
 		{
 			var model = new BookingModel();
+			var scheduler = new Scheduler(new DbBookingProvider(), new DbRuleProvider(), new DbTimeProvider());
+			var monday = DateTimeUtility.GetMondayOfWeekFor(DateTime.Today);
+			var sunday = DateTimeUtility.GetSundayOfWeekFor(DateTime.Today);
 
 			model.EventList = new List<SelectListItem>
 			{
@@ -42,23 +47,8 @@ namespace BookingPlatform.Controllers
 			};
 
 			model.CalendarModel = new BookingCalendarModel();
-			model.CalendarModel.Days = new List<DateTime>();
-			model.CalendarModel.Times = new List<DateTime>();
-			//model.CalendarModel.Availability = new Scheduler();
 			model.CalendarModel.CurrentDateTicks = DateTime.Today.Ticks;
-
-			model.CalendarModel.Days.Add(DateTime.Today);
-			model.CalendarModel.Days.Add(DateTime.Today.AddDays(1));
-			model.CalendarModel.Days.Add(DateTime.Today.AddDays(2));
-			model.CalendarModel.Days.Add(DateTime.Today.AddDays(3));
-			model.CalendarModel.Days.Add(DateTime.Today.AddDays(4));
-			model.CalendarModel.Days.Add(DateTime.Today.AddDays(5));
-			model.CalendarModel.Days.Add(DateTime.Today.AddDays(6));
-
-			model.CalendarModel.Times.Add(new DateTime(1, 1, 1, 9, 0, 0));
-			model.CalendarModel.Times.Add(new DateTime(1, 1, 1, 10, 30, 0));
-			model.CalendarModel.Times.Add(new DateTime(1, 1, 1, 11, 0, 0));
-			model.CalendarModel.Times.Add(new DateTime(1, 1, 1, 13, 30, 0));
+			model.CalendarModel.Dates = scheduler.GetBookingDateRange(monday, sunday, new Event());
 
 			return View(model);
 		}
@@ -72,10 +62,22 @@ namespace BookingPlatform.Controllers
 				return Content("Success!");
 			}
 
-			model.EventList = new List<SelectListItem>();
+			var scheduler = new Scheduler(new DbBookingProvider(), new DbRuleProvider(), new DbTimeProvider());
+			var monday = DateTimeUtility.GetMondayOfWeekFor(DateTime.Today);
+			var sunday = DateTimeUtility.GetSundayOfWeekFor(DateTime.Today);
+
+			model.EventList = new List<SelectListItem>
+			{
+				new SelectListItem { Text = "Bitte wählen", Value = "-1" },
+				new SelectListItem { Text = "Führung A", Value = "1" },
+				new SelectListItem { Text = "Führung B", Value = "2" },
+				new SelectListItem { Text = "Führung C", Value = "3" },
+				new SelectListItem { Text = "Führung D", Value = "4" }
+			};
+
 			model.CalendarModel = new BookingCalendarModel();
-			model.CalendarModel.Days = new List<DateTime>();
-			model.CalendarModel.Times = new List<DateTime>();
+			model.CalendarModel.CurrentDateTicks = DateTime.Today.Ticks;
+			model.CalendarModel.Dates = scheduler.GetBookingDateRange(monday, sunday, new Event());
 
 			return View(model);
 		}
@@ -83,14 +85,21 @@ namespace BookingPlatform.Controllers
 		[HttpGet]
 		public ActionResult UpdateCalendar(int? eventId, long? ticks, BookingCalendarModel.Navigation? navigation)
 		{
-			if (eventId.HasValue && ticks.HasValue)
+			if (!ticks.HasValue)
 			{
-				var model = new BookingCalendarModel();
-				var current = new DateTime(ticks.Value);
+				return new HttpNotFoundResult();
+			}
 
-				model.Days = new List<DateTime>();
-				model.Times = new List<DateTime>();
-				//model.Availability = new Scheduler();
+			var model = new BookingCalendarModel();
+			var current = new DateTime(ticks.Value);
+
+			if (eventId.HasValue && Database.IsValidEventId(eventId.Value))
+			{
+				var scheduler = new Scheduler(new DbBookingProvider(), new DbRuleProvider(), new DbTimeProvider());
+				var monday = DateTimeUtility.GetMondayOfWeekFor(current);
+				var sunday = DateTimeUtility.GetSundayOfWeekFor(current);
+
+				model.Dates = scheduler.GetBookingDateRange(monday, sunday, new Event());
 
 				model.CanNavigateToPreviousWeek = true;
 				model.CanNavigateToPreviousMonth = true;
@@ -114,25 +123,15 @@ namespace BookingPlatform.Controllers
 						current = current.AddMonths(1);
 					}
 				}
-
-				model.CurrentDateTicks = current.Ticks;
-				model.Days.Add(current);
-				model.Days.Add(current.AddDays(1));
-				model.Days.Add(current.AddDays(2));
-				model.Days.Add(current.AddDays(3));
-				model.Days.Add(current.AddDays(4));
-				model.Days.Add(current.AddDays(5));
-				model.Days.Add(current.AddDays(6));
-
-				model.Times.Add(new DateTime(1, 1, 1, 9, 0, 0));
-				model.Times.Add(new DateTime(1, 1, 1, 10, 30, 0));
-				model.Times.Add(new DateTime(1, 1, 1, 11, 0, 0));
-				model.Times.Add(new DateTime(1, 1, 1, 13, 30, 0));
-
-				return PartialView("_Calendar", model);
+			}
+			else
+			{
+				model.ShowEventSelectionMessage = true;
 			}
 
-			return new HttpNotFoundResult();
+			model.CurrentDateTicks = current.Ticks;
+
+			return PartialView("_Calendar", model);
 		}
 	}
 }

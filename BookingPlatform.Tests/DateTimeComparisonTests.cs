@@ -52,6 +52,20 @@ namespace BookingPlatform.Tests
 		}
 
 		[TestMethod]
+		public void IsSameTimeTest()
+		{
+			Assert.IsTrue(new DateTime(1, 1, 1, 10, 0, 0).IsSameTimeAs(new DateTime(1, 1, 1, 10, 0, 45)));
+			Assert.IsTrue(new DateTime(1, 1, 1, 10, 0, 0).IsSameTimeAs(new DateTime(2017, 1, 1, 10, 0, 0)));
+			Assert.IsTrue(new DateTime(1, 1, 1, 10, 0, 0).IsSameTimeAs(new TimeSpan(10, 0, 0)));
+			Assert.IsTrue(new DateTime(1, 1, 1, 10, 0, 0).IsSameTimeAs(new TimeSpan(10, 0, 1)));
+
+			Assert.IsFalse(new DateTime(1, 1, 1, 10, 0, 0).IsSameTimeAs(new DateTime(1, 1, 1, 11, 0, 45)));
+			Assert.IsFalse(new DateTime(1, 1, 1, 10, 10, 0).IsSameTimeAs(new DateTime(2017, 1, 1, 10, 0, 0)));
+			Assert.IsFalse(new DateTime(1, 1, 1, 10, 0, 0).IsSameTimeAs(new TimeSpan(11, 0, 0)));
+			Assert.IsFalse(new DateTime(1, 1, 1, 10, 10, 0).IsSameTimeAs(new TimeSpan(10, 0, 0)));
+		}
+
+		[TestMethod]
 		public void IsBiggerThanTest()
 		{
 			Assert.IsTrue(new DateTime(2017, 1, 1).IsBiggerThan(new DateTime(2016, 12, 31)));

@@ -181,10 +181,6 @@ textarea {
     table.calendar th, table.calendar td {
         font-size: 8pt;
     }
-
-    div.calendar-controls {
-        max-width: 100%;
-    }
 }
 
 /*** Styles for Small Screens ***/

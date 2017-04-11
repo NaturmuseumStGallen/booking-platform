@@ -66,6 +66,7 @@ namespace BookingPlatform.Constants
 			public const string NavigationPreviousWeek = "« Eine Woche zurück";
 			public const string NavigationNextWeek = "Eine Woche vor »";
 			public const string NavigationNextMonth = "Einen Monat vor »»";
+			public const string PleaseSelectEvent = "Bitte wählen Sie eine Führung aus!";
 			public const string Submit = "Abschicken";
 		}
 	}

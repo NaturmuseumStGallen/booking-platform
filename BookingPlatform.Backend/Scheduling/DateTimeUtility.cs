@@ -18,37 +18,39 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using BookingPlatform.Backend.Entities;
 
-namespace BookingPlatform.Models
+namespace BookingPlatform.Backend.Scheduling
 {
-	public class BookingCalendarModel
+	public static class DateTimeUtility
 	{
-		public bool CanNavigateToPreviousMonth { get; set; }
-		public bool CanNavigateToPreviousWeek { get; set; }
-		public long CurrentDateTicks { get; set; }
-		public bool ShowEventSelectionMessage { get; set; }
-
-		public IList<BookingDate> Dates { get; set; }
-
-		public IEnumerable<DateTime> Days
+		/// <summary>
+		/// Retrieves the Monday of the week to which the specified date belongs to.
+		/// </summary>
+		public static DateTime GetMondayOfWeekFor(DateTime date)
 		{
-			get { return Dates.GroupBy(d => d.Date.Date).Select(g => g.Key).ToList(); }
+			var monday = new DateTime(date.Year, date.Month, date.Day);
+
+			while (monday.DayOfWeek != DayOfWeek.Monday)
+			{
+				monday = monday.AddDays(-1);
+			}
+
+			return monday;
 		}
-		public IEnumerable<TimeSpan> Times
-		{
-			get { return Dates.GroupBy(d => d.Date.TimeOfDay).Select(g => g.Key).ToList(); }
-		}
 
-		public enum Navigation
+		/// <summary>
+		/// Retrieves the Sunday of the week to which the specified date belongs to.
+		/// </summary>
+		public static DateTime GetSundayOfWeekFor(DateTime date)
 		{
-			PreviousMonth = -2,
-			PreviousWeek = -1,
-			None = 0,
-			NextWeek = 1,
-			NextMonth = 2
+			var sunday = new DateTime(date.Year, date.Month, date.Day);
+
+			while (sunday.DayOfWeek != DayOfWeek.Sunday)
+			{
+				sunday = sunday.AddDays(1);
+			}
+
+			return sunday;
 		}
 	}
 }

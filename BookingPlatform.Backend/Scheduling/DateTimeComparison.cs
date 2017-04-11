@@ -42,6 +42,24 @@ namespace BookingPlatform.Backend.Scheduling
 		}
 
 		/// <summary>
+		/// Compares the two <c>DateTime</c> structs and returns <c>true</c>
+		/// if they describe the same hour and minute;
+		/// </summary>
+		public static bool IsSameTimeAs(this DateTime a, DateTime b)
+		{
+			return a.Hour == b.Hour && a.Minute == b.Minute;
+		}
+
+		/// <summary>
+		/// Compares the <c>DateTime</c> and the <c>TimeSpane</c> structs and returns
+		/// <c>true</c> if they describe the same hour and minute;
+		/// </summary>
+		public static bool IsSameTimeAs(this DateTime a, TimeSpan b)
+		{
+			return a.IsSameTimeAs(new DateTime(1, 1, 1, b.Hours, b.Minutes, 0));
+		}
+
+		/// <summary>
 		/// Determines whether the specified <c>DateTime</c> struct describes
 		/// a smaller (i.e. previous) point in time (year, month, day, hour and minute).
 		/// </summary>

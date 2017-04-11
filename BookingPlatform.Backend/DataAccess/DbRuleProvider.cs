@@ -19,36 +19,21 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using BookingPlatform.Backend.Entities;
+using BookingPlatform.Backend.Rules;
 
-namespace BookingPlatform.Models
+namespace BookingPlatform.Backend.DataAccess
 {
-	public class BookingCalendarModel
+	public class DbRuleProvider : IRuleProvider
 	{
-		public bool CanNavigateToPreviousMonth { get; set; }
-		public bool CanNavigateToPreviousWeek { get; set; }
-		public long CurrentDateTicks { get; set; }
-		public bool ShowEventSelectionMessage { get; set; }
-
-		public IList<BookingDate> Dates { get; set; }
-
-		public IEnumerable<DateTime> Days
+		public IList<IRule> GetRules(DateTime from, DateTime to)
 		{
-			get { return Dates.GroupBy(d => d.Date.Date).Select(g => g.Key).ToList(); }
-		}
-		public IEnumerable<TimeSpan> Times
-		{
-			get { return Dates.GroupBy(d => d.Date.TimeOfDay).Select(g => g.Key).ToList(); }
-		}
+			var rules = new List<IRule>();
 
-		public enum Navigation
-		{
-			PreviousMonth = -2,
-			PreviousWeek = -1,
-			None = 0,
-			NextWeek = 1,
-			NextMonth = 2
+			// TODO
+			rules.Add(new WeeklyRule(DayOfWeek.Saturday, AvailabilityStatus.NotBookable));
+			rules.Add(new WeeklyRule(DayOfWeek.Sunday, AvailabilityStatus.NotBookable));
+
+			return rules;
 		}
 	}
 }

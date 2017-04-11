@@ -18,37 +18,31 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using BookingPlatform.Backend.Entities;
+using BookingPlatform.Backend.Scheduling;
 
-namespace BookingPlatform.Models
+namespace BookingPlatform.Backend.Rules
 {
-	public class BookingCalendarModel
+	public class MinimumDateRule : IRule
 	{
-		public bool CanNavigateToPreviousMonth { get; set; }
-		public bool CanNavigateToPreviousWeek { get; set; }
-		public long CurrentDateTicks { get; set; }
-		public bool ShowEventSelectionMessage { get; set; }
+		private DateTime minimum;
 
-		public IList<BookingDate> Dates { get; set; }
-
-		public IEnumerable<DateTime> Days
+		/// <summary>
+		/// Defines a rule which marks all dates prior to the specified date as not bookable.
+		/// </summary>
+		public MinimumDateRule(DateTime minimum)
 		{
-			get { return Dates.GroupBy(d => d.Date.Date).Select(g => g.Key).ToList(); }
-		}
-		public IEnumerable<TimeSpan> Times
-		{
-			get { return Dates.GroupBy(d => d.Date.TimeOfDay).Select(g => g.Key).ToList(); }
+			this.minimum = minimum;
 		}
 
-		public enum Navigation
+		public AvailabilityStatus GetStatus(DateTime date, Event @event)
 		{
-			PreviousMonth = -2,
-			PreviousWeek = -1,
-			None = 0,
-			NextWeek = 1,
-			NextMonth = 2
+			if (date.IsSmallerThan(minimum))
+			{
+				return AvailabilityStatus.NotBookable;
+			}
+
+			return AvailabilityStatus.Undefined;
 		}
 	}
 }
