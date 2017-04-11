@@ -1,5 +1,9 @@
 ﻿/*
  * Copyright (C) 2017 Naturmuseum St. Gallen
+ *  > https://github.com/NaturmuseumStGallen
+ *
+ * Designed and engineered by Phantasus Software Systems
+ *  > http://www.phantasus.ch
  *
  * This file is part of BookingPlatform.
  *
