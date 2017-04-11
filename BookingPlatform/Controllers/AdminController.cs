@@ -21,13 +21,60 @@
  * along with BookingPlatform. If not, see <http://www.gnu.org/licenses/>.
  */
 
+using System;
 using System.Web.Mvc;
+using BookingPlatform.Backend.DataAccess;
+using BookingPlatform.Backend.Scheduling;
+using BookingPlatform.Models;
 
 namespace BookingPlatform.Controllers
 {
 	public class AdminController : Controller
 	{
-		public ActionResult Index()
+		[HttpGet]
+		public ActionResult Overview()
+		{
+			return View();
+		}
+
+		[HttpGet]
+		public ActionResult Calendar()
+		{
+			var model = new AdminCalendarModel();
+
+			model.FirstDayOfMonth = DateTimeUtility.GetFirstDayOfMonth(DateTime.Today);
+			model.LastDayOfMonth = DateTimeUtility.GetLastDayOfMonth(DateTime.Today);
+			model.Bookings = Database.Instance.GetBookings(model.FirstDayOfMonth, model.LastDayOfMonth);
+
+			return View(model);
+		}
+
+		[HttpPost]
+		public ActionResult Calendar(AdminCalendarModel model)
+		{
+			var date = new DateTime(model.Year.Value, model.Month.Value, 1);
+
+			model.FirstDayOfMonth = DateTimeUtility.GetFirstDayOfMonth(date);
+			model.LastDayOfMonth = DateTimeUtility.GetLastDayOfMonth(date);
+			model.Bookings = Database.Instance.GetBookings(model.FirstDayOfMonth, model.LastDayOfMonth);
+
+			return View(model);
+		}
+
+		[HttpGet]
+		public ActionResult BookingOverview()
+		{
+			return View();
+		}
+
+		[HttpGet]
+		public ActionResult EventOverview()
+		{
+			return View();
+		}
+
+		[HttpGet]
+		public ActionResult Settings()
 		{
 			return View();
 		}

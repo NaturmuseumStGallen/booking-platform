@@ -31,6 +31,34 @@ namespace BookingPlatform.Tests
 	public class DateTimeUtilityTests
 	{
 		[TestMethod]
+		public void FirstDayOfMonthTest()
+		{
+			var first = DateTimeUtility.GetFirstDayOfMonth(new DateTime(2017, 4, 5));
+
+			Assert.IsTrue(first.DayOfWeek == DayOfWeek.Saturday);
+			Assert.IsTrue(first.Year == 2017);
+			Assert.IsTrue(first.Month == 4);
+			Assert.IsTrue(first.Day == 1);
+			Assert.IsTrue(first.Hour == 0);
+			Assert.IsTrue(first.Minute == 0);
+			Assert.IsTrue(first.Second == 0);
+		}
+
+		[TestMethod]
+		public void LastDayOfMonthTest()
+		{
+			var last = DateTimeUtility.GetLastDayOfMonth(new DateTime(2017, 4, 5));
+
+			Assert.IsTrue(last.DayOfWeek == DayOfWeek.Sunday);
+			Assert.IsTrue(last.Year == 2017);
+			Assert.IsTrue(last.Month == 4);
+			Assert.IsTrue(last.Day == 30);
+			Assert.IsTrue(last.Hour == 0);
+			Assert.IsTrue(last.Minute == 0);
+			Assert.IsTrue(last.Second == 0);
+		}
+
+		[TestMethod]
 		public void MondayOfWeekTest()
 		{
 			var monday = DateTimeUtility.GetMondayOfWeekFor(new DateTime(2017, 2, 8));

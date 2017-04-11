@@ -23,16 +23,30 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using BookingPlatform.Backend.Entities;
 
 namespace BookingPlatform.Backend.DataAccess
 {
-	public class DbBookingProvider : IBookingProvider
+	internal class DbBookingProvider : IBookingProvider
 	{
 		public IList<Booking> GetBookings(DateTime from, DateTime to)
 		{
+			var bookings = new List<Booking>();
+
 			// TODO
-			return new List<Booking>();
+			var random = new Random();
+
+			foreach (var id in Enumerable.Range(1, 100))
+			{
+				bookings.Add(new Booking
+				{
+					Id = id,
+					Date = new DateTime(from.Year, from.Month, random.Next(1, 28), random.Next(0, 23), random.Next(0, 59), 0)
+				});
+			}
+
+			return bookings;
 		}
 	}
 }

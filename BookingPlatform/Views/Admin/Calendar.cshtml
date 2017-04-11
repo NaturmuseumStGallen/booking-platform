@@ -1,0 +1,95 @@
+﻿@*
+    /*
+     * Copyright (C) 2017 Naturmuseum St. Gallen
+     *  > https://github.com/NaturmuseumStGallen
+     *
+     * Designed and engineered by Phantasus Software Systems
+     *  > http://www.phantasus.ch
+     *
+     * This file is part of BookingPlatform.
+     *
+     * BookingPlatform is free software: you can redistribute it and/or modify
+     * it under the terms of the GNU General Public License as published by
+     * the Free Software Foundation, either version 3 of the License, or
+     * (at your option) any later version.
+     *
+     * BookingPlatform is distributed in the hope that it will be useful,
+     * but WITHOUT ANY WARRANTY; without even the implied warranty of
+     * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+     * GNU General Public License for more details.
+     *
+     * You should have received a copy of the GNU General Public License
+     * along with BookingPlatform. If not, see <http://www.gnu.org/licenses/>.
+     */
+*@
+
+@model AdminCalendarModel
+@using System.Globalization;
+@using System.Linq;
+@using BookingPlatform.Backend.Scheduling;
+@using BookingPlatform.Constants;
+@using BookingPlatform.Models;
+
+@{
+    ViewBag.Title = Strings.Admin.Calendar.PageTitle;
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+    var monday = DateTimeUtility.GetMondayOfWeekFor(Model.FirstDayOfMonth);
+    var sunday = DateTimeUtility.GetSundayOfWeekFor(Model.FirstDayOfMonth);
+    var currentDay = monday.IsSameDateAs(Model.FirstDayOfMonth) ? monday.AddDays(-7) : monday;
+}
+
+<div class="content-1000px">
+    <h2 class="center">@Model.FirstDayOfMonth.ToString("y")</h2>
+    <div class="center">
+        @using (Html.BeginForm(FormMethod.Post))
+        {
+            @Html.DropDownListFor(m => m.Month, Model.MonthList)
+            @Html.ValidationMessageFor(m => m.Month)
+
+            @Html.DropDownListFor(m => m.Year, Model.YearList)
+            @Html.ValidationMessageFor(m => m.Year)
+
+            <input type="submit" value="@Strings.Admin.Refresh" />
+        }
+    </div>
+</div>
+<div class="calendar">
+    <div class="week header">
+        @foreach (var day in Enumerable.Range(1, 6).Concat(Enumerable.Range(0, 1)))
+        {
+            <div class="day header center">
+                @DateTimeFormatInfo.CurrentInfo.GetDayName((DayOfWeek) day)
+            </div>
+        }
+    </div>
+    @foreach (var week in Enumerable.Range(0, 6))
+    {
+        <div class="week">
+            @foreach (var day in Enumerable.Range(0, 7))
+            {
+                var isPartOfMonth = Model.FirstDayOfMonth.IsSmallerThanOrEqualAs(currentDay) && currentDay.IsSmallerThanOrEqualAs(Model.LastDayOfMonth);
+                var cssClass = isPartOfMonth ? "day-of-month" : string.Empty;
+                var bookings = Model.Bookings.Where(b => b.Date.IsSameDateAs(currentDay));
+
+                <div class="day @cssClass" title="@currentDay.ToLongDateString()">
+                    @foreach (var booking in bookings.OrderBy(b => b.Date.TimeOfDay))
+                    {
+                        <div class="booking">
+                            <div class="time">
+                                @(booking.Date.TimeOfDay.ToString("hh\\:mm"))&nbsp;-&nbsp;
+                            </div>
+                            <div class="text">
+                                Some super long string that will overlap with the border of the day container
+                            </div>
+                        </div>
+                    }
+
+                    <span class="day">@currentDay.Day</span>
+                </div>
+
+                currentDay = currentDay.AddDays(1);
+            }
+        </div>
+    }
+</div>

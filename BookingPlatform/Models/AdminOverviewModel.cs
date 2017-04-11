@@ -21,43 +21,9 @@
  * along with BookingPlatform. If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using BookingPlatform.Backend.Entities;
-
 namespace BookingPlatform.Models
 {
-	public class BookingCalendarModel
+	public class AdminOverviewModel
 	{
-		public BookingCalendarModel()
-		{
-			Dates = new List<BookingDate>();
-		}
-
-		public bool CanNavigateToPreviousMonth { get; set; }
-		public bool CanNavigateToPreviousWeek { get; set; }
-		public long CurrentDateTicks { get; set; }
-		public bool ShowEventSelectionMessage { get; set; }
-
-		public IList<BookingDate> Dates { get; set; }
-
-		public IEnumerable<DateTime> Days
-		{
-			get { return Dates.GroupBy(d => d.Date.Date).Select(g => g.Key).ToList(); }
-		}
-		public IEnumerable<TimeSpan> Times
-		{
-			get { return Dates.GroupBy(d => d.Date.TimeOfDay).Select(g => g.Key).ToList(); }
-		}
-
-		public enum Navigation
-		{
-			PreviousMonth = -2,
-			PreviousWeek = -1,
-			None = 0,
-			NextWeek = 1,
-			NextMonth = 2
-		}
 	}
 }

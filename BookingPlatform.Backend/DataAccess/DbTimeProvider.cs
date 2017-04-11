@@ -26,7 +26,7 @@ using System.Collections.Generic;
 
 namespace BookingPlatform.Backend.DataAccess
 {
-	public class DbTimeProvider : ITimeProvider
+	internal class DbTimeProvider : ITimeProvider
 	{
 		public IList<TimeSpan> GetTimes()
 		{

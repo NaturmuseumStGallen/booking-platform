@@ -21,14 +21,43 @@
  * along with BookingPlatform. If not, see <http://www.gnu.org/licenses/>.
  */
 
+using System;
+using System.Collections.Generic;
+using BookingPlatform.Backend.Entities;
+using BookingPlatform.Backend.Rules;
+
 namespace BookingPlatform.Backend.DataAccess
 {
-	public static class Database
+	public class Database : IBookingProvider, IRuleProvider, ITimeProvider
 	{
+		private Database()
+		{
+		}
+
+		public static Database Instance
+		{
+			get { return new Database(); }
+		}
+
 		public static bool IsValidEventId(int id)
 		{
 			// TODO!
 			return id >= 0;
+		}
+
+		public IList<Booking> GetBookings(DateTime from, DateTime to)
+		{
+			return new DbBookingProvider().GetBookings(from, to);
+		}
+
+		public IList<IRule> GetRules(DateTime from, DateTime to)
+		{
+			return new DbRuleProvider().GetRules(from, to);
+		}
+
+		public IList<TimeSpan> GetTimes()
+		{
+			return new DbTimeProvider().GetTimes();
 		}
 	}
 }

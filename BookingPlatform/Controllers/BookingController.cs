@@ -34,10 +34,10 @@ namespace BookingPlatform.Controllers
 	public class BookingController : Controller
 	{
 		[HttpGet]
-		public ActionResult Index(int? id)
+		public ActionResult Form(int? id)
 		{
 			var model = new BookingModel();
-			var scheduler = new Scheduler(new DbBookingProvider(), new DbRuleProvider(), new DbTimeProvider());
+			var scheduler = Scheduler.CreateNew(Database.Instance);
 			var monday = DateTimeUtility.GetMondayOfWeekFor(DateTime.Today);
 			var sunday = DateTimeUtility.GetSundayOfWeekFor(DateTime.Today);
 
@@ -59,14 +59,14 @@ namespace BookingPlatform.Controllers
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public ActionResult Index(BookingModel model)
+		public ActionResult Form(BookingModel model)
 		{
 			if (ModelState.IsValid)
 			{
 				return Content("Success!");
 			}
 
-			var scheduler = new Scheduler(new DbBookingProvider(), new DbRuleProvider(), new DbTimeProvider());
+			var scheduler = Scheduler.CreateNew(Database.Instance);
 			var monday = DateTimeUtility.GetMondayOfWeekFor(DateTime.Today);
 			var sunday = DateTimeUtility.GetSundayOfWeekFor(DateTime.Today);
 
@@ -99,7 +99,7 @@ namespace BookingPlatform.Controllers
 
 			if (eventId.HasValue && Database.IsValidEventId(eventId.Value))
 			{
-				var scheduler = new Scheduler(new DbBookingProvider(), new DbRuleProvider(), new DbTimeProvider());
+				var scheduler = Scheduler.CreateNew(Database.Instance);
 				var monday = DateTimeUtility.GetMondayOfWeekFor(current);
 				var sunday = DateTimeUtility.GetSundayOfWeekFor(current);
 

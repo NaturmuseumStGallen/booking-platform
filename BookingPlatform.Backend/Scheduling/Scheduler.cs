@@ -36,7 +36,7 @@ namespace BookingPlatform.Backend.Scheduling
 		private IRuleProvider ruleProvider;
 		private ITimeProvider timeProvider;
 
-		private IList<Entities.Booking> bookings;
+		private IList<Booking> bookings;
 		private IList<IRule> rules;
 		private IList<TimeSpan> times;
 
@@ -45,6 +45,14 @@ namespace BookingPlatform.Backend.Scheduling
 			this.bookingProvider = bookingProvider;
 			this.ruleProvider = ruleProvider;
 			this.timeProvider = timeProvider;
+		}
+
+		/// <summary>
+		/// Creates a new scheduler instance, utilizing the given provider as data source for bookings, rules and times.
+		/// </summary>
+		public static Scheduler CreateNew<T>(T provider) where T : IBookingProvider, IRuleProvider, ITimeProvider
+		{
+			return new Scheduler(provider, provider, provider);
 		}
 
 		/// <summary>

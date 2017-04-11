@@ -23,10 +23,12 @@
      */
 *@
 
+@using BookingPlatform.Constants;
+
 <!DOCTYPE html>
 <html>
     <head>
-        <title>@ViewBag.Title</title>
+        <title>@Strings.Admin.BookingPlatform - @ViewBag.Title</title>
         <meta charset="utf-8" />
         <link rel="shortcut icon" type="image/x-icon" href="@Url.Content("~/Resources/Images/Favicon.ico")" />
         <link href="@Url.Content("~/Resources/Style/Admin.css")" rel="stylesheet" type="text/css" />
@@ -36,6 +38,18 @@
         <script src="http://ajax.aspnetcdn.com/ajax/mvc/5.2/jquery.validate.unobtrusive.min.js" type="text/javascript"></script>
     </head>
     <body>
-        @RenderBody()
+        <nav>
+            <h1>@Strings.Admin.BookingPlatform - @ViewBag.Title</h1>
+            <ul>
+                <li>@Html.ActionLink(Strings.Admin.Overview.PageTitle, "Overview", "Admin")</li>
+                <li>@Html.ActionLink(Strings.Admin.Calendar.PageTitle, "Calendar", "Admin")</li>
+                <li>@Html.ActionLink(Strings.Admin.BookingOverview.PageTitle, "BookingOverview", "Admin")</li>
+                <li>@Html.ActionLink(Strings.Admin.EventOverview.PageTitle, "EventOverview", "Admin")</li>
+                <li>@Html.ActionLink(Strings.Admin.Settings.PageTitle, "Settings", "Admin")</li>
+            </ul>
+        </nav>
+        <main>
+            @RenderBody()
+        </main>
     </body>
 </html>

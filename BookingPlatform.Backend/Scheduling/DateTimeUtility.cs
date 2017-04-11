@@ -28,6 +28,26 @@ namespace BookingPlatform.Backend.Scheduling
 	public static class DateTimeUtility
 	{
 		/// <summary>
+		/// Returns the first date of the specified month;
+		/// </summary>
+		/// <param name="date"></param>
+		/// <returns></returns>
+		public static DateTime GetFirstDayOfMonth(DateTime date)
+		{
+			return new DateTime(date.Year, date.Month, 1);
+		}
+
+		/// <summary>
+		/// Returns the last date of the specified month.
+		/// </summary>
+		public static DateTime GetLastDayOfMonth(DateTime date)
+		{
+			var day = DateTime.DaysInMonth(date.Year, date.Month);
+
+			return new DateTime(date.Year, date.Month, day);
+		}
+
+		/// <summary>
 		/// Retrieves the Monday of the week to which the specified date belongs to.
 		/// </summary>
 		public static DateTime GetMondayOfWeekFor(DateTime date)

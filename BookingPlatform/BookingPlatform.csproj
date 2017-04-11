@@ -103,6 +103,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AdminCalendarModel.cs" />
+    <Compile Include="Models\AdminOverviewModel.cs" />
     <Compile Include="Models\BookingCalendarModel.cs" />
     <Compile Include="Models\BookingModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -111,9 +113,14 @@
     <Content Include="Views\web.config" />
     <Content Include="packages.config" />
     <Content Include="Views\Shared\_BookingLayout.cshtml" />
-    <Content Include="Views\Booking\Index.cshtml" />
+    <Content Include="Views\Booking\Form.cshtml" />
     <Content Include="Views\Shared\_AdminLayout.cshtml" />
     <Content Include="Views\Booking\_Calendar.cshtml" />
+    <Content Include="Views\Admin\Overview.cshtml" />
+    <Content Include="Views\Admin\Calendar.cshtml" />
+    <Content Include="Views\Admin\BookingOverview.cshtml" />
+    <Content Include="Views\Admin\EventOverview.cshtml" />
+    <Content Include="Views\Admin\Settings.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -121,9 +128,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\Admin\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\BookingPlatform.Backend\BookingPlatform.Backend.csproj">
       <Project>{0ae065b1-f087-4e2a-8c56-48babec2e52a}</Project>

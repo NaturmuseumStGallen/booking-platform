@@ -27,7 +27,41 @@ namespace BookingPlatform.Constants
 	{
 		public static class Admin
 		{
+			public const string BookingPlatform = "Buchungsplattform";
+			public const string Refresh = "Aktualisieren";
 
+			public static class BookingOverview
+			{
+				public const string PageTitle = "Buchungen";
+
+			}
+
+			public static class Calendar
+			{
+				public const string PageTitle = "Monatsansicht";
+				public const string InputErrorMonth = "Bitte gültigen Monat wählen!";
+				public const string InputErrorYear = "Bitte gültiges Jahr eingeben!";
+			}
+
+			public static class EventOverview
+			{
+				public const string PageTitle = "Führungen";
+
+			}
+
+			public static class Overview
+			{
+				public const string PageTitle = "Übersicht";
+				public const string SystemStatus = "System-Status";
+
+			}
+
+			public static class Settings
+			{
+				public const string PageTitle = "Einstellungen";
+
+
+			}
 		}
 
 		public static class Public

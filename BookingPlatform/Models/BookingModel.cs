@@ -31,6 +31,12 @@ namespace BookingPlatform.Models
 {
 	public class BookingModel
 	{
+		public BookingModel()
+		{
+			EventList = new List<SelectListItem>();
+			CalendarModel = new BookingCalendarModel();
+		}
+
 		[MaxLength(100, ErrorMessage = Strings.Public.InputErrorMaxLength100)]
 		public string Address { get; set; }
 
@@ -63,7 +69,7 @@ namespace BookingPlatform.Models
 
 		[Required(ErrorMessage = Strings.Public.InputErrorNumberOfKids)]
 		[Range(5, 30, ErrorMessage = Strings.Public.InputErrorNumberOfKids)]
-		[RegularExpression("(5|6|7|8|9|[1-2][0-9]|30)", ErrorMessage = Strings.Public.InputErrorNumberOfKids)]
+		[RegularExpression("^(5|6|7|8|9|[1-2][0-9]|30)$", ErrorMessage = Strings.Public.InputErrorNumberOfKids)]
 		public int? NumberOfKids { get; set; }
 
 		[Required(ErrorMessage = Strings.Public.InputErrorPhone)]

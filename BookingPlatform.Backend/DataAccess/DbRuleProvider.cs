@@ -27,7 +27,7 @@ using BookingPlatform.Backend.Rules;
 
 namespace BookingPlatform.Backend.DataAccess
 {
-	public class DbRuleProvider : IRuleProvider
+	internal class DbRuleProvider : IRuleProvider
 	{
 		public IList<IRule> GetRules(DateTime from, DateTime to)
 		{
@@ -36,6 +36,7 @@ namespace BookingPlatform.Backend.DataAccess
 			// TODO
 			rules.Add(new WeeklyRule(DayOfWeek.Saturday, AvailabilityStatus.NotBookable));
 			rules.Add(new WeeklyRule(DayOfWeek.Sunday, AvailabilityStatus.NotBookable));
+			rules.Add(new DateRangeRule(new DateTime(2017, 4, 18, 10, 0, 0), new DateTime(2017, 4, 18, 12, 0, 0), AvailabilityStatus.Booked));
 
 			return rules;
 		}
