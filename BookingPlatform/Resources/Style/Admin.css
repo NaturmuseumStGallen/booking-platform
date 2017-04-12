@@ -43,6 +43,44 @@ body {
     width: 100%;
 }
 
+div.booking-overview {
+    margin-top: 40px;
+    width: 100%;
+}
+
+div.booking-overview div.booking, div.header {
+    align-items: center;
+    display: flex;
+}
+
+div.booking-overview div.header {
+    border-bottom: 1px solid lightgray;
+    font-style: italic;
+}
+
+div.booking-overview div div {
+    padding: 2px 5px;
+    width: 18%;
+}
+
+div.booking-overview div div:last-child {
+    text-align: right;
+    width: 10%;
+}
+
+
+div.booking-overview div.booking:hover {
+    background-color: rgba(210, 210, 210, 0.2);
+}
+
+div.booking-overview div.booking:nth-child(2n+1) {
+    background-color: aliceblue;
+}
+
+div.booking-overview div.booking:nth-child(2n+1):hover {
+    background-color: rgba(210, 210, 210, 0.2);
+}
+
 div.calendar {
     margin: 40px auto;
     width: 95%;
@@ -59,7 +97,12 @@ div.calendar div.day {
     width: 14.285%;
 }
 
+div.calendar div.day:not(:last-child):not(.header) {
+    border-right: 1px solid lightgray;
+}
+
 div.calendar div.day.header {
+    justify-content: center;
     min-height: 0;
 }
 
@@ -100,6 +143,16 @@ div.calendar div.day.header {
 div.content-1000px {
     margin: 0 auto;
     max-width: 1000px;
+    padding: 0 5px;
+}
+
+form.big > * {
+    display: block;
+}
+
+form.big input[type=text], form.big select {
+    max-width: 350px;
+    width: 100%;
 }
 
 h1, h2 {
@@ -111,6 +164,22 @@ h1, h2 {
 
 h2 {
     font-size: 16pt;
+}
+
+h2 + label {
+    margin-top: 0;
+}
+
+input[type=submit] {
+    cursor: pointer;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    max-width: 200px;
+}
+
+label {
+    display: block;
+    margin-top: 10px;
 }
 
 nav {
@@ -169,11 +238,26 @@ span.field-validation-error {
     font-style: italic;
 }
 
+textarea {
+    resize: both;
+    width: 350px;
+    max-width: 100%;
+    min-width: 350px;
+}
+
 /*** Styles for Medium Screens ***/
 
-@media (max-width: 1050px) and (min-width: 570px) {
+@media (max-width: 1200px) and (min-width: 650px) {
+    div.calendar div.day div.booking div.time {
+        display: none;
+    }
+
     nav {
         height: 75px;
+    }
+
+    nav h1 {
+        font-size: 16pt;
     }
 
     main {
@@ -183,7 +267,16 @@ span.field-validation-error {
 
 /*** Styles for Small Screens ***/
 
-@media (max-width: 570px) {
+@media (max-width: 650px) {
+    div.calendar div.day div.booking div.time {
+        display: none;
+    }
+
+    form.big input[type=text], select {
+        max-width: 98%;
+        width: 98%;
+    }
+
     nav {
         height: 100px;
     }
@@ -194,5 +287,10 @@ span.field-validation-error {
 
     main {
         padding-top: 100px;
+    }
+
+    textarea {
+        min-width: 98%;
+        width: 98%;
     }
 }

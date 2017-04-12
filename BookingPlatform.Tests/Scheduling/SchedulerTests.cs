@@ -182,11 +182,11 @@ namespace BookingPlatform.Tests
 			var bookings = new Mock<IBookingProvider>();
 			var rules = new Mock<IRuleProvider>();
 			var times = new Mock<ITimeProvider>();
-			var @event = new Event();
+			var @event = new Event { Id = 3 };
 			var date = new DateTime(2017, 1, 1, 10, 0, 0);
 			var provider = new Scheduler(bookings.Object, rules.Object, times.Object);
 
-			bookings.Setup(p => p.GetBookings(date, date)).Returns(new List<Booking> { new Booking { Date = date } });
+			bookings.Setup(p => p.GetBookings(date, date)).Returns(new List<Booking> { new Booking { Date = date, Event = @event } });
 			rules.Setup(r => r.GetRules(date, date)).Returns(new List<IRule>());
 			times.Setup(t => t.GetTimes()).Returns(new List<TimeSpan> { date.TimeOfDay });
 

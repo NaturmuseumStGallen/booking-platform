@@ -23,7 +23,7 @@
      */
 *@
 
-@model AdminOverviewModel
+@model AdminBookingOverviewModel
 @using BookingPlatform.Constants;
 @using BookingPlatform.Models;
 
@@ -32,7 +32,44 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h2>@Strings.Admin.Overview.SystemStatus</h2>
-- Number of bookings
-- Short info about last booking
-- Number of events configured
+<div class="content-1000px">
+    <h2 class="center">@(Strings.Admin.OverviewTitle + " " + Model.FirstDayOfMonth.ToString("y"))</h2>
+    <div class="center">
+        @using (Html.BeginForm("BookingOverview", "Admin", FormMethod.Post))
+        {
+            @Html.DropDownListFor(m => m.Month, Model.MonthList)
+            @Html.ValidationMessageFor(m => m.Month)
+
+            @Html.DropDownListFor(m => m.Year, Model.YearList)
+            @Html.ValidationMessageFor(m => m.Year)
+
+            <input type="submit" value="@Strings.Admin.Refresh" />
+        }
+    </div>
+    <div class="booking-overview">
+        <div class="header">
+            <div>@Strings.Admin.BookingOverview.TableHeadingDate</div>
+            <div>@Strings.Admin.BookingOverview.TableHeadingEvent</div>
+            <div>@Strings.Admin.BookingOverview.TableHeadingName</div>
+            <div>@Strings.Admin.BookingOverview.TableHeadingSchool</div>
+            <div>@Strings.Admin.BookingOverview.TableHeadingTown</div>
+            <div></div>
+        </div>
+
+        @foreach(var booking in Model.Bookings.OrderBy(b => b.Date))
+        {
+            <div class="booking">
+                <div>@booking.Date.ToString("ddd d. MMMM yyyy HH:mm")</div>
+                <div>@booking.Event.Name</div>
+                <div>@(booking.LastName + ", " + booking.FirstName)</div>
+                <div>@booking.School</div>
+                <div>@booking.Town</div>
+                <div>@Html.ActionLink(Strings.Admin.BookingOverview.EditBooking, "BookingDetails", new { booking.Id })</div>
+            </div>
+        }
+    </div>
+    <h2>@Strings.Admin.ActionsTitle</h2>
+    <ul>
+        <li>@Html.ActionLink(Strings.Admin.BookingOverview.NewBooking, "BookingDetails")</li>
+    </ul>
+</div>

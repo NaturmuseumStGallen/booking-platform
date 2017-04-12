@@ -38,12 +38,14 @@ namespace BookingPlatform.Controllers
 		}
 
 		[HttpGet]
-		public ActionResult Calendar()
+		public ActionResult Calendar(DateTime? date)
 		{
 			var model = new AdminCalendarModel();
 
-			model.FirstDayOfMonth = DateTimeUtility.GetFirstDayOfMonth(DateTime.Today);
-			model.LastDayOfMonth = DateTimeUtility.GetLastDayOfMonth(DateTime.Today);
+			date = date ?? DateTime.Today;
+
+			model.FirstDayOfMonth = DateTimeUtility.GetFirstDayOfMonth(date.Value);
+			model.LastDayOfMonth = DateTimeUtility.GetLastDayOfMonth(date.Value);
 			model.Bookings = Database.Instance.GetBookings(model.FirstDayOfMonth, model.LastDayOfMonth);
 
 			return View(model);
@@ -52,19 +54,66 @@ namespace BookingPlatform.Controllers
 		[HttpPost]
 		public ActionResult Calendar(AdminCalendarModel model)
 		{
-			var date = new DateTime(model.Year.Value, model.Month.Value, 1);
+			if (ModelState.IsValid)
+			{
+				var date = new DateTime(model.Year.Value, model.Month.Value, 1);
 
-			model.FirstDayOfMonth = DateTimeUtility.GetFirstDayOfMonth(date);
-			model.LastDayOfMonth = DateTimeUtility.GetLastDayOfMonth(date);
+				return RedirectToAction("Calendar", new { date });
+			}
+
+			return RedirectToAction("Calendar");
+		}
+
+		[HttpGet]
+		public ActionResult BookingOverview(DateTime? date)
+		{
+			var model = new AdminBookingOverviewModel();
+
+			date = date ?? DateTime.Today;
+
+			model.FirstDayOfMonth = DateTimeUtility.GetFirstDayOfMonth(date.Value);
+			model.LastDayOfMonth = DateTimeUtility.GetLastDayOfMonth(date.Value);
 			model.Bookings = Database.Instance.GetBookings(model.FirstDayOfMonth, model.LastDayOfMonth);
 
 			return View(model);
 		}
 
-		[HttpGet]
-		public ActionResult BookingOverview()
+		[HttpPost]
+		public ActionResult BookingOverview(AdminBookingOverviewModel model)
 		{
-			return View();
+			if (ModelState.IsValid)
+			{
+				var date = new DateTime(model.Year.Value, model.Month.Value, 1);
+
+				return RedirectToAction("BookingOverview", new { date });
+			}
+
+			return RedirectToAction("BookingOverview");
+		}
+
+		[HttpGet]
+		public ActionResult BookingDetails(int? id)
+		{
+			var model = new AdminBookingDetailsModel();
+
+			if (!id.HasValue)
+			{
+				model.IsNew = true;
+			}
+
+			return View(model);
+		}
+
+		[HttpPost]
+		public ActionResult BookingDetails(AdminBookingDetailsModel model)
+		{
+			if (ModelState.IsValid)
+			{
+
+				return RedirectToAction("BookingOverview", new { model.Date });
+			}
+
+			return View(model);
 		}
 
 		[HttpGet]

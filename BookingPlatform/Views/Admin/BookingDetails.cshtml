@@ -1,0 +1,114 @@
+﻿@*
+    /*
+     * Copyright (C) 2017 Naturmuseum St. Gallen
+     *  > https://github.com/NaturmuseumStGallen
+     *
+     * Designed and engineered by Phantasus Software Systems
+     *  > http://www.phantasus.ch
+     *
+     * This file is part of BookingPlatform.
+     *
+     * BookingPlatform is free software: you can redistribute it and/or modify
+     * it under the terms of the GNU General Public License as published by
+     * the Free Software Foundation, either version 3 of the License, or
+     * (at your option) any later version.
+     *
+     * BookingPlatform is distributed in the hope that it will be useful,
+     * but WITHOUT ANY WARRANTY; without even the implied warranty of
+     * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+     * GNU General Public License for more details.
+     *
+     * You should have received a copy of the GNU General Public License
+     * along with BookingPlatform. If not, see <http://www.gnu.org/licenses/>.
+     */
+*@
+
+@model AdminBookingDetailsModel
+@using BookingPlatform.Constants;
+@using BookingPlatform.Models;
+
+@{
+    ViewBag.Title = Model.IsNew ? Strings.Admin.BookingDetails.PageTitleNew : Strings.Admin.BookingDetails.PageTitleEdit;
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+    Html.EnableClientValidation();
+    Html.EnableUnobtrusiveJavaScript();
+}
+
+<div class="content-1000px">
+    @using (Html.BeginForm("BookingDetails", "Admin", FormMethod.Post, new { @class = "big" }))
+    {
+        <h2>@Strings.Admin.BookingDetails.Event</h2>
+
+        <p>@Strings.Admin.BookingDetails.State: @(Model.IsActive ? Strings.Admin.BookingDetails.Active : Strings.Admin.BookingDetails.Cancelled)</p>
+
+        @Html.DropDownListFor(m => m.EventId, Model.EventList)
+        @Html.ValidationMessageFor(m => m.EventId)
+
+        @Html.LabelFor(m => m.Date, Strings.Admin.BookingDetails.InputLabelDate)
+        @Html.TextBoxFor(m => m.Date)
+        @Html.ValidationMessageFor(m => m.Date)
+
+        <h2>@Strings.Admin.BookingDetails.PersonalInformation</h2>
+
+        @Html.LabelFor(m => m.FirstName, Strings.Admin.BookingDetails.InputLabelFirstName)
+        @Html.TextBoxFor(m => m.FirstName)
+        @Html.ValidationMessageFor(m => m.FirstName)
+
+        @Html.LabelFor(m => m.LastName, Strings.Admin.BookingDetails.InputLabelLastName)
+        @Html.TextBoxFor(m => m.LastName)
+        @Html.ValidationMessageFor(m => m.LastName)
+
+        @Html.LabelFor(m => m.School, Strings.Admin.BookingDetails.InputLabelSchool)
+        @Html.TextBoxFor(m => m.School)
+        @Html.ValidationMessageFor(m => m.School)
+
+        @Html.LabelFor(m => m.Address, Strings.Admin.BookingDetails.InputLabelAddress)
+        @Html.TextBoxFor(m => m.Address)
+        @Html.ValidationMessageFor(m => m.Address)
+
+        @Html.LabelFor(m => m.ZipCode, Strings.Admin.BookingDetails.InputLabelZipCode)
+        @Html.TextBoxFor(m => m.ZipCode)
+        @Html.ValidationMessageFor(m => m.ZipCode)
+
+        @Html.LabelFor(m => m.Town, Strings.Admin.BookingDetails.InputLabelTown)
+        @Html.TextBoxFor(m => m.Town)
+        @Html.ValidationMessageFor(m => m.Town)
+
+        <h2>@Strings.Admin.BookingDetails.ContactInformation</h2>
+
+        @Html.LabelFor(m => m.Email, Strings.Admin.BookingDetails.InputLabelEmail)
+        @Html.TextBoxFor(m => m.Email)
+        @Html.ValidationMessageFor(m => m.Email)
+
+        @Html.LabelFor(m => m.Phone, Strings.Admin.BookingDetails.InputLabelPhone)
+        @Html.TextBoxFor(m => m.Phone)
+        @Html.ValidationMessageFor(m => m.Phone)
+
+        <h2>@Strings.Admin.BookingDetails.AdditionalInformation</h2>
+
+        @Html.LabelFor(m => m.NumberOfKids, Strings.Admin.BookingDetails.InputLabelNumberOfKids)
+        @Html.TextBoxFor(m => m.NumberOfKids)
+        @Html.ValidationMessageFor(m => m.NumberOfKids)
+
+        @Html.LabelFor(m => m.Grade, Strings.Admin.BookingDetails.InputLabelGrade)
+        @Html.TextBoxFor(m => m.Grade)
+        @Html.ValidationMessageFor(m => m.Grade)
+
+        @Html.LabelFor(m => m.Notes, Strings.Admin.BookingDetails.InputLabelNotes)
+        @Html.TextAreaFor(m => m.Notes, new { rows = 5 })
+        @Html.ValidationMessageFor(m => m.Notes)
+
+        <div>
+            <input type="submit" value="@Strings.Admin.BookingDetails.Save" />
+
+            @if (!Model.IsNew)
+            {
+                var linkText = Model.IsActive ? Strings.Admin.BookingDetails.Cancel : Strings.Admin.BookingDetails.Activate;
+                var linkUrl = Model.IsActive ? "CancelBooking" : "ActivateBooking";
+
+                @(" - ") @Html.ActionLink(linkText, linkUrl, new { Model.Id })
+            }
+        </div>
+    }
+</div>

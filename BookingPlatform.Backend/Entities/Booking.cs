@@ -28,7 +28,12 @@ namespace BookingPlatform.Backend.Entities
 	public class Booking
 	{
 		public int Id { get; set; }
-		public int EventId { get; set; }
 		public DateTime Date { get; set; }
+		public Event Event { get; set; }
+		public string FirstName { get; set; }
+		public bool IsCancelled { get; set; }
+		public string LastName { get; set; }
+		public string School { get; set; }
+		public string Town { get; set; }
 	}
 }

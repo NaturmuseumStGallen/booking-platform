@@ -21,37 +21,32 @@
  * along with BookingPlatform. If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using BookingPlatform.Backend.Entities;
+var admin = admin || {};
 
-namespace BookingPlatform.Backend.DataAccess
-{
-	internal class DbBookingProvider : IBookingProvider
-	{
-		public IList<Booking> GetBookings(DateTime from, DateTime to)
-		{
-			var bookings = new List<Booking>();
+$(document).ready(function () {
+    attachSafetyHandlers();
 
-			// TODO
-			var random = new Random();
+    function attachSafetyHandlers() {
+        var elements = $('[data-safety-message');
 
-			foreach (var id in Enumerable.Range(1, 100))
-			{
-				bookings.Add(new Booking
-				{
-					Id = id,
-					Event = new Event { Name = "Irgendeine Führung" },
-					Date = new DateTime(from.Year, from.Month, random.Next(1, 28), random.Next(0, 23), random.Next(0, 59), 0),
-					FirstName = "Maxine",
-					LastName = "Muster",
-					School = "Name der Schule hier",
-					Town = "Zürich"
-				});
-			}
+        $.each(elements, function (index, element) {
+            var onclick = $(element).onclick;
 
-			return bookings;
-		}
-	}
-}
+            $(element).click(function (event) {
+                safetyHandler(element, onclick, event);
+            });
+        });
+    }
+
+    function safetyHandler(element, onclick, event) {
+        if (window.confirm($(element).attr('data-safety-message'))) {
+            onclick.call(element, event);
+            
+            return true;
+        }
+
+        event.preventDefault();
+
+        return false;
+    }
+});

@@ -23,17 +23,75 @@
 
 namespace BookingPlatform.Constants
 {
+	/// <summary>
+	/// String ressource for the whole application, grouped by area and page.
+	/// </summary>
 	public static class Strings
 	{
+		/// <summary>
+		/// Strings used in the admin pages.
+		/// </summary>
 		public static class Admin
 		{
+			public const string ActionsTitle = "Aktionen";
 			public const string BookingPlatform = "Buchungsplattform";
+			public const string OverviewTitle = "Übersicht";
 			public const string Refresh = "Aktualisieren";
+			public const string SafetyMessage = "Sicher? Aktion kann nicht rückgängig gemacht werden...";
+
+			public static class BookingDetails
+			{
+				public const string Activate = "Aktivieren";
+				public const string Active = "Aktiv";
+				public const string AdditionalInformation = "Zusätzliche Informationen";
+				public const string Cancel = "Stornieren";
+				public const string Cancelled = "Storniert";
+				public const string ContactInformation = "Kontaktinformationen";
+				public const string Event = "Führung";
+				public const string InputErrorDate = "Bitte gültiges Datum eingeben!";
+				public const string InputErrorEmail = "Bitte gültige E-Mail-Adresse angeben!";
+				public const string InputErrorEvent = "Bitte Führung auswählen!";
+				public const string InputErrorGrade = "Bitte Klassenbezeichnung angeben!";
+				public const string InputErrorFirstName = "Bitte gültigen Vornamen eingeben!";
+				public const string InputErrorLastName = "Bitte gültigen Nachnamen eingeben!";
+				public const string InputErrorMaxLength100 = "Bitte maximal 100 Zeichen eingeben!";
+				public const string InputErrorMaxLength10000 = "Bitte maximal 10'000 Zeichen eingeben!";
+				public const string InputErrorNumberOfKids = "Bitte gültige Anzahl Kinder angeben (Zahl)!";
+				public const string InputErrorPhone = "Bitte gültige Telefonnummer angeben!";
+				public const string InputErrorSchool = "Bitte Name der Schule angeben!";
+				public const string InputErrorTown = "Bitte Wohnort angeben!";
+				public const string InputErrorZipCode = "Bitte gültige Postleitzahl angeben!";
+				public const string InputLabelAddress = "Adresse";
+				public const string InputLabelDate = "Datum";
+				public const string InputLabelEmail = "E-Mail*";
+				public const string InputLabelFirstName = "Vorname*";
+				public const string InputLabelGrade = "Klassenbezeichnung*";
+				public const string InputLabelLastName = "Nachname*";
+				public const string InputLabelNotes = "Bemerkungen";
+				public const string InputLabelNumberOfKids = "Anzahl Kinder*";
+				public const string InputLabelPhone = "Telefon*";
+				public const string InputLabelSchool = "Schule*";
+				public const string InputLabelTown = "Ortschaft*";
+				public const string InputLabelZipCode = "Postleitzahl";
+				public const string PageTitleEdit = "Buchung bearbeiten";
+				public const string PageTitleNew = "Neue Buchung erfassen";
+				public const string PersonalInformation = "Persönliche Informationen";
+				public const string Save = "Speichern";
+				public const string State = "Status";
+			}
 
 			public static class BookingOverview
 			{
+				public const string EditBooking = "Details";
+				public const string NewBooking = "Neue Buchung erfassen";
+				public const string Overview = "Übersicht";
 				public const string PageTitle = "Buchungen";
-
+				public const string TableHeadingDate = "Datum";
+				public const string TableHeadingEvent = "Führung";
+				public const string TableHeadingName = "Nachname, Vorname";
+				public const string TableHeadingSchool = "Schule";
+				public const string TableHeadingTown = "Ortschaft";
+				public const string TableHeadingCancel = "Stornieren";
 			}
 
 			public static class Calendar
@@ -64,6 +122,9 @@ namespace BookingPlatform.Constants
 			}
 		}
 
+		/// <summary>
+		/// Strings used in the public pages.
+		/// </summary>
 		public static class Public
 		{
 			public const string AdditionalInformation = "Zusätzliche Informationen";
@@ -72,8 +133,6 @@ namespace BookingPlatform.Constants
 			public const string ContactInformation = "Kontaktinformationen";
 			public const string Date = "Datum";
 			public const string Event = "Führung";
-			public const string PageTitle = "Online-Buchung";
-			public const string PersonalInformation = "Persönliche Informationen";
 			public const string InputDescriptionGrade = "z.B. \"Mittelstufe, 5. + 6. Klasse\"";
 			public const string InputDescriptionNumberOfKids = "min. 5 bis max. 30";
 			public const string InputErrorDate = "Bitte wählen Sie einen Termin!";
@@ -104,6 +163,8 @@ namespace BookingPlatform.Constants
 			public const string NavigationPreviousWeek = "« Eine Woche zurück";
 			public const string NavigationNextWeek = "Eine Woche vor »";
 			public const string NavigationNextMonth = "Einen Monat vor »»";
+			public const string PageTitle = "Online-Buchung";
+			public const string PersonalInformation = "Persönliche Informationen";
 			public const string PleaseSelectEvent = "Bitte wählen Sie eine Führung aus!";
 			public const string Submit = "Abschicken";
 		}

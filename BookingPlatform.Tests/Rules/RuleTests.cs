@@ -87,7 +87,7 @@ namespace BookingPlatform.Tests
 			var date = new DateTime(2017, 4, 1, 12, 30, 0);
 			var eventGroup = new EventGroup
 			{
-				Bookings = new List<Booking> { new Booking { EventId = 4, Date = date } },
+				Bookings = new List<Booking> { new Booking { Event = new Event { Id = 4 }, Date = date } },
 				Events = new List<Event> { new Event { Id = 2 }, new Event { Id = 4 }, new Event { Id = 5 } }
 			};
 			var rule = new EventGroupRule(eventGroup, AvailabilityStatus.Booked);

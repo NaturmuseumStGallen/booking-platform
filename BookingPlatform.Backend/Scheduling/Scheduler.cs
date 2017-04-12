@@ -111,7 +111,7 @@ namespace BookingPlatform.Backend.Scheduling
 
 			foreach (var booking in bookings)
 			{
-				if (booking.EventId == @event.Id && booking.Date.IsSameDateAndTimeAs(dateTime))
+				if (booking.Event.Id == @event.Id && booking.Date.IsSameDateAndTimeAs(dateTime))
 				{
 					return AvailabilityStatus.Booked;
 				}

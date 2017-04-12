@@ -90,6 +90,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
+    <Content Include="Resources\Scripts\Admin.js" />
     <Content Include="Resources\Scripts\Booking.js" />
     <Content Include="Resources\Style\Admin.css" />
     <Content Include="Resources\Style\Booking.css" />
@@ -103,6 +104,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AdminBookingDetailsModel.cs" />
+    <Compile Include="Models\AdminBookingOverviewModel.cs" />
     <Compile Include="Models\AdminCalendarModel.cs" />
     <Compile Include="Models\AdminOverviewModel.cs" />
     <Compile Include="Models\BookingCalendarModel.cs" />
@@ -121,6 +124,7 @@
     <Content Include="Views\Admin\BookingOverview.cshtml" />
     <Content Include="Views\Admin\EventOverview.cshtml" />
     <Content Include="Views\Admin\Settings.cshtml" />
+    <Content Include="Views\Admin\BookingDetails.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
