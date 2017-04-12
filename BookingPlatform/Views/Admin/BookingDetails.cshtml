@@ -40,14 +40,28 @@
     {
         <h2>@Strings.Admin.BookingDetails.Event</h2>
 
-        <p>@Strings.Admin.BookingDetails.State: @(Model.IsActive ? Strings.Admin.BookingDetails.Active : Strings.Admin.BookingDetails.Cancelled)</p>
+        <p>
+            @Strings.Admin.BookingDetails.State: @(Model.IsActive ? Strings.Admin.BookingDetails.Active : Strings.Admin.BookingDetails.Cancelled)
+
+            @if (!Model.IsNew)
+            {
+                var linkText = Model.IsActive ? Strings.Admin.BookingDetails.Cancel : Strings.Admin.BookingDetails.Activate;
+                var linkUrl = Model.IsActive ? "CancelBooking" : "ActivateBooking";
+
+                @(" - ") @Html.ActionLink(linkText, linkUrl, new { Model.Id })
+            }
+        </p>
 
         @Html.DropDownListFor(m => m.EventId, Model.EventList)
         @Html.ValidationMessageFor(m => m.EventId)
 
         @Html.LabelFor(m => m.Date, Strings.Admin.BookingDetails.InputLabelDate)
-        @Html.TextBoxFor(m => m.Date)
+        @Html.TextBoxFor(m => m.Date, new { data_date_picker = bool.TrueString })
         @Html.ValidationMessageFor(m => m.Date)
+
+        @Html.LabelFor(m => m.Time, Strings.Admin.BookingDetails.InputLabelTime)
+        @Html.TextBoxFor(m => m.Time)
+        @Html.ValidationMessageFor(m => m.Time)
 
         <h2>@Strings.Admin.BookingDetails.PersonalInformation</h2>
 
@@ -99,16 +113,6 @@
         @Html.TextAreaFor(m => m.Notes, new { rows = 5 })
         @Html.ValidationMessageFor(m => m.Notes)
 
-        <div>
-            <input type="submit" value="@Strings.Admin.BookingDetails.Save" />
-
-            @if (!Model.IsNew)
-            {
-                var linkText = Model.IsActive ? Strings.Admin.BookingDetails.Cancel : Strings.Admin.BookingDetails.Activate;
-                var linkUrl = Model.IsActive ? "CancelBooking" : "ActivateBooking";
-
-                @(" - ") @Html.ActionLink(linkText, linkUrl, new { Model.Id })
-            }
-        </div>
+        <input type="submit" value="@Strings.Admin.BookingDetails.Save" />
     }
 </div>

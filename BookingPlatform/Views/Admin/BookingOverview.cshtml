@@ -55,7 +55,6 @@
             <div>@Strings.Admin.BookingOverview.TableHeadingTown</div>
             <div></div>
         </div>
-
         @foreach(var booking in Model.Bookings.OrderBy(b => b.Date))
         {
             <div class="booking">

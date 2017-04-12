@@ -24,6 +24,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
+using BookingPlatform.Backend.Entities;
 using BookingPlatform.Constants;
 
 namespace BookingPlatform.Models
@@ -32,7 +33,7 @@ namespace BookingPlatform.Models
 	{
 		public BookingModel()
 		{
-			EventList = new List<SelectListItem>();
+			Events = new List<Event>();
 			CalendarModel = new BookingCalendarModel();
 		}
 
@@ -86,9 +87,22 @@ namespace BookingPlatform.Models
 
 		[RegularExpression("([1-9][0-9]{3})", ErrorMessage = Strings.Public.InputErrorZipCode)]
 		public int? ZipCode { get; set; }
-
-		public IList<SelectListItem> EventList { get; set; }
+		
+		public IList<Event> Events { get; set; }
 
 		public BookingCalendarModel CalendarModel { get; set; }
+
+		public IEnumerable<SelectListItem> EventListItems
+		{
+			get
+			{
+				yield return new SelectListItem { Text = Strings.Public.PleaseSelect, Value = "-1" };
+
+				foreach (var @event in Events)
+				{
+					yield return new SelectListItem { Text = @event.Name, Value = @event.Id.ToString() };
+				}
+			}
+		}
 	}
 }

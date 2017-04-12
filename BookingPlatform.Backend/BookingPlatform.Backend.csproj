@@ -42,6 +42,8 @@
   <ItemGroup>
     <Compile Include="DataAccess\Database.cs" />
     <Compile Include="DataAccess\DbBookingProvider.cs" />
+    <Compile Include="DataAccess\DbEventGroupProvider.cs" />
+    <Compile Include="DataAccess\DbEventProvider.cs" />
     <Compile Include="DataAccess\DbRuleProvider.cs" />
     <Compile Include="DataAccess\DbTimeProvider.cs" />
     <Compile Include="Entities\EventGroup.cs" />

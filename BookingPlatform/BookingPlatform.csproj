@@ -107,6 +107,9 @@
     <Compile Include="Models\AdminBookingDetailsModel.cs" />
     <Compile Include="Models\AdminBookingOverviewModel.cs" />
     <Compile Include="Models\AdminCalendarModel.cs" />
+    <Compile Include="Models\AdminEventDetailsModel.cs" />
+    <Compile Include="Models\AdminEventGroupDetailsModel.cs" />
+    <Compile Include="Models\AdminEventOverviewModel.cs" />
     <Compile Include="Models\AdminOverviewModel.cs" />
     <Compile Include="Models\BookingCalendarModel.cs" />
     <Compile Include="Models\BookingModel.cs" />

@@ -25,6 +25,7 @@ var admin = admin || {};
 
 $(document).ready(function () {
     attachSafetyHandlers();
+    attachDatePickers();
 
     function attachSafetyHandlers() {
         var elements = $('[data-safety-message');
@@ -36,6 +37,10 @@ $(document).ready(function () {
                 safetyHandler(element, onclick, event);
             });
         });
+    }
+
+    function attachDatePickers() {
+        $("[data-date-picker]").datepicker({ dateFormat: 'dd.mm.yy' });
     }
 
     function safetyHandler(element, onclick, event) {

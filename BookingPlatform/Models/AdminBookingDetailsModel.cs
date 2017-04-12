@@ -24,12 +24,13 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Web.Mvc;
 using BookingPlatform.Constants;
 
 namespace BookingPlatform.Models
 {
-	public class AdminBookingDetailsModel
+	public class AdminBookingDetailsModel : IValidatableObject
 	{
 		public AdminBookingDetailsModel()
 		{
@@ -40,7 +41,8 @@ namespace BookingPlatform.Models
 		public string Address { get; set; }
 
 		[Required(ErrorMessage = Strings.Admin.BookingDetails.InputErrorDate)]
-		public DateTime? Date { get; set; }
+		[RegularExpression("^((0[1-9])|([1-2][0-9])|(3[0-1])).((0[1-9])|(1[0-2])).20[1-5][0-9]$", ErrorMessage = Strings.Admin.BookingDetails.InputErrorDate)]
+		public string Date { get; set; }
 
 		[Required(ErrorMessage = Strings.Admin.BookingDetails.InputErrorEvent)]
 		[Range(0, int.MaxValue, ErrorMessage = Strings.Admin.BookingDetails.InputErrorEvent)]
@@ -78,10 +80,15 @@ namespace BookingPlatform.Models
 		[MaxLength(100, ErrorMessage = Strings.Admin.BookingDetails.InputErrorMaxLength100)]
 		public string School { get; set; }
 
+		[Required(ErrorMessage = Strings.Admin.BookingDetails.InputErrorTime)]
+		[RegularExpression("^((0[0-9])|(1[0-9])|(2[0-3])):((0[0-9])|([1-5][0-9]))$", ErrorMessage = Strings.Admin.BookingDetails.InputErrorTime)]
+		public string Time { get; set; }
+
 		[Required(ErrorMessage = Strings.Admin.BookingDetails.InputErrorTown)]
 		[MaxLength(100, ErrorMessage = Strings.Admin.BookingDetails.InputErrorMaxLength100)]
 		public string Town { get; set; }
-
+		
+		[Required(ErrorMessage = Strings.Admin.BookingDetails.InputErrorZipCode)]
 		[RegularExpression("([1-9][0-9]{3})", ErrorMessage = Strings.Admin.BookingDetails.InputErrorZipCode)]
 		public int? ZipCode { get; set; }
 
@@ -90,5 +97,29 @@ namespace BookingPlatform.Models
 		public bool IsNew { get; set; }
 
 		public IList<SelectListItem> EventList { get; set; }
+
+		public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+		{
+			DateTime date;
+			TimeSpan time;
+			var results = new List<ValidationResult>();
+
+			if (!DateTime.TryParse(Date, out date))
+			{
+				results.Add(new ValidationResult(Strings.Admin.BookingDetails.InputErrorDate, new[] { nameof(Date) }));
+			}
+
+			if (!TimeSpan.TryParse(Time, out time))
+			{
+				results.Add(new ValidationResult(Strings.Admin.BookingDetails.InputErrorTime, new[] { nameof(Time) }));
+			}
+
+			if (results.Any())
+			{
+				results.Add(ValidationResult.Success);
+			}
+
+			return results;
+		}
 	}
 }

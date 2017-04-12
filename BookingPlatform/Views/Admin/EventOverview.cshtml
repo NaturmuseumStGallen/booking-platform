@@ -23,7 +23,7 @@
      */
 *@
 
-@model AdminOverviewModel
+@model AdminEventOverviewModel
 @using BookingPlatform.Constants;
 @using BookingPlatform.Models;
 
@@ -32,62 +32,49 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<p>1Content goes here...</p>
-<p>2Content goes here...</p>
-<p>3Content goes here...</p>
-<p>4Content goes here...</p>
-<p>5Content goes here...</p>
-<p>6Content goes here...</p>
-<p>7Content goes here...</p>
-<p>8Content goes here...</p>
-<p>9Content goes here...</p>
-<p>10Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
+<div class="content-1000px">
+    <h2>@Strings.Admin.EventOverview.Events</h2>
+    <div class="event-overview">
+        <div class="header">
+            <div>@Strings.Admin.EventOverview.Id</div>
+            <div>@Strings.Admin.EventOverview.Name</div>
+            <div></div>
+        </div>
+        @foreach (var @event in Model.Events)
+        {
+            <div class="event">
+                <div>@(@event.Id)</div>
+                <div>@(@event.Name)</div>
+                <div>@Html.ActionLink(Strings.Admin.EventOverview.Edit, "EventDetails", new { @event.Id })</div>
+            </div>
+        }
+    </div>
 
-<p>Content goes here...</p>
-<p>Content goes here...</p>
+    <h2>@Strings.Admin.EventOverview.EventGroups</h2>
+    <div class="event-group-overview">
+        <div class="header">
+            <div>@Strings.Admin.EventOverview.Name</div>
+            <div>@Strings.Admin.EventOverview.Events</div>
+            <div></div>
+        </div>
+        @foreach (var group in Model.EventGroups)
+        {
+            <div class="event-group">
+                <div>@group.Name</div>
+                <div class="events">
+                    @foreach (var @event in group.Events)
+                    {
+                        <div>@(@event.Id)</div>
+                    }
+                </div>
+                <div>@Html.ActionLink(Strings.Admin.EventOverview.Edit, "EventGroupDetails", new { group.Id })</div>
+            </div>
+        }
+    </div>
 
+    <h2>@Strings.Admin.ActionsTitle</h2>
+    <ul>
+        <li>@Html.ActionLink(Strings.Admin.EventOverview.NewEvent, "EventDetails")</li>
+        <li>@Html.ActionLink(Strings.Admin.EventOverview.NewEventGroup, "EventGroupDetails")</li>
+    </ul>
+</div>

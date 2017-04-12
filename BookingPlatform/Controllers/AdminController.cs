@@ -22,6 +22,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 using BookingPlatform.Backend.DataAccess;
 using BookingPlatform.Backend.Scheduling;
@@ -101,6 +102,15 @@ namespace BookingPlatform.Controllers
 				model.IsNew = true;
 			}
 
+			model.EventList = new List<SelectListItem>
+			{
+				new SelectListItem { Text = "Bitte wählen", Value = "-1" },
+				new SelectListItem { Text = "Führung A", Value = "1" },
+				new SelectListItem { Text = "Führung B", Value = "2" },
+				new SelectListItem { Text = "Führung C", Value = "3" },
+				new SelectListItem { Text = "Führung D", Value = "4" }
+			};
+
 			return View(model);
 		}
 
@@ -109,9 +119,19 @@ namespace BookingPlatform.Controllers
 		{
 			if (ModelState.IsValid)
 			{
+				// TODO: Save or update booking!
 
 				return RedirectToAction("BookingOverview", new { model.Date });
 			}
+
+			model.EventList = new List<SelectListItem>
+			{
+				new SelectListItem { Text = "Bitte wählen", Value = "-1" },
+				new SelectListItem { Text = "Führung A", Value = "1" },
+				new SelectListItem { Text = "Führung B", Value = "2" },
+				new SelectListItem { Text = "Führung C", Value = "3" },
+				new SelectListItem { Text = "Führung D", Value = "4" }
+			};
 
 			return View(model);
 		}
@@ -119,7 +139,50 @@ namespace BookingPlatform.Controllers
 		[HttpGet]
 		public ActionResult EventOverview()
 		{
-			return View();
+			var model = new AdminEventOverviewModel();
+
+			model.Events = Database.Instance.GetActiveEvents();
+			model.EventGroups = Database.Instance.GetEventGroups();
+
+			return View(model);
+		}
+		
+		[HttpGet]
+		public ActionResult EventDetails()
+		{
+			var model = new AdminEventDetailsModel();
+
+			return View(model);
+		}
+
+		[HttpPost]
+		public ActionResult EventDetails(AdminEventDetailsModel model)
+		{
+			if (ModelState.IsValid)
+			{
+				return RedirectToAction("EventOverview");
+			}
+
+			return View(model);
+		}
+
+		[HttpGet]
+		public ActionResult EventGroupDetails()
+		{
+			var model = new AdminEventGroupDetailsModel();
+
+			return View(model);
+		}
+
+		[HttpPost]
+		public ActionResult EventGroupDetails(AdminEventGroupDetailsModel model)
+		{
+			if (ModelState.IsValid)
+			{
+				return RedirectToAction("EventOverview");
+			}
+
+			return View(model);
 		}
 
 		[HttpGet]

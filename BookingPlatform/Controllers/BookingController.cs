@@ -22,7 +22,6 @@
  */
 
 using System;
-using System.Collections.Generic;
 using System.Web.Mvc;
 using BookingPlatform.Backend.DataAccess;
 using BookingPlatform.Backend.Entities;
@@ -41,18 +40,15 @@ namespace BookingPlatform.Controllers
 			var monday = DateTimeUtility.GetMondayOfWeekFor(DateTime.Today);
 			var sunday = DateTimeUtility.GetSundayOfWeekFor(DateTime.Today);
 
-			model.EventList = new List<SelectListItem>
-			{
-				new SelectListItem { Text = "Bitte wählen", Value = "-1" },
-				new SelectListItem { Text = "Führung A", Value = "1" },
-				new SelectListItem { Text = "Führung B", Value = "2" },
-				new SelectListItem { Text = "Führung C", Value = "3" },
-				new SelectListItem { Text = "Führung D", Value = "4" }
-			};
-
-			model.CalendarModel = new BookingCalendarModel();
+			model.Events = Database.Instance.GetActiveEvents();
 			model.CalendarModel.CurrentDateTicks = DateTime.Today.Ticks;
-			model.CalendarModel.Dates = scheduler.GetBookingDateRange(monday, sunday, new Event());
+
+			if (id.HasValue && Database.Instance.IsValidEventId(id.Value))
+			{
+				var @event = Database.Instance.GetEventBy(id.Value);
+
+				model.CalendarModel.Dates = scheduler.GetBookingDateRange(monday, sunday, @event);
+			}
 
 			return View(model);
 		}
@@ -63,6 +59,10 @@ namespace BookingPlatform.Controllers
 		{
 			if (ModelState.IsValid)
 			{
+				// TODO:
+				// - Save booking
+				// - Send email
+				// - Return success page with most important booking information & note about email confirmation
 				return Content("Success!");
 			}
 
@@ -70,18 +70,15 @@ namespace BookingPlatform.Controllers
 			var monday = DateTimeUtility.GetMondayOfWeekFor(DateTime.Today);
 			var sunday = DateTimeUtility.GetSundayOfWeekFor(DateTime.Today);
 
-			model.EventList = new List<SelectListItem>
-			{
-				new SelectListItem { Text = "Bitte wählen", Value = "-1" },
-				new SelectListItem { Text = "Führung A", Value = "1" },
-				new SelectListItem { Text = "Führung B", Value = "2" },
-				new SelectListItem { Text = "Führung C", Value = "3" },
-				new SelectListItem { Text = "Führung D", Value = "4" }
-			};
-
-			model.CalendarModel = new BookingCalendarModel();
+			model.Events = Database.Instance.GetActiveEvents();
 			model.CalendarModel.CurrentDateTicks = DateTime.Today.Ticks;
-			model.CalendarModel.Dates = scheduler.GetBookingDateRange(monday, sunday, new Event());
+
+			if (model.EventId.HasValue && Database.Instance.IsValidEventId(model.EventId.Value))
+			{
+				var @event = Database.Instance.GetEventBy(model.EventId.Value);
+
+				model.CalendarModel.Dates = scheduler.GetBookingDateRange(monday, sunday, @event);
+			}
 
 			return View(model);
 		}
@@ -97,7 +94,7 @@ namespace BookingPlatform.Controllers
 			var model = new BookingCalendarModel();
 			var current = new DateTime(ticks.Value);
 
-			if (eventId.HasValue && Database.IsValidEventId(eventId.Value))
+			if (eventId.HasValue && Database.Instance.IsValidEventId(eventId.Value))
 			{
 				var scheduler = Scheduler.CreateNew(Database.Instance);
 				var monday = DateTimeUtility.GetMondayOfWeekFor(current);

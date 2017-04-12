@@ -21,21 +21,9 @@
  * along with BookingPlatform. If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System.Collections.Generic;
-
-namespace BookingPlatform.Backend.Entities
+namespace BookingPlatform.Models
 {
-	public class EventGroup
+	public class AdminEventDetailsModel
 	{
-		public EventGroup()
-		{
-			Bookings = new List<Booking>();
-			Events = new List<Event>();
-		}
-
-		public int Id { get; set; }
-		public IList<Booking> Bookings { get; set; }
-		public IList<Event> Events { get; set; }
-		public string Name { get; set; }
 	}
 }

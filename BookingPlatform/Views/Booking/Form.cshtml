@@ -43,7 +43,7 @@
 
     <h2>@Strings.Public.Event</h2>
 
-    @Html.DropDownListFor(m => m.EventId, Model.EventList, new
+    @Html.DropDownListFor(m => m.EventId, Model.EventListItems, new
     {
         onchange = "booking.updateCalendar('" + BookingCalendarModel.Navigation.None + "')",
         data_event_id = bool.TrueString

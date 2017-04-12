@@ -44,11 +44,11 @@ body {
 }
 
 div.booking-overview {
-    margin-top: 40px;
+    margin-top: 20px;
     width: 100%;
 }
 
-div.booking-overview div.booking, div.header {
+div.booking-overview div.booking, div.booking-overview div.header {
     align-items: center;
     display: flex;
 }
@@ -67,7 +67,6 @@ div.booking-overview div div:last-child {
     text-align: right;
     width: 10%;
 }
-
 
 div.booking-overview div.booking:hover {
     background-color: rgba(210, 210, 210, 0.2);
@@ -146,6 +145,86 @@ div.content-1000px {
     padding: 0 5px;
 }
 
+div.event-overview {
+    width: 100%;
+}
+
+div.event-overview div {
+    align-items: center;
+    display: flex;
+}
+
+div.event-overview div div {
+    padding: 2px 5px;
+    width: 70%;
+}
+
+div.event-overview div div:first-child {
+    width: 10%;
+}
+
+div.event-overview div div:last-child {
+    justify-content: flex-end;
+    width: 20%;
+}
+
+div.event-overview div.header {
+    border-bottom: 1px solid lightgray;
+    font-style: italic;
+}
+
+div.event-overview div.event:hover {
+    background-color: rgba(210, 210, 210, 0.2);
+}
+
+div.event-overview div.event:nth-child(2n+1) {
+    background-color: aliceblue;
+}
+
+div.event-overview div.event:nth-child(2n+1):hover {
+    background-color: rgba(210, 210, 210, 0.2);
+}
+
+div.event-group-overview {
+    width: 100%;
+}
+
+div.event-group-overview div {
+    align-items: center;
+    display: flex;
+}
+
+div.event-group-overview > div > div {
+    padding: 2px 5px;
+    width: 40%;
+}
+
+div.event-group-overview > div > div:last-child {
+    justify-content: flex-end;
+    width: 20%;
+}
+
+div.event-group-overview div.header {
+    border-bottom: 1px solid lightgray;
+    font-style: italic;
+}
+
+div.event-group-overview div.event-group div.events {
+    display: block;
+}
+
+div.event-group-overview div.event-group:hover {
+    background-color: rgba(210, 210, 210, 0.2);
+}
+
+div.event-group-overview div.event-group:nth-child(2n+1) {
+    background-color: aliceblue;
+}
+
+div.event-group-overview div.event-group:nth-child(2n+1):hover {
+    background-color: rgba(210, 210, 210, 0.2);
+}
+
 form.big > * {
     display: block;
 }
@@ -184,6 +263,7 @@ label {
 
 nav {
     background-color: whitesmoke;
+    border-bottom: 1px solid lightgray;
     display: flex;
     left: 0;
     height: 50px; 
@@ -272,7 +352,7 @@ textarea {
         display: none;
     }
 
-    form.big input[type=text], select {
+    form.big input[type=text], form.big select {
         max-width: 98%;
         width: 98%;
     }

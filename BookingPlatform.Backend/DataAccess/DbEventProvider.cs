@@ -21,54 +21,30 @@
  * along with BookingPlatform. If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System;
 using System.Collections.Generic;
+using System.Linq;
 using BookingPlatform.Backend.Entities;
-using BookingPlatform.Backend.Rules;
 
 namespace BookingPlatform.Backend.DataAccess
 {
-	public class Database : IBookingProvider, IRuleProvider, ITimeProvider
+	internal class DbEventProvider
 	{
-		public static Database Instance
+		public IList<Event> GetAllActive()
 		{
-			get { return new Database(); }
+			var events = new List<Event>();
+
+			// TODO
+			foreach (var id in Enumerable.Range(0, 10))
+			{
+				events.Add(new Event { Id = id, Name = "Führung " + id });
+			}
+
+			return events;
 		}
 
-		public IList<Event> GetActiveEvents()
+		public Event GetById(int id)
 		{
-			return new DbEventProvider().GetAllActive();
-		}
-
-		public Event GetEventBy(int id)
-		{
-			return new DbEventProvider().GetById(id);
-		}
-
-		public IList<EventGroup> GetEventGroups()
-		{
-			return new DbEventGroupProvider().GetAll();
-		}
-
-		public IList<Booking> GetBookings(DateTime from, DateTime to)
-		{
-			return new DbBookingProvider().GetBookings(from, to);
-		}
-
-		public IList<IRule> GetRules(DateTime from, DateTime to)
-		{
-			return new DbRuleProvider().GetRules(from, to);
-		}
-
-		public IList<TimeSpan> GetTimes()
-		{
-			return new DbTimeProvider().GetTimes();
-		}
-
-		public bool IsValidEventId(int id)
-		{
-			// TODO!
-			return id >= 0;
+			return new Event();
 		}
 	}
 }
