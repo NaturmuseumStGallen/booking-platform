@@ -1,0 +1,60 @@
+﻿@*
+    /*
+     * Copyright (C) 2017 Naturmuseum St. Gallen
+     *  > https://github.com/NaturmuseumStGallen
+     *
+     * Designed and engineered by Phantasus Software Systems
+     *  > http://www.phantasus.ch
+     *
+     * This file is part of BookingPlatform.
+     *
+     * BookingPlatform is free software: you can redistribute it and/or modify
+     * it under the terms of the GNU General Public License as published by
+     * the Free Software Foundation, either version 3 of the License, or
+     * (at your option) any later version.
+     *
+     * BookingPlatform is distributed in the hope that it will be useful,
+     * but WITHOUT ANY WARRANTY; without even the implied warranty of
+     * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+     * GNU General Public License for more details.
+     *
+     * You should have received a copy of the GNU General Public License
+     * along with BookingPlatform. If not, see <http://www.gnu.org/licenses/>.
+     */
+*@
+
+@model AdminEventGroupDetailsModel
+@using BookingPlatform.Constants;
+@using BookingPlatform.Models;
+
+@{
+    ViewBag.SectionTitle = Strings.Admin.EventOverview.PageTitle;
+    ViewBag.Title = Model.IsNew ? Strings.Admin.EventGroupDetails.PageTitleNew : Strings.Admin.EventGroupDetails.PageTitleEdit;
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+    Html.EnableClientValidation();
+    Html.EnableUnobtrusiveJavaScript();
+}
+
+<div class="content-1000px">
+    <h1>@ViewBag.Title</h1>
+    @using (Html.BeginForm("EventGroupDetails", "Admin", FormMethod.Post, new { @class = "big" }))
+    {
+        @Html.LabelFor(m => m.Name, Strings.Admin.EventGroupDetails.InputLabelName)
+        @Html.TextBoxFor(m => m.Name)
+        @Html.ValidationMessageFor(m => m.Name)
+
+        @Html.LabelFor(m => m.EventIds, Strings.Admin.EventGroupDetails.InputLabelEvents)
+        @Html.ListBoxFor(m => m.EventIds, Model.Events)
+        @Html.ValidationMessageFor(m => m.EventIds)
+
+        <div class="inline-block">
+            <input type="submit" value="@Strings.Admin.Save" />
+
+            @if (!Model.IsNew)
+            {
+                @(" - ") @Html.ActionLink(Strings.Admin.Delete, "DeleteEventGroup", new { Model.Id }, new { data_safety_message = Strings.Admin.SafetyMessage })
+            }
+        </div>
+    }
+</div>

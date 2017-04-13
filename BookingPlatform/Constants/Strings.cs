@@ -35,9 +35,10 @@ namespace BookingPlatform.Constants
 		{
 			public const string ActionsTitle = "Aktionen";
 			public const string BookingPlatform = "Buchungsplattform";
-			public const string OverviewTitle = "Übersicht";
+			public const string Delete = "Löschen";
 			public const string Refresh = "Aktualisieren";
 			public const string SafetyMessage = "Sicher? Aktion kann nicht rückgängig gemacht werden...";
+			public const string Save = "Speichern";
 
 			public static class BookingDetails
 			{
@@ -49,19 +50,19 @@ namespace BookingPlatform.Constants
 				public const string ContactInformation = "Kontaktinformationen";
 				public const string Event = "Führung";
 				public const string InputErrorDate = "Bitte gültiges Datum eingeben (dd.mm.yyyy)!";
-				public const string InputErrorEmail = "Bitte gültige E-Mail-Adresse angeben!";
+				public const string InputErrorEmail = "Bitte gültige E-Mail-Adresse eingeben!";
 				public const string InputErrorEvent = "Bitte Führung auswählen!";
-				public const string InputErrorGrade = "Bitte Klassenbezeichnung angeben!";
+				public const string InputErrorGrade = "Bitte Klassenbezeichnung eingeben!";
 				public const string InputErrorFirstName = "Bitte gültigen Vornamen eingeben!";
 				public const string InputErrorLastName = "Bitte gültigen Nachnamen eingeben!";
 				public const string InputErrorMaxLength100 = "Bitte maximal 100 Zeichen eingeben!";
 				public const string InputErrorMaxLength10000 = "Bitte maximal 10'000 Zeichen eingeben!";
-				public const string InputErrorNumberOfKids = "Bitte gültige Anzahl Kinder angeben!";
-				public const string InputErrorPhone = "Bitte gültige Telefonnummer angeben!";
-				public const string InputErrorSchool = "Bitte Name der Schule angeben!";
+				public const string InputErrorNumberOfKids = "Bitte gültige Anzahl Kinder eingeben!";
+				public const string InputErrorPhone = "Bitte gültige Telefonnummer eingeben!";
+				public const string InputErrorSchool = "Bitte Name der Schule eingeben!";
 				public const string InputErrorTime = "Bitte gültige Zeit eingeben (hh:mm)!";
-				public const string InputErrorTown = "Bitte Wohnort angeben!";
-				public const string InputErrorZipCode = "Bitte gültige Postleitzahl angeben!";
+				public const string InputErrorTown = "Bitte Wohnort eingeben!";
+				public const string InputErrorZipCode = "Bitte gültige Postleitzahl eingeben!";
 				public const string InputLabelAddress = "Adresse";
 				public const string InputLabelDate = "Datum*";
 				public const string InputLabelEmail = "E-Mail*";
@@ -78,7 +79,7 @@ namespace BookingPlatform.Constants
 				public const string PageTitleEdit = "Buchung bearbeiten";
 				public const string PageTitleNew = "Neue Buchung erfassen";
 				public const string PersonalInformation = "Persönliche Informationen";
-				public const string Save = "Speichern";
+				public const string PleaseSelect = " - Bitte wählen - ";
 				public const string State = "Status";
 			}
 
@@ -103,6 +104,36 @@ namespace BookingPlatform.Constants
 				public const string InputErrorYear = "Bitte gültiges Jahr eingeben!";
 			}
 
+			public static class EventDetails
+			{
+				public const string Color = "Farbe";
+				public const string Deactivate = "Deaktivieren";
+				public const string Example = "Beispiel";
+				public const string InputErrorBlue = "Bitte gültigen Blau-Wert auswählen!";
+				public const string InputErrorGreen = "Bitte gültigen Grün-Wert auswählen!";
+				public const string InputErrorMaxLength100 = "Bitte maximal 100 Zeichen eingeben!";
+				public const string InputErrorName = "Bitte gültigen Namen eingeben!";
+				public const string InputErrorRed = "Bitte gültigen Rot-Wert auswählen!";
+				public const string InputLabelBlue = "Blau-Wert";
+				public const string InputLabelGreen = "Grün-Wert";
+				public const string InputLabelName = "Name";
+				public const string InputLabelRed = "Rot-Wert";
+				public const string PageTitleNew = "Neue Führung erfassen";
+				public const string PageTitleEdit = "Führung bearbeiten";
+				public const string Preview = "Vorschau";
+			}
+
+			public static class EventGroupDetails
+			{
+				public const string InputErrorEvents = "Bitte mindestens 1 Führung auswählen!";
+				public const string InputErrorMaxLength100 = "Bitte maximal 100 Zeichen eingeben!";
+				public const string InputErrorName = "Bitte gültigen Namen eingeben!";
+				public const string InputLabelEvents = "Führungen";
+				public const string InputLabelName = "Name";
+				public const string PageTitleNew = "Neue Führungsgruppe erfassen";
+				public const string PageTitleEdit = "Führungsgruppe bearbeiten";
+			}
+
 			public static class EventOverview
 			{
 				public const string Edit = "Bearbeiten";
@@ -119,14 +150,20 @@ namespace BookingPlatform.Constants
 			{
 				public const string PageTitle = "Übersicht";
 				public const string SystemStatus = "System-Status";
-
 			}
 
 			public static class Settings
 			{
+				public const string Address = "Adresse";
+				public const string AddNewRecipient = "EmpfängerIn hinzufügen:";
+				public const string Content = "Inhalt Bestätigungsmail";
+				public const string EMailConfiguration = "E-Mail Konfiguration";
+				public const string Html = "HTML:";
 				public const string PageTitle = "Einstellungen";
-
-
+				public const string PlaceholderInfo = "Platzhalter: %%NAME%%, %%DATE%%, %%EVENT%%";
+				public const string PlainText = "Nur-Text:";
+				public const string Recipients = "EmpfängerInnen von System-Meldungen";
+				public const string RuleOverview = "Übersicht Buchungsregeln";
 			}
 		}
 

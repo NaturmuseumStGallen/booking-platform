@@ -21,9 +21,37 @@
  * along with BookingPlatform. If not, see <http://www.gnu.org/licenses/>.
  */
 
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
+using BookingPlatform.Backend.Entities;
+using BookingPlatform.Constants;
+
 namespace BookingPlatform.Models
 {
 	public class AdminEventGroupDetailsModel
 	{
+		public AdminEventGroupDetailsModel()
+		{
+			AvailableEvents = new List<Event>();
+			SelectedEvents = new List<Event>();
+		}
+
+		[Required(ErrorMessage = Strings.Admin.EventGroupDetails.InputErrorName)]
+		[MaxLength(100, ErrorMessage = Strings.Admin.EventGroupDetails.InputErrorMaxLength100)]
+		public string Name { get; set; }
+
+		[Required(ErrorMessage = Strings.Admin.EventGroupDetails.InputErrorEvents)]
+		public IList<int> EventIds { get; set; }
+
+		public int? Id { get; set; }
+		public bool IsNew { get; set; }
+		public IList<Event> AvailableEvents { get; set; }
+		public IList<Event> SelectedEvents { get; set; }
+
+		public MultiSelectList Events
+		{
+			get { return new MultiSelectList(AvailableEvents, nameof(Event.Id), nameof(Event.Name), SelectedEvents); }
+		}
 	}
 }

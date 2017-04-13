@@ -111,6 +111,7 @@
     <Compile Include="Models\AdminEventGroupDetailsModel.cs" />
     <Compile Include="Models\AdminEventOverviewModel.cs" />
     <Compile Include="Models\AdminOverviewModel.cs" />
+    <Compile Include="Models\AdminSettingsModel.cs" />
     <Compile Include="Models\BookingCalendarModel.cs" />
     <Compile Include="Models\BookingModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -128,6 +129,8 @@
     <Content Include="Views\Admin\EventOverview.cshtml" />
     <Content Include="Views\Admin\Settings.cshtml" />
     <Content Include="Views\Admin\BookingDetails.cshtml" />
+    <Content Include="Views\Admin\EventDetails.cshtml" />
+    <Content Include="Views\Admin\EventGroupDetails.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -229,12 +229,59 @@ form.big > * {
     display: block;
 }
 
+form.big .inline-block * {
+    display: inline-block;
+}
+
+form.big input[type=range] {
+    width: 95%;
+}
+
 form.big input[type=text], form.big select {
     max-width: 350px;
     width: 100%;
 }
 
-h1, h2 {
+form.big div.color-input {
+    align-items: flex-end;
+    display: flex;
+    font-size: 0;
+}
+
+form.big div.color-input > div {
+    width: 25%;
+}
+
+form.big div.color-input > div > * {
+    display: block;
+}
+
+form.big div.color-input div[data-color-preview] {
+    margin: 0 10px;
+    padding: 10px 5px;
+    text-align: center;
+}
+
+form.big div.color-input label {
+    text-align: center;
+}
+
+form.big select {
+    margin: 0;
+}
+
+form.big textarea {
+    resize: both;
+    width: 350px;
+    max-width: 100%;
+    min-width: 350px;
+}
+
+form.big textarea.wide {
+    width: 100%;
+}
+
+h1, h2, h3 {
     font-family: 'Arial Rounded MT', sans-serif;
     font-size: 20pt;
     margin-bottom: 5px;
@@ -243,6 +290,10 @@ h1, h2 {
 
 h2 {
     font-size: 16pt;
+}
+
+h3 {
+    font-size: 12pt;
 }
 
 h2 + label {
@@ -318,11 +369,34 @@ span.field-validation-error {
     font-style: italic;
 }
 
-textarea {
-    resize: both;
-    width: 350px;
-    max-width: 100%;
-    min-width: 350px;
+table {
+    border-spacing: 0;
+    width: 100%;
+}
+
+table .align-left {
+    text-align: left;
+}
+
+table .align-right {
+    text-align: right;
+}
+
+table td, table th {
+    padding: 2px 5px;
+}
+
+table thead th {
+    border-bottom: 1px solid lightgray;
+    font-style: italic;
+}
+
+table tbody tr:hover, table tbody tr:nth-child(2n+1):hover {
+    background-color: rgba(210, 210, 210, 0.2);
+}
+
+table tbody tr:nth-child(2n+1) {
+    background-color: aliceblue;
 }
 
 /*** Styles for Medium Screens ***/
@@ -355,6 +429,27 @@ textarea {
     form.big input[type=text], form.big select {
         max-width: 98%;
         width: 98%;
+    }
+
+    form.big input[type=range] {
+        margin: 0 auto;
+    }
+
+    form.big div.color-input {
+        display: block;
+    }
+
+    form.big div.color-input div {
+        width: 100%;
+    }
+
+    form.big div.color-input > div:first-child {
+        margin-top: 10px;
+    }
+
+    form.big div.color-input div[data-color-preview] {
+        margin: 10px auto;
+        width: 90%;
     }
 
     nav {

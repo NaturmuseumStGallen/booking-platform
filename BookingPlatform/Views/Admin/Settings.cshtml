@@ -23,71 +23,57 @@
      */
 *@
 
-@model AdminOverviewModel
+@model AdminSettingsModel
 @using BookingPlatform.Constants;
 @using BookingPlatform.Models;
 
 @{
+    ViewBag.SectionTitle = Strings.Admin.Settings.PageTitle;
     ViewBag.Title = Strings.Admin.Settings.PageTitle;
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<p>1Content goes here...</p>
-<p>2Content goes here...</p>
-<p>3Content goes here...</p>
-<p>4Content goes here...</p>
-<p>5Content goes here...</p>
-<p>6Content goes here...</p>
-<p>7Content goes here...</p>
-<p>8Content goes here...</p>
-<p>9Content goes here...</p>
-<p>10Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
-<p>Content goes here...</p>
+<div class="content-1000px">
+    <h1>@ViewBag.Title</h1>
 
-<p>Content goes here...</p>
-<p>Content goes here...</p>
+    <h2>@Strings.Admin.Settings.EMailConfiguration</h2>
+
+    <h3>@Strings.Admin.Settings.Recipients</h3>
+    <table>
+        <thead>
+            <tr>
+                <th class="align-left">@Strings.Admin.Settings.Address</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var recipient in Model.Recipients)
+            {
+                <tr>
+                    <td>@recipient.EMail</td>
+                    <td class="align-right">@Html.ActionLink(Strings.Admin.Delete, "DeleteEmail", new { recipient.Id })</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @using (Html.BeginForm("NewEmailRecipient", "Admin"))
+    {
+        <span>@Strings.Admin.Settings.AddNewRecipient</span>
+        <input type="email" name="email" />
+        <input type="submit" value="@Strings.Admin.Save" />
+    }
+
+    <h3>@Strings.Admin.Settings.Content</h3>
+    @using (Html.BeginForm("UpdateEmailContent", "Admin", FormMethod.Post, new { @class = "big" }))
+    {
+        <label for="plaintext">@Strings.Admin.Settings.PlainText</label>
+        <textarea class="wide" name="plaintext" rows="20">@Model.PlaintextContent</textarea>
+        <label for="html">@Strings.Admin.Settings.Html</label>
+        <textarea class="wide" name="html" rows="20">@Model.HtmlContent</textarea>
+        <p>@Strings.Admin.Settings.PlaceholderInfo</p>
+        <input type="submit" value="@Strings.Admin.Save" />
+    }
+
+    <h2>@Strings.Admin.Settings.RuleOverview</h2>
+</div>
 

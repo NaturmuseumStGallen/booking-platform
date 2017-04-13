@@ -1,0 +1,78 @@
+﻿@*
+    /*
+     * Copyright (C) 2017 Naturmuseum St. Gallen
+     *  > https://github.com/NaturmuseumStGallen
+     *
+     * Designed and engineered by Phantasus Software Systems
+     *  > http://www.phantasus.ch
+     *
+     * This file is part of BookingPlatform.
+     *
+     * BookingPlatform is free software: you can redistribute it and/or modify
+     * it under the terms of the GNU General Public License as published by
+     * the Free Software Foundation, either version 3 of the License, or
+     * (at your option) any later version.
+     *
+     * BookingPlatform is distributed in the hope that it will be useful,
+     * but WITHOUT ANY WARRANTY; without even the implied warranty of
+     * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+     * GNU General Public License for more details.
+     *
+     * You should have received a copy of the GNU General Public License
+     * along with BookingPlatform. If not, see <http://www.gnu.org/licenses/>.
+     */
+*@
+
+@model AdminEventDetailsModel
+@using BookingPlatform.Constants;
+@using BookingPlatform.Models;
+
+@{
+    ViewBag.SectionTitle = Strings.Admin.EventOverview.PageTitle;
+    ViewBag.Title = Model.IsNew ? Strings.Admin.EventDetails.PageTitleNew : Strings.Admin.EventDetails.PageTitleEdit;
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+    Html.EnableClientValidation();
+    Html.EnableUnobtrusiveJavaScript();
+}
+
+<div class="content-1000px">
+    <h1>@ViewBag.Title</h1>
+    @using (Html.BeginForm("EventDetails", "Admin", FormMethod.Post, new { @class = "big" }))
+    {
+        @Html.LabelFor(m => m.Name, Strings.Admin.EventDetails.InputLabelName)
+        @Html.TextBoxFor(m => m.Name)
+        @Html.ValidationMessageFor(m => m.Name)
+
+        <label>@Strings.Admin.EventDetails.Color</label>
+        <div class="color-input">
+            <div>
+                @Html.LabelFor(m => m.Red, Strings.Admin.EventDetails.InputLabelRed)
+                <input id="@Html.IdFor(m => m.Red)" name="@Html.NameFor(m => m.Red)" data-color-red type="range" min="0" max="255" step="1" value="@Model.Red" />
+                @Html.ValidationMessageFor(m => m.Red)
+            </div>
+            <div>
+                @Html.LabelFor(m => m.Green, Strings.Admin.EventDetails.InputLabelGreen)
+                <input id="@Html.IdFor(m => m.Green)" name="@Html.NameFor(m => m.Green)" data-color-green type="range" min="0" max="255" step="1" value="@Model.Green" />
+                @Html.ValidationMessageFor(m => m.Green)
+            </div>
+            <div>
+                @Html.LabelFor(m => m.Blue, Strings.Admin.EventDetails.InputLabelBlue)
+                <input id="@Html.IdFor(m => m.Blue)" name="@Html.NameFor(m => m.Blue)" data-color-blue type="range" min="0" max="255" step="1" value="@Model.Blue" />
+                @Html.ValidationMessageFor(m => m.Blue)
+            </div>
+            <div data-color-preview data-auto-color>
+                @Strings.Admin.EventDetails.Example
+            </div>
+        </div>
+
+        <div class="inline-block">
+            <input type="submit" value="@Strings.Admin.Save" />
+
+            @if (!Model.IsNew)
+            {
+                @(" - ") @Html.ActionLink(Strings.Admin.EventDetails.Deactivate, "CancelEvent", new { Model.Id }, new { data_safety_message = Strings.Admin.SafetyMessage })
+            }
+        </div>
+    }
+</div>

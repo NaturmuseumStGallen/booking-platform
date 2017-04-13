@@ -32,6 +32,8 @@ namespace BookingPlatform.Controllers
 {
 	public class AdminController : Controller
 	{
+		private const string SETTINGS_SAVED = "settings_saved";
+
 		[HttpGet]
 		public ActionResult Overview()
 		{
@@ -102,14 +104,7 @@ namespace BookingPlatform.Controllers
 				model.IsNew = true;
 			}
 
-			model.EventList = new List<SelectListItem>
-			{
-				new SelectListItem { Text = "Bitte wählen", Value = "-1" },
-				new SelectListItem { Text = "Führung A", Value = "1" },
-				new SelectListItem { Text = "Führung B", Value = "2" },
-				new SelectListItem { Text = "Führung C", Value = "3" },
-				new SelectListItem { Text = "Führung D", Value = "4" }
-			};
+			model.Events = Database.Instance.GetActiveEvents();
 
 			return View(model);
 		}
@@ -124,14 +119,7 @@ namespace BookingPlatform.Controllers
 				return RedirectToAction("BookingOverview", new { model.Date });
 			}
 
-			model.EventList = new List<SelectListItem>
-			{
-				new SelectListItem { Text = "Bitte wählen", Value = "-1" },
-				new SelectListItem { Text = "Führung A", Value = "1" },
-				new SelectListItem { Text = "Führung B", Value = "2" },
-				new SelectListItem { Text = "Führung C", Value = "3" },
-				new SelectListItem { Text = "Führung D", Value = "4" }
-			};
+			model.Events = Database.Instance.GetActiveEvents();
 
 			return View(model);
 		}
@@ -148,9 +136,14 @@ namespace BookingPlatform.Controllers
 		}
 		
 		[HttpGet]
-		public ActionResult EventDetails()
+		public ActionResult EventDetails(int? id)
 		{
 			var model = new AdminEventDetailsModel();
+
+			if (!id.HasValue)
+			{
+				model.IsNew = true;
+			}
 
 			return View(model);
 		}
@@ -167,9 +160,16 @@ namespace BookingPlatform.Controllers
 		}
 
 		[HttpGet]
-		public ActionResult EventGroupDetails()
+		public ActionResult EventGroupDetails(int? id)
 		{
 			var model = new AdminEventGroupDetailsModel();
+
+			if (!id.HasValue)
+			{
+				model.IsNew = true;
+			}
+
+			model.AvailableEvents = Database.Instance.GetActiveEvents();
 
 			return View(model);
 		}
@@ -188,7 +188,25 @@ namespace BookingPlatform.Controllers
 		[HttpGet]
 		public ActionResult Settings()
 		{
-			return View();
+			var model = new AdminSettingsModel();
+
+			model.Recipients.Add(new AdminSettingsModel.RecipientModel { EMail = "blubb@sdf.ch", Id = 3 });
+			model.Recipients.Add(new AdminSettingsModel.RecipientModel { EMail = "blubb@sdf.ch", Id = 3 });
+			model.Recipients.Add(new AdminSettingsModel.RecipientModel { EMail = "blubb@sdf.ch", Id = 3 });
+			model.Recipients.Add(new AdminSettingsModel.RecipientModel { EMail = "blubb@sdf.ch", Id = 3 });
+			model.Recipients.Add(new AdminSettingsModel.RecipientModel { EMail = "blubb@sdf.ch", Id = 3 });
+
+			return View(model);
+		}
+
+		[HttpPost]
+		public ActionResult NewEmailRecipient(string email)
+		{
+			if (ModelState.IsValid)
+			{
+			}
+
+			return RedirectToAction("Settings");
 		}
 	}
 }

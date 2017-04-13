@@ -26,6 +26,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web.Mvc;
+using BookingPlatform.Backend.Entities;
 using BookingPlatform.Constants;
 
 namespace BookingPlatform.Models
@@ -34,7 +35,7 @@ namespace BookingPlatform.Models
 	{
 		public AdminBookingDetailsModel()
 		{
-			EventList = new List<SelectListItem>();
+			Events = new List<Event>();
 		}
 
 		[MaxLength(100, ErrorMessage = Strings.Admin.BookingDetails.InputErrorMaxLength100)]
@@ -95,8 +96,20 @@ namespace BookingPlatform.Models
 		public int? Id { get; set; }
 		public bool IsActive { get; set; }
 		public bool IsNew { get; set; }
+		public IList<Event> Events { get; set; }
 
-		public IList<SelectListItem> EventList { get; set; }
+		public IEnumerable<SelectListItem> EventListItems
+		{
+			get
+			{
+				yield return new SelectListItem { Text = Strings.Admin.BookingDetails.PleaseSelect, Value = "-1" };
+
+				foreach (var @event in Events)
+				{
+					yield return new SelectListItem { Text = @event.Name, Value = @event.Id.ToString(), Selected = EventId == @event.Id };
+				}
+			}
+		}
 
 		public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
 		{

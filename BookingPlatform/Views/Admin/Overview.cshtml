@@ -28,11 +28,11 @@
 @using BookingPlatform.Models;
 
 @{
+    ViewBag.SectionTitle = Strings.Admin.Overview.PageTitle;
     ViewBag.Title = Strings.Admin.Overview.PageTitle;
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h2>@Strings.Admin.Overview.SystemStatus</h2>
-- Number of bookings
-- Short info about last booking
-- Number of events configured
+<div class="content-1000px">
+    <h2>@Strings.Admin.Overview.SystemStatus</h2>
+</div>

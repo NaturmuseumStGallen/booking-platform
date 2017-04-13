@@ -28,12 +28,13 @@
 @using BookingPlatform.Models;
 
 @{
+    ViewBag.SectionTitle = Strings.Admin.BookingOverview.PageTitle;
     ViewBag.Title = Strings.Admin.BookingOverview.PageTitle;
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
 <div class="content-1000px">
-    <h2 class="center">@(Strings.Admin.OverviewTitle + " " + Model.FirstDayOfMonth.ToString("y"))</h2>
+    <h2 class="center">@(Strings.Admin.BookingOverview.Overview + " " + Model.FirstDayOfMonth.ToString("y"))</h2>
     <div class="center">
         @using (Html.BeginForm("BookingOverview", "Admin", FormMethod.Post))
         {

@@ -28,6 +28,7 @@
 @using BookingPlatform.Models;
 
 @{
+    ViewBag.SectionTitle = Strings.Admin.BookingOverview.PageTitle;
     ViewBag.Title = Model.IsNew ? Strings.Admin.BookingDetails.PageTitleNew : Strings.Admin.BookingDetails.PageTitleEdit;
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 
@@ -36,6 +37,7 @@
 }
 
 <div class="content-1000px">
+    <h1>@ViewBag.Title</h1>
     @using (Html.BeginForm("BookingDetails", "Admin", FormMethod.Post, new { @class = "big" }))
     {
         <h2>@Strings.Admin.BookingDetails.Event</h2>
@@ -52,7 +54,7 @@
             }
         </p>
 
-        @Html.DropDownListFor(m => m.EventId, Model.EventList)
+        @Html.DropDownListFor(m => m.EventId, Model.EventListItems)
         @Html.ValidationMessageFor(m => m.EventId)
 
         @Html.LabelFor(m => m.Date, Strings.Admin.BookingDetails.InputLabelDate)
@@ -113,6 +115,6 @@
         @Html.TextAreaFor(m => m.Notes, new { rows = 5 })
         @Html.ValidationMessageFor(m => m.Notes)
 
-        <input type="submit" value="@Strings.Admin.BookingDetails.Save" />
+        <input type="submit" value="@Strings.Admin.Save" />
     }
 </div>

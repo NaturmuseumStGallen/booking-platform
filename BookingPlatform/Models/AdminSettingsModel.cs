@@ -21,30 +21,25 @@
  * along with BookingPlatform. If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System.ComponentModel.DataAnnotations;
-using BookingPlatform.Constants;
+using System.Collections.Generic;
 
 namespace BookingPlatform.Models
 {
-	public class AdminEventDetailsModel
+	public class AdminSettingsModel
 	{
-		[Required(ErrorMessage = Strings.Admin.EventDetails.InputErrorName)]
-		[MaxLength(100, ErrorMessage = Strings.Admin.EventDetails.InputErrorMaxLength100)]
-		public string Name { get; set; }
+		public AdminSettingsModel()
+		{
+			Recipients = new List<RecipientModel>();
+		}
 
-		[Required(ErrorMessage = Strings.Admin.EventDetails.InputErrorBlue)]
-		[Range(0, 255, ErrorMessage = Strings.Admin.EventDetails.InputErrorBlue)]
-		public int? Blue { get; set; }
+		public string PlaintextContent { get; set; }
+		public string HtmlContent { get; set; }
+		public IList<RecipientModel> Recipients { get; set; }
 
-		[Required(ErrorMessage = Strings.Admin.EventDetails.InputErrorGreen)]
-		[Range(0, 255, ErrorMessage = Strings.Admin.EventDetails.InputErrorGreen)]
-		public int? Green { get; set; }
-
-		[Required(ErrorMessage = Strings.Admin.EventDetails.InputErrorRed)]
-		[Range(0, 255, ErrorMessage = Strings.Admin.EventDetails.InputErrorRed)]
-		public int? Red { get; set; }
-
-		public int? Id { get; set; }
-		public bool IsNew { get; set; }
+		public class RecipientModel
+		{
+			public string EMail { get; set; }
+			public int Id { get; set; }
+		}
 	}
 }

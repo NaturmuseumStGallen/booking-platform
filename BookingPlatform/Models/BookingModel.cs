@@ -100,7 +100,7 @@ namespace BookingPlatform.Models
 
 				foreach (var @event in Events)
 				{
-					yield return new SelectListItem { Text = @event.Name, Value = @event.Id.ToString() };
+					yield return new SelectListItem { Text = @event.Name, Value = @event.Id.ToString(), Selected = EventId == @event.Id };
 				}
 			}
 		}
