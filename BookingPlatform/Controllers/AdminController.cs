@@ -22,9 +22,11 @@
  */
 
 using System;
-using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
+using BookingPlatform.Backend.Constants;
 using BookingPlatform.Backend.DataAccess;
+using BookingPlatform.Backend.Entities;
 using BookingPlatform.Backend.Scheduling;
 using BookingPlatform.Models;
 
@@ -38,33 +40,6 @@ namespace BookingPlatform.Controllers
 		public ActionResult Overview()
 		{
 			return View();
-		}
-
-		[HttpGet]
-		public ActionResult Calendar(DateTime? date)
-		{
-			var model = new AdminCalendarModel();
-
-			date = date ?? DateTime.Today;
-
-			model.FirstDayOfMonth = DateTimeUtility.GetFirstDayOfMonth(date.Value);
-			model.LastDayOfMonth = DateTimeUtility.GetLastDayOfMonth(date.Value);
-			model.Bookings = Database.Instance.GetBookings(model.FirstDayOfMonth, model.LastDayOfMonth);
-
-			return View(model);
-		}
-
-		[HttpPost]
-		public ActionResult Calendar(AdminCalendarModel model)
-		{
-			if (ModelState.IsValid)
-			{
-				var date = new DateTime(model.Year.Value, model.Month.Value, 1);
-
-				return RedirectToAction("Calendar", new { date });
-			}
-
-			return RedirectToAction("Calendar");
 		}
 
 		[HttpGet]
@@ -99,9 +74,9 @@ namespace BookingPlatform.Controllers
 		{
 			var model = new AdminBookingDetailsModel();
 
-			if (!id.HasValue)
+			if (id.HasValue)
 			{
-				model.IsNew = true;
+				// TODO: load booking and map
 			}
 
 			model.Events = Database.Instance.GetActiveEvents();
@@ -125,6 +100,33 @@ namespace BookingPlatform.Controllers
 		}
 
 		[HttpGet]
+		public ActionResult Calendar(DateTime? date)
+		{
+			var model = new AdminCalendarModel();
+
+			date = date ?? DateTime.Today;
+
+			model.FirstDayOfMonth = DateTimeUtility.GetFirstDayOfMonth(date.Value);
+			model.LastDayOfMonth = DateTimeUtility.GetLastDayOfMonth(date.Value);
+			model.Bookings = Database.Instance.GetBookings(model.FirstDayOfMonth, model.LastDayOfMonth);
+
+			return View(model);
+		}
+
+		[HttpPost]
+		public ActionResult Calendar(AdminCalendarModel model)
+		{
+			if (ModelState.IsValid)
+			{
+				var date = new DateTime(model.Year.Value, model.Month.Value, 1);
+
+				return RedirectToAction("Calendar", new { date });
+			}
+
+			return RedirectToAction("Calendar");
+		}
+
+		[HttpGet]
 		public ActionResult EventOverview()
 		{
 			var model = new AdminEventOverviewModel();
@@ -140,9 +142,9 @@ namespace BookingPlatform.Controllers
 		{
 			var model = new AdminEventDetailsModel();
 
-			if (!id.HasValue)
+			if (id.HasValue)
 			{
-				model.IsNew = true;
+				// TODO: Load event and map
 			}
 
 			return View(model);
@@ -159,27 +161,53 @@ namespace BookingPlatform.Controllers
 			return View(model);
 		}
 
-		[HttpGet]
-		public ActionResult EventGroupDetails(int? id)
+		[HttpPost]
+		public ActionResult NewEmailRecipient(string email)
 		{
-			var model = new AdminEventGroupDetailsModel();
+			var isValid = new EmailAddressAttribute().IsValid(email);
 
-			if (!id.HasValue)
+			if (isValid)
 			{
-				model.IsNew = true;
+				Database.Instance.SaveEmailRecipient(email);
 			}
 
-			model.AvailableEvents = Database.Instance.GetActiveEvents();
+			return RedirectToAction("Settings");
+		}
 
-			return View(model);
+		[HttpGet]
+		public ActionResult RuleDetails(int? id, RuleType? type)
+		{
+			if (!id.HasValue && type.HasValue)
+			{
+				var model = ModelMapper.NewModelFor(type.Value);
+
+				return View(model);
+			}
+			else if (id.HasValue && Database.Instance.IsValidRuleId(id.Value))
+			{
+				var ruleData = Database.Instance.GetRuleData(id.Value);
+				var model = ModelMapper.NewModelFor(ruleData.Type);
+
+				model.MapFromEntity(ruleData);
+
+				return View(model);
+			}
+
+			return RedirectToAction("Settings");
 		}
 
 		[HttpPost]
-		public ActionResult EventGroupDetails(AdminEventGroupDetailsModel model)
+		public ActionResult RuleDetails(AdminRuleDetailsModel model)
 		{
 			if (ModelState.IsValid)
 			{
-				return RedirectToAction("EventOverview");
+				var ruleData = model.Id.HasValue ? Database.Instance.GetRuleData(model.Id.Value) : new RuleData();
+
+				model.MapToEntity(ruleData);
+
+				// TODO: Save or update rule
+
+				return RedirectToAction("Settings");
 			}
 
 			return View(model);
@@ -189,24 +217,15 @@ namespace BookingPlatform.Controllers
 		public ActionResult Settings()
 		{
 			var model = new AdminSettingsModel();
+			var settings = Database.Instance.GetGlobalSettings();
 
-			model.Recipients.Add(new AdminSettingsModel.RecipientModel { EMail = "blubb@sdf.ch", Id = 3 });
-			model.Recipients.Add(new AdminSettingsModel.RecipientModel { EMail = "blubb@sdf.ch", Id = 3 });
-			model.Recipients.Add(new AdminSettingsModel.RecipientModel { EMail = "blubb@sdf.ch", Id = 3 });
-			model.Recipients.Add(new AdminSettingsModel.RecipientModel { EMail = "blubb@sdf.ch", Id = 3 });
-			model.Recipients.Add(new AdminSettingsModel.RecipientModel { EMail = "blubb@sdf.ch", Id = 3 });
+			model.MapFromEntity(settings);
+
+			model.Recipients = Database.Instance.GetEmailRecipients();
+			model.Rules = Database.Instance.GetRuleData();
+			model.Times = Database.Instance.GetTimeData();
 
 			return View(model);
-		}
-
-		[HttpPost]
-		public ActionResult NewEmailRecipient(string email)
-		{
-			if (ModelState.IsValid)
-			{
-			}
-
-			return RedirectToAction("Settings");
 		}
 	}
 }

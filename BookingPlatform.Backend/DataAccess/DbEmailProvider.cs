@@ -21,31 +21,23 @@
  * along with BookingPlatform. If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using BookingPlatform.Backend.Entities;
 
 namespace BookingPlatform.Backend.DataAccess
 {
-	internal class DbTimeProvider : ITimeProvider
+	internal class DbEmailProvider
 	{
-		public IList<TimeSpan> GetTimes()
+		public IList<EmailRecipient> GetAll()
 		{
-			return GetTimeData().Select(t => t.Value).ToList();
-		}
+			var recipients = new List<EmailRecipient>();
 
-		public IList<TimeData> GetTimeData()
-		{
-			var times = new List<TimeData>();
+			recipients.Add(new EmailRecipient { Address = "blubb@blabb", Id = 3 });
+			recipients.Add(new EmailRecipient { Address = "blubb@blabb", Id = 3 });
+			recipients.Add(new EmailRecipient { Address = "blubb@blabb", Id = 3 });
+			recipients.Add(new EmailRecipient { Address = "blobb@blabb", Id = 7 });
 
-			// TODO
-			times.Add(new TimeData { Id = 4, Value = new TimeSpan(9, 0, 0) });
-			times.Add(new TimeData { Id = 4, Value = new TimeSpan(10, 30, 0) });
-			times.Add(new TimeData { Id = 4, Value = new TimeSpan(13, 0, 0) });
-			times.Add(new TimeData { Id = 4, Value = new TimeSpan(15, 0, 0) });
-
-			return times;
+			return recipients;
 		}
 	}
 }

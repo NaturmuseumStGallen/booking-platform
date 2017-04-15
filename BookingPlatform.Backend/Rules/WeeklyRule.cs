@@ -22,6 +22,7 @@
  */
 
 using System;
+using BookingPlatform.Backend.Constants;
 using BookingPlatform.Backend.Entities;
 using BookingPlatform.Backend.Scheduling;
 
@@ -33,6 +34,11 @@ namespace BookingPlatform.Backend.Rules
 		private AvailabilityStatus status;
 		private TimeSpan? time;
 		private DateTime? startDate;
+
+		public RuleType Type
+		{
+			get { return RuleType.Weekly; }
+		}
 
 		/// <summary>
 		/// Defines a weekly recurring rule which returns the specified status for events happening

@@ -21,30 +21,33 @@
  * along with BookingPlatform. If not, see <http://www.gnu.org/licenses/>.
  */
 
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
+using BookingPlatform.Backend.Constants;
+using BookingPlatform.Backend.Entities;
 using BookingPlatform.Constants;
 
 namespace BookingPlatform.Models
 {
-	public class AdminEventDetailsModel
+	public class EventGroupRuleModel : AdminRuleDetailsModel
 	{
-		[Required(ErrorMessage = Strings.Admin.EventDetails.InputErrorName)]
-		[MaxLength(100, ErrorMessage = Strings.Admin.EventDetails.InputErrorMaxLength100)]
-		public string Name { get; set; }
+		public EventGroupRuleModel()
+		{
+			AvailableEvents = new List<Event>();
+			SelectedEvents = new List<Event>();
+			Type = RuleType.EventGroup;
+		}
 
-		[Required(ErrorMessage = Strings.Admin.EventDetails.InputErrorBlue)]
-		[Range(0, 255, ErrorMessage = Strings.Admin.EventDetails.InputErrorBlue)]
-		public int? Blue { get; set; }
+		[Required(ErrorMessage = Strings.Admin.RuleDetails.InputErrorEvents)]
+		public IList<int> EventIds { get; set; }
 
-		[Required(ErrorMessage = Strings.Admin.EventDetails.InputErrorGreen)]
-		[Range(0, 255, ErrorMessage = Strings.Admin.EventDetails.InputErrorGreen)]
-		public int? Green { get; set; }
+		public IList<Event> AvailableEvents { get; set; }
+		public IList<Event> SelectedEvents { get; set; }
 
-		[Required(ErrorMessage = Strings.Admin.EventDetails.InputErrorRed)]
-		[Range(0, 255, ErrorMessage = Strings.Admin.EventDetails.InputErrorRed)]
-		public int? Red { get; set; }
-
-		public int? Id { get; set; }
-		public bool IsNew { get; set; }
+		public MultiSelectList Events
+		{
+			get { return new MultiSelectList(AvailableEvents, nameof(Event.Id), nameof(Event.Name), SelectedEvents); }
+		}
 	}
 }

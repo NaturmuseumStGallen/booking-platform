@@ -22,46 +22,45 @@
  */
 
 using System;
+using System.Collections.Generic;
+using System.Web.Mvc;
 using BookingPlatform.Backend.Constants;
 using BookingPlatform.Backend.Entities;
-using BookingPlatform.Backend.Scheduling;
+using BookingPlatform.Constants;
 
-namespace BookingPlatform.Backend.Rules
+namespace BookingPlatform.Models
 {
-	public class MinimumDateRule : IRule
+	public class AdminSettingsModel
 	{
-		private DateTime minimum;
-
-		public RuleType Type
+		public AdminSettingsModel()
 		{
-			get { return RuleType.MinimumDate; }
+			Recipients = new List<EmailRecipient>();
+			Rules = new List<RuleData>();
+			Times = new List<TimeData>();
 		}
 
-		/// <summary>
-		/// Defines a rule which marks all dates prior to the specified date as not bookable.
-		/// </summary>
-		public MinimumDateRule(DateTime minimum)
-		{
-			this.minimum = minimum;
-		}
+		public string Password { get; set; }
+		public string PlaintextContent { get; set; }
+		public string HtmlContent { get; set; }
 
-		/// <summary>
-		/// Defines a rule which marks all dates prior to today + the specified offset as not bookable.
-		/// E.g. if the offset is 7 and today is Monday, events are not bookable until Monday next week.
-		/// </summary>
-		public MinimumDateRule(int offset)
-		{
-			minimum = DateTime.Today.AddDays(offset);
-		}
+		public IList<EmailRecipient> Recipients { get; set; }
+		public IList<RuleData> Rules { get; set; }
+		public IList<TimeData> Times { get; set; }
 
-		public AvailabilityStatus GetStatus(DateTime date, Event @event)
+		public IEnumerable<SelectListItem> RuleTypes
 		{
-			if (date.IsSmallerThan(minimum))
+			get
 			{
-				return AvailabilityStatus.NotBookable;
+				foreach (RuleType type in Enum.GetValues(typeof(RuleType)))
+				{
+					yield return new SelectListItem { Text = Strings.Admin.GetRuleTypeName(type), Value = type.ToString() };
+				}
 			}
+		}
 
-			return AvailabilityStatus.Undefined;
+		public MvcHtmlString GetRuleDetails(RuleData rule)
+		{
+			return new MvcHtmlString("Rule details go here<br /> - Some property value <br /> - Yet another value");
 		}
 	}
 }

@@ -104,16 +104,22 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\AdminBookingDetailsModel.cs" />
-    <Compile Include="Models\AdminBookingOverviewModel.cs" />
-    <Compile Include="Models\AdminCalendarModel.cs" />
-    <Compile Include="Models\AdminEventDetailsModel.cs" />
-    <Compile Include="Models\AdminEventGroupDetailsModel.cs" />
-    <Compile Include="Models\AdminEventOverviewModel.cs" />
-    <Compile Include="Models\AdminOverviewModel.cs" />
-    <Compile Include="Models\AdminSettingsModel.cs" />
-    <Compile Include="Models\BookingCalendarModel.cs" />
-    <Compile Include="Models\BookingModel.cs" />
+    <Compile Include="Models\Admin\AdminBookingDetailsModel.cs" />
+    <Compile Include="Models\Admin\AdminBookingOverviewModel.cs" />
+    <Compile Include="Models\Admin\AdminCalendarModel.cs" />
+    <Compile Include="Models\Admin\AdminEventDetailsModel.cs" />
+    <Compile Include="Models\Admin\AdminEventOverviewModel.cs" />
+    <Compile Include="Models\Admin\AdminOverviewModel.cs" />
+    <Compile Include="Models\Admin\AdminRuleDetailsModel.cs" />
+    <Compile Include="Models\Admin\AdminSettingsModel.cs" />
+    <Compile Include="Models\Admin\RuleModels\DateRangeRuleModel.cs" />
+    <Compile Include="Models\Admin\RuleModels\EventGroupRuleModel.cs" />
+    <Compile Include="Models\Admin\RuleModels\MinimumDateRuleModel.cs" />
+    <Compile Include="Models\Admin\RuleModels\WeeklyRuleModel.cs" />
+    <Compile Include="Models\Booking\BookingCalendarModel.cs" />
+    <Compile Include="Models\Booking\BookingModel.cs" />
+    <Compile Include="Models\ModelMapper.cs" />
+    <Compile Include="Models\RuleModelBinder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -130,7 +136,11 @@
     <Content Include="Views\Admin\Settings.cshtml" />
     <Content Include="Views\Admin\BookingDetails.cshtml" />
     <Content Include="Views\Admin\EventDetails.cshtml" />
-    <Content Include="Views\Admin\EventGroupDetails.cshtml" />
+    <Content Include="Views\Admin\RuleDetails.cshtml" />
+    <Content Include="Views\Admin\EditorTemplates\DateRangeRuleModel.cshtml" />
+    <Content Include="Views\Admin\EditorTemplates\EventGroupRuleModel.cshtml" />
+    <Content Include="Views\Admin\EditorTemplates\MinimumDateRuleModel.cshtml" />
+    <Content Include="Views\Admin\EditorTemplates\WeeklyRuleModel.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

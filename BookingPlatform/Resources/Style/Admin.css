@@ -35,6 +35,14 @@
     text-align: center;
 }
 
+.inline-block {
+    display: inline-block;
+}
+
+.italic {
+    font-style: italic;
+}
+
 /*** Element Styles ***/
 
 body {
@@ -140,7 +148,7 @@ div.calendar div.day.header {
 }
 
 div.content-1000px {
-    margin: 0 auto;
+    margin: 0 auto 40px auto;
     max-width: 1000px;
     padding: 0 5px;
 }
@@ -273,12 +281,12 @@ form.big select {
 form.big textarea {
     resize: both;
     width: 350px;
-    max-width: 100%;
+    max-width: 99%;
     min-width: 350px;
 }
 
 form.big textarea.wide {
-    width: 100%;
+    width: 99%;
 }
 
 h1, h2, h3 {
@@ -288,16 +296,30 @@ h1, h2, h3 {
     margin-top: 25px;
 }
 
-h2 {
+h1 + h2 {
     font-size: 16pt;
+    margin-top: 10px;
+}
+
+h2 + label {
+    margin-top: 0;
+}
+
+h3 {
+    font-size: 16pt;
+    margin-top: 10px;
 }
 
 h3 {
     font-size: 12pt;
 }
 
-h2 + label {
-    margin-top: 0;
+hr {
+    background-color: lightgray;
+    border: none;
+    height: 1px;
+    margin: 50px auto;
+    width: 25%;
 }
 
 input[type=submit] {

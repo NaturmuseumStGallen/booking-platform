@@ -23,36 +23,14 @@
      */
 *@
 
-@model AdminEventOverviewModel
-@using BookingPlatform.Constants;
+@model MinimumDateRuleModel
 @using BookingPlatform.Models;
+@using BookingPlatform.Constants;
 
-@{
-    ViewBag.SectionTitle = Strings.Admin.EventOverview.PageTitle;
-    ViewBag.Title = Strings.Admin.EventOverview.PageTitle;
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
-}
+@Html.LabelFor(m => m.Date, Strings.Admin.RuleDetails.InputLabelDate)
+@Html.TextBoxFor(m => m.Date, new { data_date_picker = bool.TrueString })
+@Html.ValidationMessageFor(m => m.Date)
 
-<div class="content-1000px">
-    <h2>@Strings.Admin.EventOverview.Events</h2>
-    <div class="event-overview">
-        <div class="header">
-            <div>@Strings.Admin.EventOverview.Id</div>
-            <div>@Strings.Admin.EventOverview.Name</div>
-            <div></div>
-        </div>
-        @foreach (var @event in Model.Events)
-        {
-            <div class="event">
-                <div>@(@event.Id)</div>
-                <div>@(@event.Name)</div>
-                <div>@Html.ActionLink(Strings.Admin.Edit, "EventDetails", new { @event.Id })</div>
-            </div>
-        }
-    </div>
-
-    <h2>@Strings.Admin.ActionsTitle</h2>
-    <ul>
-        <li>@Html.ActionLink(Strings.Admin.EventOverview.NewEvent, "EventDetails")</li>
-    </ul>
-</div>
+@Html.LabelFor(m => m.Days, Strings.Admin.RuleDetails.InputLabelDays)
+@Html.TextBoxFor(m => m.Days)
+@Html.ValidationMessageFor(m => m.Days)

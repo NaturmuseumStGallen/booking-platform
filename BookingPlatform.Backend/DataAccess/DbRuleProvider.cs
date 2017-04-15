@@ -23,6 +23,8 @@
 
 using System;
 using System.Collections.Generic;
+using BookingPlatform.Backend.Constants;
+using BookingPlatform.Backend.Entities;
 using BookingPlatform.Backend.Rules;
 
 namespace BookingPlatform.Backend.DataAccess
@@ -39,6 +41,23 @@ namespace BookingPlatform.Backend.DataAccess
 			rules.Add(new DateRangeRule(new DateTime(2017, 4, 18, 10, 0, 0), new DateTime(2017, 4, 18, 12, 0, 0), AvailabilityStatus.Booked));
 
 			return rules;
+		}
+
+		public IList<RuleData> GetRuleData()
+		{
+			var data = new List<RuleData>();
+
+			data.Add(new RuleData { Id = 4, Name = "Some rule here", Type = RuleType.DateRange });
+			data.Add(new RuleData { Id = 4, Name = "Some rule here", Type = RuleType.DateRange });
+			data.Add(new RuleData { Id = 5, Name = "Some other rule here", Type = RuleType.EventGroup });
+			data.Add(new RuleData { Id = 4, Name = "Some rule here", Type = RuleType.DateRange });
+
+			return data;
+		}
+
+		public RuleData GetRuleData(int id)
+		{
+			return new RuleData { Id = 4, Name = "Some rule here", Type = RuleType.DateRange };
 		}
 	}
 }

@@ -27,7 +27,7 @@ namespace BookingPlatform
 	{
 		Undefined = 0,
 		Free = 1,
-		Booked = 2,
-		NotBookable = 3
+		NotBookable = 2,
+		Booked = 3
 	}
 }

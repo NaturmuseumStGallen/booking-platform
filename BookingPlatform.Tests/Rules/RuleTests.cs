@@ -44,6 +44,19 @@ namespace BookingPlatform.Tests
 		}
 
 		[TestMethod]
+		public void MinimumDateRuleTest()
+		{
+			var rule = new MinimumDateRule(7);
+
+			Assert.IsTrue(rule.GetStatus(DateTime.Today.AddYears(-5), null) == AvailabilityStatus.NotBookable);
+			Assert.IsTrue(rule.GetStatus(DateTime.Today.AddDays(-1), null) == AvailabilityStatus.NotBookable);
+			Assert.IsTrue(rule.GetStatus(DateTime.Today, null) == AvailabilityStatus.NotBookable);
+			Assert.IsTrue(rule.GetStatus(DateTime.Today.AddDays(3), null) == AvailabilityStatus.NotBookable);
+			Assert.IsTrue(rule.GetStatus(DateTime.Today.AddDays(7), null) == AvailabilityStatus.Undefined);
+			Assert.IsTrue(rule.GetStatus(DateTime.Today.AddMonths(1), null) == AvailabilityStatus.Undefined);
+		}
+
+		[TestMethod]
 		public void WeeklyRuleWholeDayTest()
 		{
 			var rule = new WeeklyRule(DayOfWeek.Wednesday, AvailabilityStatus.Booked);

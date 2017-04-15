@@ -23,36 +23,22 @@
      */
 *@
 
-@model AdminEventOverviewModel
-@using BookingPlatform.Constants;
+@model WeeklyRuleModel
 @using BookingPlatform.Models;
+@using BookingPlatform.Constants;
 
-@{
-    ViewBag.SectionTitle = Strings.Admin.EventOverview.PageTitle;
-    ViewBag.Title = Strings.Admin.EventOverview.PageTitle;
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
-}
+@Html.LabelFor(m => m.Day, Strings.Admin.RuleDetails.InputLabelDayOfWeek)
+@Html.DropDownListFor(m => m.Day, Model.DayOfWeekListItems)
+@Html.ValidationMessageFor(m => m.Day)
 
-<div class="content-1000px">
-    <h2>@Strings.Admin.EventOverview.Events</h2>
-    <div class="event-overview">
-        <div class="header">
-            <div>@Strings.Admin.EventOverview.Id</div>
-            <div>@Strings.Admin.EventOverview.Name</div>
-            <div></div>
-        </div>
-        @foreach (var @event in Model.Events)
-        {
-            <div class="event">
-                <div>@(@event.Id)</div>
-                <div>@(@event.Name)</div>
-                <div>@Html.ActionLink(Strings.Admin.Edit, "EventDetails", new { @event.Id })</div>
-            </div>
-        }
-    </div>
+@Html.LabelFor(m => m.Status, Strings.Admin.RuleDetails.InputLabelStatus)
+@Html.DropDownListFor(m => m.Status, Model.StatusListItems)
+@Html.ValidationMessageFor(m => m.Status)
 
-    <h2>@Strings.Admin.ActionsTitle</h2>
-    <ul>
-        <li>@Html.ActionLink(Strings.Admin.EventOverview.NewEvent, "EventDetails")</li>
-    </ul>
-</div>
+@Html.LabelFor(m => m.Time, Strings.Admin.RuleDetails.InputLabelTime)
+@Html.TextBoxFor(m => m.Time)
+@Html.ValidationMessageFor(m => m.Time)
+
+@Html.LabelFor(m => m.StartDate, Strings.Admin.RuleDetails.InputLabelStartDate)
+@Html.TextBoxFor(m => m.StartDate, new { data_date_picker = bool.TrueString })
+@Html.ValidationMessageFor(m => m.StartDate)

@@ -21,17 +21,20 @@
  * along with BookingPlatform. If not, see <http://www.gnu.org/licenses/>.
  */
 
+using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using BookingPlatform.Models;
 
 namespace BookingPlatform
 {
-	public class MvcApplication : System.Web.HttpApplication
+	public class MvcApplication : HttpApplication
 	{
 		protected void Application_Start()
 		{
 			AreaRegistration.RegisterAllAreas();
 			RouteConfig.RegisterRoutes(RouteTable.Routes);
+			ModelBinders.Binders.Add(typeof(AdminRuleDetailsModel), new RuleModelBinder());
 		}
 	}
 }

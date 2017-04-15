@@ -23,6 +23,7 @@
 
 using System;
 using System.Linq;
+using BookingPlatform.Backend.Constants;
 using BookingPlatform.Backend.Entities;
 using BookingPlatform.Backend.Scheduling;
 
@@ -32,6 +33,11 @@ namespace BookingPlatform.Backend.Rules
 	{
 		private EventGroup group;
 		private AvailabilityStatus status;
+
+		public RuleType Type
+		{
+			get { return RuleType.EventGroup; }
+		}
 
 		public EventGroupRule(EventGroup group, AvailabilityStatus status)
 		{

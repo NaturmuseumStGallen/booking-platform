@@ -34,10 +34,47 @@
 }
 
 <div class="content-1000px">
-    <h1>@ViewBag.Title</h1>
-
+    <h2>@Strings.Admin.Settings.GlobalSettings</h2>
+    <h3>@Strings.Admin.Settings.AdminPassword</h3>
+    <div>
+        <p class="inline-block">
+            @Strings.Admin.Settings.CurrentPassword
+            <span class="italic">@Model.Password</span>
+            &nbsp;-&nbsp;
+        </p>
+        @using (Html.BeginForm("UpdatePassword", "Admin", FormMethod.Post, new { @class = "inline-block" }))
+        {
+            <span>@Strings.Admin.Settings.ChangePassword</span>
+            <input type="text" name="password" />
+            <input type="submit" value="@Strings.Admin.Save" />
+        }
+    </div>
+    <h3>@Strings.Admin.Settings.BookingTimes</h3>
+    <table>
+        <thead>
+            <tr>
+                <th class="align-left">@Strings.Admin.Settings.Time</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var time in Model.Times)
+            {
+                <tr>
+                    <td>@time.Value.ToString("hh\\:mm")</td>
+                    <td class="align-right">@Html.ActionLink(Strings.Admin.Delete, "DeleteTime", new { time.Id })</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @using (Html.BeginForm("NewTime", "Admin"))
+    {
+        <span>@Strings.Admin.Settings.AddNewTime</span>
+        <input type="text" name="time" />
+        <input type="submit" value="@Strings.Admin.Save" />
+    }
+    <hr />
     <h2>@Strings.Admin.Settings.EMailConfiguration</h2>
-
     <h3>@Strings.Admin.Settings.Recipients</h3>
     <table>
         <thead>
@@ -50,7 +87,7 @@
             @foreach (var recipient in Model.Recipients)
             {
                 <tr>
-                    <td>@recipient.EMail</td>
+                    <td>@recipient.Address</td>
                     <td class="align-right">@Html.ActionLink(Strings.Admin.Delete, "DeleteEmail", new { recipient.Id })</td>
                 </tr>
             }
@@ -62,7 +99,6 @@
         <input type="email" name="email" />
         <input type="submit" value="@Strings.Admin.Save" />
     }
-
     <h3>@Strings.Admin.Settings.Content</h3>
     @using (Html.BeginForm("UpdateEmailContent", "Admin", FormMethod.Post, new { @class = "big" }))
     {
@@ -73,7 +109,33 @@
         <p>@Strings.Admin.Settings.PlaceholderInfo</p>
         <input type="submit" value="@Strings.Admin.Save" />
     }
-
+    <hr />
     <h2>@Strings.Admin.Settings.RuleOverview</h2>
+    <table>
+        <thead>
+            <tr>
+                <th class="align-left">@Strings.Admin.Settings.RuleName</th>
+                <th class="align-left">@Strings.Admin.Settings.RuleType</th>
+                <th class="align-left">@Strings.Admin.Settings.RuleSettings</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var rule in Model.Rules)
+            {
+                <tr>
+                    <td>@rule.Name</td>
+                    <td>@Strings.Admin.GetRuleTypeName(rule.Type)</td>
+                    <td>@Model.GetRuleDetails(rule)</td>
+                    <td class="align-right">@Html.ActionLink(Strings.Admin.Edit, "RuleDetails", new { rule.Id })</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @using (Html.BeginForm("RuleDetails", "Admin", FormMethod.Get))
+    {
+        <span>@Strings.Admin.Settings.CreateNewRule</span>
+        @Html.DropDownList("type", Model.RuleTypes)
+        <input type="submit" value="@Strings.Admin.Create" />
+    }
 </div>
-

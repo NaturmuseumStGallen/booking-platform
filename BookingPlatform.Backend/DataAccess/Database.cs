@@ -40,6 +40,16 @@ namespace BookingPlatform.Backend.DataAccess
 			return new DbEventProvider().GetAllActive();
 		}
 
+		public IList<Booking> GetBookings(DateTime from, DateTime to)
+		{
+			return new DbBookingProvider().GetBookings(from, to);
+		}
+
+		public IList<EmailRecipient> GetEmailRecipients()
+		{
+			return new DbEmailProvider().GetAll();
+		}
+
 		public Event GetEventBy(int id)
 		{
 			return new DbEventProvider().GetById(id);
@@ -50,9 +60,9 @@ namespace BookingPlatform.Backend.DataAccess
 			return new DbEventGroupProvider().GetAll();
 		}
 
-		public IList<Booking> GetBookings(DateTime from, DateTime to)
+		public Settings GetGlobalSettings()
 		{
-			return new DbBookingProvider().GetBookings(from, to);
+			return new Settings { HtmlEmailContent = "Some content goes here" };
 		}
 
 		public IList<IRule> GetRules(DateTime from, DateTime to)
@@ -60,15 +70,41 @@ namespace BookingPlatform.Backend.DataAccess
 			return new DbRuleProvider().GetRules(from, to);
 		}
 
+		public RuleData GetRuleData(int id)
+		{
+			return new DbRuleProvider().GetRuleData(id);
+		}
+
+		public IList<RuleData> GetRuleData()
+		{
+			return new DbRuleProvider().GetRuleData();
+		}
+
 		public IList<TimeSpan> GetTimes()
 		{
 			return new DbTimeProvider().GetTimes();
+		}
+
+		public IList<TimeData> GetTimeData()
+		{
+			return new DbTimeProvider().GetTimeData();
 		}
 
 		public bool IsValidEventId(int id)
 		{
 			// TODO!
 			return id >= 0;
+		}
+
+		public bool IsValidRuleId(int id)
+		{
+			// TODO
+			return id >= 0;
+		}
+
+		public void SaveEmailRecipient(string email)
+		{
+			// TODO!
 		}
 	}
 }

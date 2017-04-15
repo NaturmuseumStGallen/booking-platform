@@ -21,25 +21,13 @@
  * along with BookingPlatform. If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System.Collections.Generic;
-
-namespace BookingPlatform.Models
+namespace BookingPlatform.Backend.Constants
 {
-	public class AdminSettingsModel
+	public enum RuleType
 	{
-		public AdminSettingsModel()
-		{
-			Recipients = new List<RecipientModel>();
-		}
-
-		public string PlaintextContent { get; set; }
-		public string HtmlContent { get; set; }
-		public IList<RecipientModel> Recipients { get; set; }
-
-		public class RecipientModel
-		{
-			public string EMail { get; set; }
-			public int Id { get; set; }
-		}
+		DateRange = 1,
+		EventGroup = 2,
+		MinimumDate = 3,
+		Weekly = 4
 	}
 }

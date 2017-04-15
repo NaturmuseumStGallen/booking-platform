@@ -22,6 +22,7 @@
  */
 
 using System;
+using BookingPlatform.Backend.Constants;
 using BookingPlatform.Backend.Entities;
 using BookingPlatform.Backend.Scheduling;
 
@@ -32,6 +33,11 @@ namespace BookingPlatform.Backend.Rules
 		private DateTime from;
 		private DateTime to;
 		private AvailabilityStatus status;
+
+		public RuleType Type
+		{
+			get { return RuleType.DateRange; }
+		}
 
 		/// <summary>
 		/// Defines a new date range rule that returns the specified status

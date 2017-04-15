@@ -33,7 +33,8 @@ namespace BookingPlatform
 			routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
 			routes.MapRoute(name: "Admin", url: "admin/{action}", defaults: new { controller = "Admin", action = "Overview" });
-			routes.MapRoute(name: "Default", url: "{controller}/{action}", defaults: new { action = "Form" });
+			routes.MapRoute(name: "Public", url: "booking", defaults: new { controller = "Booking", action = "Form" });
+			routes.MapRoute(name: "Default", url: "{controller}/{action}");
 		}
 	}
 }

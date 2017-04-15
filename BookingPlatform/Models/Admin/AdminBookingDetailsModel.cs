@@ -95,8 +95,12 @@ namespace BookingPlatform.Models
 
 		public int? Id { get; set; }
 		public bool IsActive { get; set; }
-		public bool IsNew { get; set; }
 		public IList<Event> Events { get; set; }
+
+		public bool IsNew
+		{
+			get { return !Id.HasValue; }
+		}
 
 		public IEnumerable<SelectListItem> EventListItems
 		{

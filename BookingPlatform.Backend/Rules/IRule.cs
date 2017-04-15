@@ -22,12 +22,18 @@
  */
 
 using System;
+using BookingPlatform.Backend.Constants;
 using BookingPlatform.Backend.Entities;
 
 namespace BookingPlatform.Backend.Rules
 {
 	public interface IRule
 	{
+		/// <summary>
+		/// Defines the type of this rule, used for database persistence and in the presentation layer.
+		/// </summary>
+		RuleType Type { get; }
+
 		/// <summary>
 		/// Returns the availability status according to the specified date and event. Should return
 		/// <c>AvailabilityStatus.Undefined</c> if the rule is not relevant for the given parameters.
