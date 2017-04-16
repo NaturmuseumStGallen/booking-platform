@@ -21,28 +21,25 @@
  * along with BookingPlatform. If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System.Collections.Generic;
-using System.Linq;
-using BookingPlatform.Backend.Entities;
+using System;
 
 namespace BookingPlatform.Backend.DataAccess
 {
-	internal class DbEventGroupProvider
+	internal class DbSettingsDao
 	{
-		public IList<EventGroup> GetAll()
+		public void DeleteEmailRecipient(int id)
 		{
-			var groups = new List<EventGroup>();
+			
+		}
 
-			foreach (var id in Enumerable.Range(0, 5))
-			{
-				groups.Add(new EventGroup
-				{
-					Name = "Gruppe " + id,
-					Events = Enumerable.Range(0, 3).Select(i => new Event()).ToList()
-				});
-			}
+		public void UpdateEmailContent(string title, string plaintext, string html)
+		{
+			
+		}
 
-			return groups;
+		public void UpdatePassword(string password)
+		{
+			
 		}
 	}
 }

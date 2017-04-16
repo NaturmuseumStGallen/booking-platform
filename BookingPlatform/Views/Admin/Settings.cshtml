@@ -46,7 +46,7 @@
         {
             <span>@Strings.Admin.Settings.ChangePassword</span>
             <input type="text" name="password" />
-            <input type="submit" value="@Strings.Admin.Save" />
+            <input type="submit" value="@Strings.Admin.Save" data-safety-message="@Strings.Admin.SafetyMessage" />
         }
     </div>
     <h3>@Strings.Admin.Settings.BookingTimes</h3>
@@ -62,7 +62,9 @@
             {
                 <tr>
                     <td>@time.Value.ToString("hh\\:mm")</td>
-                    <td class="align-right">@Html.ActionLink(Strings.Admin.Delete, "DeleteTime", new { time.Id })</td>
+                    <td class="align-right">
+                        @Html.ActionLink(Strings.Admin.Delete, "DeleteTime", new { time.Id }, new { data_safety_message = Strings.Admin.SafetyMessage })
+                    </td>
                 </tr>
             }
         </tbody>
@@ -74,7 +76,7 @@
         <input type="submit" value="@Strings.Admin.Save" />
     }
     <hr />
-    <h2>@Strings.Admin.Settings.EMailConfiguration</h2>
+    <h2>@Strings.Admin.Settings.EmailConfiguration</h2>
     <h3>@Strings.Admin.Settings.Recipients</h3>
     <table>
         <thead>
@@ -88,12 +90,14 @@
             {
                 <tr>
                     <td>@recipient.Address</td>
-                    <td class="align-right">@Html.ActionLink(Strings.Admin.Delete, "DeleteEmail", new { recipient.Id })</td>
+                    <td class="align-right">
+                        @Html.ActionLink(Strings.Admin.Delete, "DeleteRecipient", new { recipient.Id }, new { data_safety_message = Strings.Admin.SafetyMessage })
+                    </td>
                 </tr>
             }
         </tbody>
     </table>
-    @using (Html.BeginForm("NewEmailRecipient", "Admin"))
+    @using (Html.BeginForm("NewRecipient", "Admin"))
     {
         <span>@Strings.Admin.Settings.AddNewRecipient</span>
         <input type="email" name="email" />
@@ -102,6 +106,8 @@
     <h3>@Strings.Admin.Settings.Content</h3>
     @using (Html.BeginForm("UpdateEmailContent", "Admin", FormMethod.Post, new { @class = "big" }))
     {
+        <label for="title">@Strings.Admin.Settings.EmailTitle</label>
+        <input name="title" type="text" value="@Model.EmailTitle" />
         <label for="plaintext">@Strings.Admin.Settings.PlainText</label>
         <textarea class="wide" name="plaintext" rows="20">@Model.PlaintextContent</textarea>
         <label for="html">@Strings.Admin.Settings.Html</label>

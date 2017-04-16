@@ -59,23 +59,26 @@ $(document).ready(function () {
 
     function attachAutoColor() {
         var elements = $('[data-auto-color]');
+        var settings = { attributes: true, attributeFilter: ['style'] };
 
         var observer = new MutationObserver(function (mutations) {
             $.each(mutations, function (index, record) {
                 observer.disconnect();
                 autoColor(record.target);
-                observer.observe(record.target, { attributes: true, attributeFilter: ['style'] });
+                observer.observe(record.target, settings);
             });
         });
 
         $.each(elements, function (index, element) {
-            observer.observe(element, { attributes: true, attributeFilter: ['style'] });
+            observer.observe(element, settings);
             autoColor(element);
         });
     }
 
     function safetyHandler(element, onclick, event) {
-        if (window.confirm($(element).attr('data-safety-message'))) {
+        var message = $(element).attr('data-safety-message');
+
+        if (window.confirm(message)) {
             onclick.call(element, event);
             
             return true;

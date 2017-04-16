@@ -118,7 +118,7 @@ namespace BookingPlatform.Constants
 				public const string PageTitleNew = "Neue Buchung erfassen";
 				public const string PersonalInformation = "Persönliche Informationen";
 				public const string PleaseSelect = " - Bitte wählen - ";
-				public const string State = "Status";
+				public const string State = "Status:";
 			}
 
 			public static class BookingOverview
@@ -260,14 +260,15 @@ namespace BookingPlatform.Constants
 				public const string CreateNewRule = "Neue Regel erstellen:";
 				public const string CurrentPassword = "Momentanes Passwort:";
 				public const string DateRangeRule = "Einzeldatum / Zeitperiode";
-				public const string EMailConfiguration = "E-Mail Konfiguration";
+				public const string EmailConfiguration = "E-Mail Konfiguration";
+				public const string EmailTitle = "Titel";
 				public const string EventGroupRule = "Führungsgruppe";
 				public const string GlobalSettings = "Globale Einstellungen";
-				public const string Html = "HTML:";
+				public const string Html = "HTML-Inhalt";
 				public const string MinimumDateRule = "Mindestdatum";
 				public const string PageTitle = "Einstellungen";
 				public const string PlaceholderInfo = "Platzhalter: %%NAME%%, %%DATE%%, %%EVENT%%";
-				public const string PlainText = "Nur-Text:";
+				public const string PlainText = "Nur-Text-Inhalt";
 				public const string Recipients = "EmpfängerInnen von System-Meldungen";
 				public const string RuleName = "Name";
 				public const string RuleOverview = "Übersicht Buchungsregeln";

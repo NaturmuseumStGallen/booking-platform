@@ -21,16 +21,46 @@
  * along with BookingPlatform. If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System.Web.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using BookingPlatform.Backend.Entities;
 
-namespace BookingPlatform.Controllers
+namespace BookingPlatform.Backend.DataAccess
 {
-	public partial class AdminController : Controller
+	internal class DbEventDao
 	{
-		[HttpGet]
-		public ActionResult Overview()
+		public void Deactivate(int id)
 		{
-			return View();
+			
+		}
+
+		public IList<Event> GetAllActive()
+		{
+			var events = new List<Event>();
+
+			// TODO
+			foreach (var id in Enumerable.Range(0, 10))
+			{
+				events.Add(new Event { Id = id, Name = "Führung " + id });
+			}
+
+			return events;
+		}
+
+		public Event GetById(int id)
+		{
+			return new Event();
+		}
+
+		public void SaveNew(Event @event)
+		{
+			
+		}
+
+		public void Update(Event @event)
+		{
+			
 		}
 	}
 }

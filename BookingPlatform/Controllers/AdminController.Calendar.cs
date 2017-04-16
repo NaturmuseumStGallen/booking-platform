@@ -22,36 +22,40 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using BookingPlatform.Backend.Entities;
+using System.Web.Mvc;
+using BookingPlatform.Backend.DataAccess;
+using BookingPlatform.Backend.Scheduling;
+using BookingPlatform.Models;
 
-namespace BookingPlatform.Backend.DataAccess
+namespace BookingPlatform.Controllers
 {
-	internal class DbBookingProvider : IBookingProvider
+	public partial class AdminController
 	{
-		public IList<Booking> GetBookings(DateTime from, DateTime to)
+		[HttpGet]
+		public ActionResult Calendar(DateTime? date)
 		{
-			var bookings = new List<Booking>();
+			var model = new AdminCalendarModel();
 
-			// TODO
-			var random = new Random();
+			date = date ?? DateTime.Today;
 
-			foreach (var id in Enumerable.Range(1, 100))
+			model.FirstDayOfMonth = DateTimeUtility.GetFirstDayOfMonth(date.Value);
+			model.LastDayOfMonth = DateTimeUtility.GetLastDayOfMonth(date.Value);
+			model.Bookings = Database.Instance.GetBookings(model.FirstDayOfMonth, model.LastDayOfMonth);
+
+			return View(model);
+		}
+
+		[HttpPost]
+		public ActionResult Calendar(AdminCalendarModel model)
+		{
+			if (ModelState.IsValid)
 			{
-				bookings.Add(new Booking
-				{
-					Id = id,
-					Event = new Event { Name = "Irgendeine Führung" },
-					Date = new DateTime(from.Year, from.Month, random.Next(1, 28), random.Next(0, 23), random.Next(0, 59), 0),
-					FirstName = "Maxine",
-					LastName = "Muster",
-					School = "Name der Schule hier",
-					Town = "Zürich"
-				});
+				var date = new DateTime(model.Year.Value, model.Month.Value, 1);
+
+				return RedirectToAction("Calendar", new { date });
 			}
 
-			return bookings;
+			return RedirectToAction("Calendar");
 		}
 	}
 }

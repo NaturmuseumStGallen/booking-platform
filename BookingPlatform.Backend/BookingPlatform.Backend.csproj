@@ -42,12 +42,13 @@
   <ItemGroup>
     <Compile Include="Constants\RuleType.cs" />
     <Compile Include="DataAccess\Database.cs" />
-    <Compile Include="DataAccess\DbBookingProvider.cs" />
-    <Compile Include="DataAccess\DbEmailProvider.cs" />
-    <Compile Include="DataAccess\DbEventGroupProvider.cs" />
-    <Compile Include="DataAccess\DbEventProvider.cs" />
-    <Compile Include="DataAccess\DbRuleProvider.cs" />
-    <Compile Include="DataAccess\DbTimeProvider.cs" />
+    <Compile Include="DataAccess\DbBookingDao.cs" />
+    <Compile Include="DataAccess\DbEmailDao.cs" />
+    <Compile Include="DataAccess\DbEventGroupDao.cs" />
+    <Compile Include="DataAccess\DbEventDao.cs" />
+    <Compile Include="DataAccess\DbRuleDao.cs" />
+    <Compile Include="DataAccess\DbSettingsDao.cs" />
+    <Compile Include="DataAccess\DbTimeDao.cs" />
     <Compile Include="Entities\EmailRecipient.cs" />
     <Compile Include="Entities\RuleData.cs" />
     <Compile Include="Entities\Settings.cs" />

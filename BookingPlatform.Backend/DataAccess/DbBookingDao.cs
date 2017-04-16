@@ -28,24 +28,50 @@ using BookingPlatform.Backend.Entities;
 
 namespace BookingPlatform.Backend.DataAccess
 {
-	internal class DbTimeProvider : ITimeProvider
+	internal class DbBookingDao : IBookingProvider
 	{
-		public IList<TimeSpan> GetTimes()
+		public Booking GetBy(int id)
 		{
-			return GetTimeData().Select(t => t.Value).ToList();
+			return new Booking();
 		}
 
-		public IList<TimeData> GetTimeData()
+		public IList<Booking> GetBookings(DateTime from, DateTime to)
 		{
-			var times = new List<TimeData>();
+			var bookings = new List<Booking>();
 
 			// TODO
-			times.Add(new TimeData { Id = 4, Value = new TimeSpan(9, 0, 0) });
-			times.Add(new TimeData { Id = 4, Value = new TimeSpan(10, 30, 0) });
-			times.Add(new TimeData { Id = 4, Value = new TimeSpan(13, 0, 0) });
-			times.Add(new TimeData { Id = 4, Value = new TimeSpan(15, 0, 0) });
+			var random = new Random();
 
-			return times;
+			foreach (var id in Enumerable.Range(1, 100))
+			{
+				bookings.Add(new Booking
+				{
+					Id = id,
+					Event = new Event { Name = "Irgendeine Führung" },
+					Date = new DateTime(from.Year, from.Month, random.Next(1, 28), random.Next(0, 23), random.Next(0, 59), 0),
+					FirstName = "Maxine",
+					LastName = "Muster",
+					School = "Name der Schule hier",
+					Town = "Zürich"
+				});
+			}
+
+			return bookings;
+		}
+
+		public void SaveNew(Booking booking)
+		{
+
+		}
+
+		public void Update(Booking booking)
+		{
+
+		}
+
+		public void UpdateState(int id, bool isActive)
+		{
+
 		}
 	}
 }

@@ -40,6 +40,11 @@
     <h1>@ViewBag.Title</h1>
     @using (Html.BeginForm("EventDetails", "Admin", FormMethod.Post, new { @class = "big" }))
     {
+        if (!Model.IsNew)
+        {
+            @Html.HiddenFor(m => m.Id)
+        }
+
         @Html.LabelFor(m => m.Name, Strings.Admin.EventDetails.InputLabelName)
         @Html.TextBoxFor(m => m.Name)
         @Html.ValidationMessageFor(m => m.Name)
@@ -71,7 +76,7 @@
 
             @if (!Model.IsNew)
             {
-                @(" - ") @Html.ActionLink(Strings.Admin.EventDetails.Deactivate, "CancelEvent", new { Model.Id }, new { data_safety_message = Strings.Admin.SafetyMessage })
+                @(" - ") @Html.ActionLink(Strings.Admin.EventDetails.Deactivate, "DeactivateEvent", new { Model.Id }, new { data_safety_message = Strings.Admin.SafetyMessage })
             }
         </div>
     }

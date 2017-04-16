@@ -27,24 +27,22 @@ using BookingPlatform.Backend.Entities;
 
 namespace BookingPlatform.Backend.DataAccess
 {
-	internal class DbEventProvider
+	internal class DbEventGroupDao
 	{
-		public IList<Event> GetAllActive()
+		public IList<EventGroup> GetAll()
 		{
-			var events = new List<Event>();
+			var groups = new List<EventGroup>();
 
-			// TODO
-			foreach (var id in Enumerable.Range(0, 10))
+			foreach (var id in Enumerable.Range(0, 5))
 			{
-				events.Add(new Event { Id = id, Name = "Führung " + id });
+				groups.Add(new EventGroup
+				{
+					Name = "Gruppe " + id,
+					Events = Enumerable.Range(0, 3).Select(i => new Event()).ToList()
+				});
 			}
 
-			return events;
-		}
-
-		public Event GetById(int id)
-		{
-			return new Event();
+			return groups;
 		}
 	}
 }

@@ -21,16 +21,41 @@
  * along with BookingPlatform. If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System.Web.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using BookingPlatform.Backend.Entities;
 
-namespace BookingPlatform.Controllers
+namespace BookingPlatform.Backend.DataAccess
 {
-	public partial class AdminController : Controller
+	internal class DbTimeDao : ITimeProvider
 	{
-		[HttpGet]
-		public ActionResult Overview()
+		public void Delete(int id)
 		{
-			return View();
+			
+		}
+
+		public IList<TimeSpan> GetTimes()
+		{
+			return GetTimeData().Select(t => t.Value).ToList();
+		}
+
+		public IList<TimeData> GetTimeData()
+		{
+			var times = new List<TimeData>();
+
+			// TODO
+			times.Add(new TimeData { Id = 4, Value = new TimeSpan(9, 0, 0) });
+			times.Add(new TimeData { Id = 4, Value = new TimeSpan(10, 30, 0) });
+			times.Add(new TimeData { Id = 4, Value = new TimeSpan(13, 0, 0) });
+			times.Add(new TimeData { Id = 4, Value = new TimeSpan(15, 0, 0) });
+
+			return times;
+		}
+
+		public void SaveNew(TimeSpan time)
+		{
+			
 		}
 	}
 }

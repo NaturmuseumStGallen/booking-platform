@@ -89,7 +89,6 @@ namespace BookingPlatform.Models
 		[MaxLength(100, ErrorMessage = Strings.Admin.BookingDetails.InputErrorMaxLength100)]
 		public string Town { get; set; }
 		
-		[Required(ErrorMessage = Strings.Admin.BookingDetails.InputErrorZipCode)]
 		[RegularExpression("([1-9][0-9]{3})", ErrorMessage = Strings.Admin.BookingDetails.InputErrorZipCode)]
 		public int? ZipCode { get; set; }
 

@@ -25,7 +25,11 @@ namespace BookingPlatform.Backend.Entities
 {
 	public class Event
 	{
-		public int Id { get; set; }
+		public int? Id { get; set; }
+		public bool IsActive { get; set; }
 		public string Name { get; set; }
+		public int ColorComponentBlue { get; set; }
+		public int ColorComponentGreen { get; set; }
+		public int ColorComponentRed { get; set; }
 	}
 }

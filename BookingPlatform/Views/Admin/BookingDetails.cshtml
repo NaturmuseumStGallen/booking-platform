@@ -37,22 +37,24 @@
 }
 
 <div class="content-1000px">
-    <h1>@ViewBag.Title</h1>
-    @using (Html.BeginForm("BookingDetails", "Admin", FormMethod.Post, new { @class = "big" }))
+    <h2>@ViewBag.Title</h2>
+    @if (!Model.IsNew)
     {
-        <h2>@Strings.Admin.BookingDetails.Event</h2>
+        var linkText = Model.IsActive ? Strings.Admin.BookingDetails.Cancel : Strings.Admin.BookingDetails.Activate;
 
         <p>
-            @Strings.Admin.BookingDetails.State: @(Model.IsActive ? Strings.Admin.BookingDetails.Active : Strings.Admin.BookingDetails.Cancelled)
-
-            @if (!Model.IsNew)
-            {
-                var linkText = Model.IsActive ? Strings.Admin.BookingDetails.Cancel : Strings.Admin.BookingDetails.Activate;
-                var linkUrl = Model.IsActive ? "CancelBooking" : "ActivateBooking";
-
-                @(" - ") @Html.ActionLink(linkText, linkUrl, new { Model.Id })
-            }
+            @Strings.Admin.BookingDetails.State @(Model.IsActive ? Strings.Admin.BookingDetails.Active : Strings.Admin.BookingDetails.Cancelled)
+            &nbsp;&minus;&nbsp; @Html.ActionLink(linkText, "UpdateBookingState", new { Model.Id, Model.IsActive })
         </p>
+    }
+    @using (Html.BeginForm("BookingDetails", "Admin", FormMethod.Post, new { @class = "big" }))
+    {
+        <h3>@Strings.Admin.BookingDetails.Event</h3>
+
+        if (!Model.IsNew)
+        {
+            @Html.HiddenFor(m => m.Id)
+        }
 
         @Html.DropDownListFor(m => m.EventId, Model.EventListItems)
         @Html.ValidationMessageFor(m => m.EventId)
@@ -65,7 +67,7 @@
         @Html.TextBoxFor(m => m.Time)
         @Html.ValidationMessageFor(m => m.Time)
 
-        <h2>@Strings.Admin.BookingDetails.PersonalInformation</h2>
+        <h3>@Strings.Admin.BookingDetails.PersonalInformation</h3>
 
         @Html.LabelFor(m => m.FirstName, Strings.Admin.BookingDetails.InputLabelFirstName)
         @Html.TextBoxFor(m => m.FirstName)
@@ -91,7 +93,7 @@
         @Html.TextBoxFor(m => m.Town)
         @Html.ValidationMessageFor(m => m.Town)
 
-        <h2>@Strings.Admin.BookingDetails.ContactInformation</h2>
+        <h3>@Strings.Admin.BookingDetails.ContactInformation</h3>
 
         @Html.LabelFor(m => m.Email, Strings.Admin.BookingDetails.InputLabelEmail)
         @Html.TextBoxFor(m => m.Email)
@@ -101,7 +103,7 @@
         @Html.TextBoxFor(m => m.Phone)
         @Html.ValidationMessageFor(m => m.Phone)
 
-        <h2>@Strings.Admin.BookingDetails.AdditionalInformation</h2>
+        <h3>@Strings.Admin.BookingDetails.AdditionalInformation</h3>
 
         @Html.LabelFor(m => m.NumberOfKids, Strings.Admin.BookingDetails.InputLabelNumberOfKids)
         @Html.TextBoxFor(m => m.NumberOfKids)

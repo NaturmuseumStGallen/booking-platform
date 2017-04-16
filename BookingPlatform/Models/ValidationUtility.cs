@@ -21,16 +21,40 @@
  * along with BookingPlatform. If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System.Web.Mvc;
+using System;
+using System.ComponentModel.DataAnnotations;
 
-namespace BookingPlatform.Controllers
+namespace BookingPlatform.Models
 {
-	public partial class AdminController : Controller
+	public static class ValidationUtility
 	{
-		[HttpGet]
-		public ActionResult Overview()
+		public static bool AreNotNullOrWhitespace(params string[] strings)
 		{
-			return View();
+			var valid = true;
+
+			foreach (var @string in strings)
+			{
+				valid &= !String.IsNullOrWhiteSpace(@string);
+			}
+
+			return valid;
+		}
+
+		public static bool IsValidEmail(string email)
+		{
+			return new EmailAddressAttribute().IsValid(email);
+		}
+
+		public static bool IsValidPassword(string password)
+		{
+			return !String.IsNullOrWhiteSpace(password);
+		}
+
+		public static bool IsValidTime(string time)
+		{
+			TimeSpan timeSpan;
+
+			return TimeSpan.TryParse(time, out timeSpan);
 		}
 	}
 }

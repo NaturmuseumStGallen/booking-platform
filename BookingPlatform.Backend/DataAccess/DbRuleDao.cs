@@ -29,8 +29,13 @@ using BookingPlatform.Backend.Rules;
 
 namespace BookingPlatform.Backend.DataAccess
 {
-	internal class DbRuleProvider : IRuleProvider
+	internal class DbRuleDao : IRuleProvider
 	{
+		public void Delete(int id)
+		{
+			
+		}
+
 		public IList<IRule> GetRules(DateTime from, DateTime to)
 		{
 			var rules = new List<IRule>();
@@ -58,6 +63,16 @@ namespace BookingPlatform.Backend.DataAccess
 		public RuleData GetRuleData(int id)
 		{
 			return new RuleData { Id = 4, Name = "Some rule here", Type = RuleType.DateRange };
+		}
+
+		public void SaveNew(RuleData ruleData)
+		{
+			
+		}
+
+		public void Update(RuleData ruleData)
+		{
+			
 		}
 	}
 }

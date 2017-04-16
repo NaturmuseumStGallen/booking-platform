@@ -100,6 +100,18 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Constants\Strings.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\AdminController.Bookings.cs">
+      <DependentUpon>AdminController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controllers\AdminController.Calendar.cs">
+      <DependentUpon>AdminController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controllers\AdminController.Events.cs">
+      <DependentUpon>AdminController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controllers\AdminController.Settings.cs">
+      <DependentUpon>AdminController.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controllers\BookingController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -120,6 +132,7 @@
     <Compile Include="Models\Booking\BookingModel.cs" />
     <Compile Include="Models\ModelMapper.cs" />
     <Compile Include="Models\RuleModelBinder.cs" />
+    <Compile Include="Models\ValidationUtility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

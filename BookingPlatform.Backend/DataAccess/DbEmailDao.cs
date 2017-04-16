@@ -26,7 +26,7 @@ using BookingPlatform.Backend.Entities;
 
 namespace BookingPlatform.Backend.DataAccess
 {
-	internal class DbEmailProvider
+	internal class DbEmailDao
 	{
 		public IList<EmailRecipient> GetAll()
 		{

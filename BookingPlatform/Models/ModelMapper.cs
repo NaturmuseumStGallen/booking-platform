@@ -23,12 +23,59 @@
 
 using System;
 using BookingPlatform.Backend.Constants;
+using BookingPlatform.Backend.DataAccess;
 using BookingPlatform.Backend.Entities;
 
 namespace BookingPlatform.Models
 {
 	public static class ModelMapper
 	{
+		public static void InitializeFor(this AdminRuleDetailsModel model, RuleType type)
+		{
+			switch (model.Type)
+			{
+				case RuleType.DateRange:
+				case RuleType.MinimumDate:
+				case RuleType.Weekly:
+					// Nothing to do here so far...
+					break;
+				case RuleType.EventGroup:
+					(model as EventGroupRuleModel).AvailableEvents = Database.Instance.GetActiveEvents();
+					break;
+				default:
+					throw new InvalidOperationException(String.Format("Rule of type '{0}' not yet configured!", model.Type));
+			}
+		}
+
+		public static void MapFromEntity(this AdminBookingDetailsModel model, Booking booking)
+		{
+			model.Address = booking.Address;
+			model.Date = booking.Date.ToString("dd.MM.yyyy");
+			model.Email = booking.Email;
+			model.EventId = booking.Event.Id;
+			model.FirstName = booking.FirstName;
+			model.Grade = booking.Grade;
+			model.Id = booking.Id;
+			model.IsActive = booking.IsActive;
+			model.LastName = booking.LastName;
+			model.Notes = booking.Notes;
+			model.NumberOfKids = booking.NumberOfKids;
+			model.Phone = booking.Phone;
+			model.School = booking.School;
+			model.Time = booking.Date.TimeOfDay.ToString("hh\\:mm");
+			model.Town = booking.Town;
+			model.ZipCode = booking.ZipCode;
+		}
+
+		public static void MapFromEntity(this AdminEventDetailsModel model, Event @event)
+		{
+			model.Id = @event.Id;
+			model.Name = @event.Name;
+			model.Blue = @event.ColorComponentBlue;
+			model.Green = @event.ColorComponentGreen;
+			model.Red = @event.ColorComponentRed;
+		}
+
 		public static void MapFromEntity(this AdminRuleDetailsModel model, RuleData rule)
 		{
 			switch (model.Type)
@@ -50,14 +97,83 @@ namespace BookingPlatform.Models
 			}
 		}
 
+		public static void MapFromEntity(this DateRangeRuleModel model, RuleData rule)
+		{
+
+		}
+
+		public static void MapFromEntity(this EventGroupRuleModel model, RuleData rule)
+		{
+
+		}
+
+		public static void MapFromEntity(this MinimumDateRuleModel model, RuleData rule)
+		{
+
+		}
+
+		public static void MapFromEntity(this WeeklyRuleModel model, RuleData rule)
+		{
+
+		}
+
 		public static void MapFromEntity(this AdminSettingsModel model, Settings settings)
 		{
+			model.EmailTitle = settings.EmailTitle;
 			model.HtmlContent = settings.HtmlEmailContent;
 			model.Password = settings.Password;
 			model.PlaintextContent = settings.PlaintextEmailContent;
 		}
 
+		public static void MapToEntity(this AdminBookingDetailsModel model, Booking booking)
+		{
+			booking.Address = model.Address;
+			booking.Date = DateTime.Parse(model.Date + " " + model.Time);
+			booking.Email = model.Email;
+			booking.EventId = model.EventId;
+			booking.FirstName = model.FirstName;
+			booking.Grade = model.Grade;
+			booking.Id = model.Id;
+			booking.IsActive = model.IsActive;
+			booking.LastName = model.LastName;
+			booking.Notes = model.Notes;
+			booking.NumberOfKids = model.NumberOfKids.Value;
+			booking.Phone = model.Phone;
+			booking.School = model.School;
+			booking.Town = model.Town;
+			booking.ZipCode = model.ZipCode;
+		}
+
+		public static void MapToEntity(this AdminEventDetailsModel model, Event @event)
+		{
+			@event.Id = model.Id;
+			@event.Name = model.Name;
+			@event.ColorComponentBlue = model.Blue.Value;
+			@event.ColorComponentGreen = model.Green.Value;
+			@event.ColorComponentRed = model.Red.Value;
+		}
+
 		public static void MapToEntity(this AdminRuleDetailsModel model, RuleData rule)
+		{
+
+		}
+
+		public static void MapToEntity(this DateRangeRuleModel model, RuleData rule)
+		{
+
+		}
+
+		public static void MapToEntity(this EventGroupRuleModel model, RuleData rule)
+		{
+
+		}
+
+		public static void MapToEntity(this MinimumDateRuleModel model, RuleData rule)
+		{
+
+		}
+
+		public static void MapToEntity(this WeeklyRuleModel model, RuleData rule)
 		{
 
 		}
@@ -77,46 +193,6 @@ namespace BookingPlatform.Models
 				default:
 					throw new InvalidOperationException(String.Format("Rule of type '{0}' not yet configured!", type));
 			}
-		}
-
-		private static void MapFromEntity(this DateRangeRuleModel model, RuleData rule)
-		{
-
-		}
-
-		private static void MapFromEntity(this EventGroupRuleModel model, RuleData rule)
-		{
-
-		}
-
-		private static void MapFromEntity(this MinimumDateRuleModel model, RuleData rule)
-		{
-
-		}
-
-		private static void MapFromEntity(this WeeklyRuleModel model, RuleData rule)
-		{
-
-		}
-
-		private static void MapToEntity(this DateRangeRuleModel model, RuleData rule)
-		{
-
-		}
-
-		private static void MapToEntity(this EventGroupRuleModel model, RuleData rule)
-		{
-
-		}
-
-		private static void MapToEntity(this MinimumDateRuleModel model, RuleData rule)
-		{
-
-		}
-
-		private static void MapToEntity(this WeeklyRuleModel model, RuleData rule)
-		{
-
 		}
 	}
 }
