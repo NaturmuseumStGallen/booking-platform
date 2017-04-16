@@ -30,11 +30,12 @@ namespace BookingPlatform.Models
 	{
 		public static bool AreNotNullOrWhitespace(params string[] strings)
 		{
+			const int MAX_LENGTH = 5000;
 			var valid = true;
 
 			foreach (var @string in strings)
 			{
-				valid &= !String.IsNullOrWhiteSpace(@string);
+				valid &= !String.IsNullOrWhiteSpace(@string) && @string.Length < MAX_LENGTH;
 			}
 
 			return valid;
@@ -42,7 +43,9 @@ namespace BookingPlatform.Models
 
 		public static bool IsValidEmail(string email)
 		{
-			return new EmailAddressAttribute().IsValid(email);
+			const int MAX_LENGTH = 100;
+
+			return new EmailAddressAttribute().IsValid(email) && email.Length <= MAX_LENGTH;
 		}
 
 		public static bool IsValidPassword(string password)

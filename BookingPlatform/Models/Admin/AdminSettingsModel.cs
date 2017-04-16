@@ -40,7 +40,6 @@ namespace BookingPlatform.Models
 		}
 
 		public string EmailTitle { get; set; }
-		public string Password { get; set; }
 		public string PlaintextContent { get; set; }
 		public string HtmlContent { get; set; }
 

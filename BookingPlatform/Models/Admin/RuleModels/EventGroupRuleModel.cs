@@ -21,8 +21,10 @@
  * along with BookingPlatform. If not, see <http://www.gnu.org/licenses/>.
  */
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Web.Mvc;
 using BookingPlatform.Backend.Constants;
 using BookingPlatform.Backend.Entities;
@@ -30,7 +32,7 @@ using BookingPlatform.Constants;
 
 namespace BookingPlatform.Models
 {
-	public class EventGroupRuleModel : AdminRuleDetailsModel
+	public class EventGroupRuleModel : AdminRuleDetailsModel, IValidatableObject
 	{
 		public EventGroupRuleModel()
 		{
@@ -48,6 +50,23 @@ namespace BookingPlatform.Models
 		public MultiSelectList Events
 		{
 			get { return new MultiSelectList(AvailableEvents, nameof(Event.Id), nameof(Event.Name), SelectedEvents); }
+		}
+
+		public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+		{
+			var results = new List<ValidationResult>();
+
+			if (EventIds == null || EventIds.Count < 2)
+			{
+				results.Add(new ValidationResult(Strings.Admin.RuleDetails.InputErrorEvents, new[] { nameof(EventIds) }));
+			}
+
+			if (results.Any())
+			{
+				results.Add(ValidationResult.Success);
+			}
+
+			return results;
 		}
 	}
 }

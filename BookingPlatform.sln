@@ -11,6 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookingPlatform.Backend", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8AE204DA-E52A-4401-B0B2-9BA611D05D3A}"
 	ProjectSection(SolutionItems) = preProject
+		Database.sql = Database.sql
 		GNU General Public License v3.txt = GNU General Public License v3.txt
 	EndProjectSection
 EndProject

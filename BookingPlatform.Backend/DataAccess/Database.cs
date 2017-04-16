@@ -62,12 +62,24 @@ namespace BookingPlatform.Backend.DataAccess
 
 		public Booking GetBookingBy(int id)
 		{
-			return new DbBookingDao().GetBy(id);
+			var booking = new DbBookingDao().GetBy(id);
+
+			booking.Event = new DbEventDao().GetById(booking.EventId.Value);
+
+			return booking;
 		}
 
 		public IList<Booking> GetBookings(DateTime from, DateTime to)
 		{
-			return new DbBookingDao().GetBookings(from, to);
+			var bookings = new DbBookingDao().GetBookings(from, to);
+			var eventDao = new DbEventDao();
+
+			foreach (var booking in bookings)
+			{
+				booking.Event = eventDao.GetById(booking.EventId.Value);
+			}
+
+			return bookings;
 		}
 
 		public IList<EmailRecipient> GetEmailRecipients()

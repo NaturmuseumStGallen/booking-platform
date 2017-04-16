@@ -23,6 +23,9 @@
 
 namespace BookingPlatform
 {
+	/// <summary>
+	/// IMPORTANT: Needs to be in sync with the corresponding table in the database!
+	/// </summary>
 	public enum AvailabilityStatus
 	{
 		Undefined = 0,

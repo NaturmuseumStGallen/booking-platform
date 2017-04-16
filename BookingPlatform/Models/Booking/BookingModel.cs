@@ -64,7 +64,7 @@ namespace BookingPlatform.Models
 		[MaxLength(100, ErrorMessage = Strings.Public.InputErrorMaxLength100)]
 		public string LastName { get; set; }
 
-		[MaxLength(10000, ErrorMessage = Strings.Public.InputErrorMaxLength10000)]
+		[MaxLength(5000, ErrorMessage = Strings.Public.InputErrorMaxLength5000)]
 		public string Notes { get; set; }
 
 		[Required(ErrorMessage = Strings.Public.InputErrorNumberOfKids)]

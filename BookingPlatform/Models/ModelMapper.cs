@@ -121,7 +121,6 @@ namespace BookingPlatform.Models
 		{
 			model.EmailTitle = settings.EmailTitle;
 			model.HtmlContent = settings.HtmlEmailContent;
-			model.Password = settings.Password;
 			model.PlaintextContent = settings.PlaintextEmailContent;
 		}
 

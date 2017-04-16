@@ -36,19 +36,12 @@
 <div class="content-1000px">
     <h2>@Strings.Admin.Settings.GlobalSettings</h2>
     <h3>@Strings.Admin.Settings.AdminPassword</h3>
-    <div>
-        <p class="inline-block">
-            @Strings.Admin.Settings.CurrentPassword
-            <span class="italic">@Model.Password</span>
-            &nbsp;-&nbsp;
-        </p>
-        @using (Html.BeginForm("UpdatePassword", "Admin", FormMethod.Post, new { @class = "inline-block" }))
-        {
-            <span>@Strings.Admin.Settings.ChangePassword</span>
-            <input type="text" name="password" />
-            <input type="submit" value="@Strings.Admin.Save" data-safety-message="@Strings.Admin.SafetyMessage" />
-        }
-    </div>
+    @using (Html.BeginForm("UpdatePassword", "Admin", FormMethod.Post, new { @class = "inline-block" }))
+    {
+        <span>@Strings.Admin.Settings.ChangePassword</span>
+        <input type="text" name="password" />
+        <input type="submit" value="@Strings.Admin.Save" data-safety-message="@Strings.Admin.SafetyMessage" />
+    }
     <h3>@Strings.Admin.Settings.BookingTimes</h3>
     <table>
         <thead>

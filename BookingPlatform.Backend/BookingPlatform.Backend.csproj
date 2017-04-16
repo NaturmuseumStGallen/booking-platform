@@ -32,6 +32,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -42,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Constants\RuleType.cs" />
     <Compile Include="DataAccess\Database.cs" />
+    <Compile Include="DataAccess\DbBaseDao.cs" />
     <Compile Include="DataAccess\DbBookingDao.cs" />
     <Compile Include="DataAccess\DbEmailDao.cs" />
     <Compile Include="DataAccess\DbEventGroupDao.cs" />

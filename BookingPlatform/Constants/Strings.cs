@@ -94,7 +94,7 @@ namespace BookingPlatform.Constants
 				public const string InputErrorFirstName = "Bitte gültigen Vornamen eingeben!";
 				public const string InputErrorLastName = "Bitte gültigen Nachnamen eingeben!";
 				public const string InputErrorMaxLength100 = "Bitte maximal 100 Zeichen eingeben!";
-				public const string InputErrorMaxLength10000 = "Bitte maximal 10'000 Zeichen eingeben!";
+				public const string InputErrorMaxLength5000 = "Bitte maximal 5'000 Zeichen eingeben!";
 				public const string InputErrorNumberOfKids = "Bitte gültige Anzahl Kinder eingeben!";
 				public const string InputErrorPhone = "Bitte gültige Telefonnummer eingeben!";
 				public const string InputErrorSchool = "Bitte Name der Schule eingeben!";
@@ -183,7 +183,7 @@ namespace BookingPlatform.Constants
 				public const string InputErrorDate = "Bitte gültiges Datum eingeben (dd.mm.yyyy)!";
 				public const string InputErrorDays = "Bitte gültige Anzahl Tage eingeben (0 oder mehr)!";
 				public const string InputErrorDayOfWeek = "Bitte gültigen Wochentag auswählen!";
-				public const string InputErrorEvents = "Bitte mindestens 1 Führung auswählen!";
+				public const string InputErrorEvents = "Bitte mindestens 2 Führungen auswählen!";
 				public const string InputErrorMaxLength100 = "Bitte maximal 100 Zeichen eingeben!";
 				public const string InputErrorName = "Bitte gültigen Namen eingeben!";
 				public const string InputErrorTime = "Bitte gültige Zeit eingeben (hh:mm)!";
@@ -299,7 +299,7 @@ namespace BookingPlatform.Constants
 			public const string InputErrorFirstName = "Bitte geben Sie einen Vornamen ein!";
 			public const string InputErrorLastName = "Bitte geben Sie einen Nachnamen ein!";
 			public const string InputErrorMaxLength100 = "Bitte geben Sie maximal 100 Zeichen ein!";
-			public const string InputErrorMaxLength10000 = "Bitte geben Sie maximal 10'000 Zeichen ein!";
+			public const string InputErrorMaxLength5000 = "Bitte geben Sie maximal 5'000 Zeichen ein!";
 			public const string InputErrorNumberOfKids = "Bitte geben Sie eine gültige Anzahl Kinder an (5 - 30)!";
 			public const string InputErrorPhone = "Bitte geben Sie eine gültige Telefonnummer an!";
 			public const string InputErrorSchool = "Bitte geben Sie den Namen Ihrer Schule an!";
