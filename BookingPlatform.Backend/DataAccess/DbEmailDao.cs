@@ -22,22 +22,36 @@
  */
 
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using BookingPlatform.Backend.Entities;
 
 namespace BookingPlatform.Backend.DataAccess
 {
-	internal class DbEmailDao
+	internal class DbEmailDao : DbBaseDao<EmailRecipient>
 	{
+		public void Delete(int id)
+		{
+			var sql = "DELETE FROM EmailRecipient WHERE Id = @Id";
+			var parameter = new SqlParameter("@Id", id);
+
+			ExecuteNonQuery(sql, parameter);
+		}
+
 		public IList<EmailRecipient> GetAll()
 		{
-			var recipients = new List<EmailRecipient>();
+			var sql = "SELECT * FROM EmailRecipient";
 
-			recipients.Add(new EmailRecipient { Address = "blubb@blabb", Id = 3 });
-			recipients.Add(new EmailRecipient { Address = "blubb@blabb", Id = 3 });
-			recipients.Add(new EmailRecipient { Address = "blubb@blabb", Id = 3 });
-			recipients.Add(new EmailRecipient { Address = "blobb@blabb", Id = 7 });
+			return ExecuteMultiQuery(sql);
+		}
 
-			return recipients;
+		protected override EmailRecipient MapFrom(SqlDataReader reader)
+		{
+			var recipient = new EmailRecipient();
+
+			recipient.Id = (int) reader[nameof(EmailRecipient.Id)];
+			recipient.Address = (string) reader[nameof(EmailRecipient.Address)];
+
+			return recipient;
 		}
 	}
 }

@@ -27,11 +27,6 @@ namespace BookingPlatform.Backend.DataAccess
 {
 	internal class DbSettingsDao
 	{
-		public void DeleteEmailRecipient(int id)
-		{
-			
-		}
-
 		public void UpdateEmailContent(string title, string plaintext, string html)
 		{
 			

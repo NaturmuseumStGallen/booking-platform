@@ -24,7 +24,6 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
 using BookingPlatform.Backend.Entities;
 
 namespace BookingPlatform.Backend.DataAccess
@@ -34,9 +33,9 @@ namespace BookingPlatform.Backend.DataAccess
 		public Booking GetBy(int id)
 		{
 			var sql = "SELECT * FROM Booking WHERE Id = @Id";
-			var param = new SqlParameter("@Id", id);
+			var parameter = new SqlParameter("@Id", id);
 
-			return ExecuteSingleQuery(sql, param);
+			return ExecuteSingleQuery(sql, parameter);
 		}
 
 		public IList<Booking> GetBookings(DateTime from, DateTime to)
@@ -53,38 +52,107 @@ namespace BookingPlatform.Backend.DataAccess
 
 		public void SaveNew(Booking booking)
 		{
+			var sql = @"
+			INSERT INTO
+				Booking(EventId, IsActive, [Address], [Date], Email, FirstName, Grade, LastName, Notes, NumberOfKids, Phone, School, Town, ZipCode)
+			VALUES
+				(@EventId, @IsActive, @Address, @Date, @Email, @FirstName, @Grade, @LastName, @Notes, @NumberOfKids, @Phone, @School, @Town, @ZipCode)";
+			var parameters = new[]
+			{
+				new SqlParameter("@EventId", booking.EventId),
+				new SqlParameter("@IsActive", booking.IsActive),
+				new SqlParameter("@Address", booking.Address),
+				new SqlParameter("@Date", booking.Date),
+				new SqlParameter("@Email", booking.Email),
+				new SqlParameter("@FirstName", booking.FirstName),
+				new SqlParameter("@Grade", booking.Grade),
+				new SqlParameter("@LastName", booking.LastName),
+				new SqlParameter("@Notes", booking.Notes),
+				new SqlParameter("@NumberOfKids", booking.NumberOfKids),
+				new SqlParameter("@Phone", booking.Phone),
+				new SqlParameter("@School", booking.School),
+				new SqlParameter("@Town", booking.Town),
+				new SqlParameter("@ZipCode", booking.ZipCode)
+			};
 
+			ExecuteNonQuery(sql, parameters);
 		}
 
 		public void Update(Booking booking)
 		{
+			var sql = @"
+			UPDATE
+				Booking
+			SET
+				EventId = @EventId,
+				IsActive = @IsActive,
+				[Address] = @Address,
+				[Date] = @Date,
+				Email = @Email,
+				FirstName = @FirstName,
+				Grade = @Grade,
+				LastName = @LastName,
+				Notes = @Notes,
+				NumberOfKids = @NumberOfKids,
+				Phone = @Phone,
+				School = @School,
+				Town = @Town,
+				ZipCode = @ZipCode
+			WHERE
+				Id = @Id";
+			var parameters = new[]
+			{
+				new SqlParameter("@Id", booking.Id),
+				new SqlParameter("@EventId", booking.EventId),
+				new SqlParameter("@IsActive", booking.IsActive),
+				new SqlParameter("@Address", booking.Address),
+				new SqlParameter("@Date", booking.Date),
+				new SqlParameter("@Email", booking.Email),
+				new SqlParameter("@FirstName", booking.FirstName),
+				new SqlParameter("@Grade", booking.Grade),
+				new SqlParameter("@LastName", booking.LastName),
+				new SqlParameter("@Notes", booking.Notes),
+				new SqlParameter("@NumberOfKids", booking.NumberOfKids),
+				new SqlParameter("@Phone", booking.Phone),
+				new SqlParameter("@School", booking.School),
+				new SqlParameter("@Town", booking.Town),
+				new SqlParameter("@ZipCode", booking.ZipCode)
+			};
 
+			ExecuteNonQuery(sql, parameters);
 		}
 
 		public void UpdateState(int id, bool isActive)
 		{
+			var sql = "UPDATE Booking SET IsActive = @IsActive WHERE Id = @Id";
+			var parameters = new[]
+			{
+				new SqlParameter("@Id", id),
+				new SqlParameter("@IsActive", isActive)
+			};
 
+			ExecuteNonQuery(sql, parameters);
 		}
 
 		protected override Booking MapFrom(SqlDataReader reader)
 		{
 			var booking = new Booking();
 
-			booking.Id = reader.GetInt32(0);
-			booking.EventId = reader.GetInt32(1);
-			booking.IsActive = reader.GetBoolean(2);
-			booking.Address = reader.IsDBNull(3) ? null : reader.GetString(3);
-			booking.Date = reader.GetDateTime(4);
-			booking.Email = reader.GetString(5);
-			booking.FirstName = reader.GetString(6);
-			booking.Grade = reader.GetString(7);
-			booking.LastName = reader.GetString(8);
-			booking.Notes = reader.IsDBNull(9) ? null : reader.GetString(9);
-			booking.NumberOfKids = reader.GetInt32(10);
-			booking.Phone = reader.GetString(11);
-			booking.School = reader.GetString(12);
-			booking.Town = reader.GetString(13);
-			booking.ZipCode = reader.IsDBNull(14) ? null : (int?) reader.GetInt32(14);
+			booking.Id = (int) reader[nameof(Booking.Id)];
+			booking.EventId = (int) reader[nameof(Booking.EventId)];
+			booking.IsActive = (bool) reader[nameof(Booking.IsActive)];
+			booking.Address = (string) reader[nameof(Booking.Address)];
+			booking.Date = (DateTime) reader[nameof(Booking.Date)];
+			booking.Email = (string) reader[nameof(Booking.Email)];
+			booking.FirstName = (string) reader[nameof(Booking.FirstName)];
+			booking.Grade = (string) reader[nameof(Booking.Grade)];
+			booking.LastName = (string) reader[nameof(Booking.LastName)];
+			booking.Notes = (string) reader[nameof(Booking.Notes)];
+			booking.NumberOfKids = (int) reader[nameof(Booking.NumberOfKids)];
+			booking.Phone = (string) reader[nameof(Booking.Phone)];
+			booking.School = (string) reader[nameof(Booking.School)];
+			booking.Town = (string) reader[nameof(Booking.Town)];
+			booking.ZipCode = (int?) reader[nameof(Booking.ZipCode)];
 
 			return booking;
 		}

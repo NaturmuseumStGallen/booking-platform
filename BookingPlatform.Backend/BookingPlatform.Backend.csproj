@@ -46,7 +46,6 @@
     <Compile Include="DataAccess\DbBaseDao.cs" />
     <Compile Include="DataAccess\DbBookingDao.cs" />
     <Compile Include="DataAccess\DbEmailDao.cs" />
-    <Compile Include="DataAccess\DbEventGroupDao.cs" />
     <Compile Include="DataAccess\DbEventDao.cs" />
     <Compile Include="DataAccess\DbRuleDao.cs" />
     <Compile Include="DataAccess\DbSettingsDao.cs" />

@@ -21,46 +21,94 @@
  * along with BookingPlatform. If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Data.SqlClient;
 using BookingPlatform.Backend.Entities;
 
 namespace BookingPlatform.Backend.DataAccess
 {
-	internal class DbEventDao
+	internal class DbEventDao : DbBaseDao<Event>
 	{
 		public void Deactivate(int id)
 		{
-			
+			var sql = "UPDATE [Event] SET IsActive = 0 WHERE Id = @Id";
+			var parameter = new SqlParameter("@Id", id);
+
+			ExecuteNonQuery(sql, parameter);
 		}
 
 		public IList<Event> GetAllActive()
 		{
-			var events = new List<Event>();
+			var sql = "SELECT * FROM [Event] WHERE IsActive = 1";
 
-			// TODO
-			foreach (var id in Enumerable.Range(0, 10))
-			{
-				events.Add(new Event { Id = id, Name = "Führung " + id });
-			}
-
-			return events;
+			return ExecuteMultiQuery(sql);
 		}
 
 		public Event GetById(int id)
 		{
-			return new Event();
+			var sql = "SELECT * FROM [Event] WHERE Id = @Id";
+			var parameter = new SqlParameter("@Id", id);
+
+			return ExecuteSingleQuery(sql, parameter);
 		}
 
 		public void SaveNew(Event @event)
 		{
-			
+			var sql = @"
+			INSERT INTO
+				[Event](IsActive, Name, ColorComponentBlue, ColorComponentGreen, ColorComponentRed)
+			VALUES
+				(@IsActive, @Name, @ColorComponentBlue, @ColorComponentGreen, @ColorComponentRed)";
+			var parameters = new[]
+			{
+				new SqlParameter("@IsActive", @event.IsActive),
+				new SqlParameter("@Name", @event.Name),
+				new SqlParameter("@ColorComponentBlue", @event.ColorComponentBlue),
+				new SqlParameter("@ColorComponentGreen", @event.ColorComponentGreen),
+				new SqlParameter("@ColorComponentRed", @event.ColorComponentRed)
+			};
+
+			ExecuteNonQuery(sql, parameters);
 		}
 
 		public void Update(Event @event)
 		{
-			
+			var sql = @"
+			UPDATE
+				[Event]
+			SET
+				IsActive = @IsActive,
+				Name = @Name,
+				ColorComponentBlue = @ColorComponentBlue,
+				ColorComponentGreen = @ColorComponentGreen,
+				ColorComponentRed = @ColorComponentRed
+			WHERE
+				Id = @Id";
+			var parameters = new[]
+			{
+				new SqlParameter("@Id", @event.Id),
+				new SqlParameter("@IsActive", @event.IsActive),
+				new SqlParameter("@Name", @event.Name),
+				new SqlParameter("@ColorComponentBlue", @event.ColorComponentBlue),
+				new SqlParameter("@ColorComponentGreen", @event.ColorComponentGreen),
+				new SqlParameter("@ColorComponentRed", @event.ColorComponentRed)
+			};
+
+			ExecuteNonQuery(sql, parameters);
+		}
+
+		protected override Event MapFrom(SqlDataReader reader)
+		{
+			var @event = new Event();
+
+			@event.Id = (int) reader[nameof(Event.Id)];
+			@event.IsActive = (bool) reader[nameof(Event.IsActive)];
+			@event.Name = (string) reader[nameof(Event.Name)];
+			@event.ColorComponentBlue = (int) reader[nameof(Event.ColorComponentBlue)];
+			@event.ColorComponentGreen = (int) reader[nameof(Event.ColorComponentGreen)];
+			@event.ColorComponentRed = (int) reader[nameof(Event.ColorComponentRed)];
+
+			return @event;
 		}
 	}
 }

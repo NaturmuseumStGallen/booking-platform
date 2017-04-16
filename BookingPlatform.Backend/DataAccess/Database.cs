@@ -42,7 +42,7 @@ namespace BookingPlatform.Backend.DataAccess
 
 		public void DeleteEmailRecipient(int id)
 		{
-			new DbSettingsDao().DeleteEmailRecipient(id);
+			new DbEmailDao().Delete(id);
 		}
 
 		public void DeleteRule(int id)
