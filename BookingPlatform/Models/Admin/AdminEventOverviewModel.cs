@@ -34,6 +34,5 @@ namespace BookingPlatform.Models
 		}
 
 		public IList<Event> Events { get; set; }
-		public IList<EventGroup> EventGroups { get; set; }
 	}
 }

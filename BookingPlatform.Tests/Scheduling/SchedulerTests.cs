@@ -46,7 +46,7 @@ namespace BookingPlatform.Tests
 			var provider = new Scheduler(bookings.Object, rules.Object, times.Object);
 
 			bookings.Setup(p => p.GetBookings(DateTime.Now, DateTime.Now)).Returns(new List<Booking>());
-			rules.Setup(r => r.GetRules(DateTime.Now, DateTime.Now)).Returns(new List<IRule>());
+			rules.Setup(r => r.GetRules()).Returns(new List<IRule>());
 			times.Setup(t => t.GetTimes()).Returns(new List<TimeSpan>());
 
 			var dates = provider.GetBookingDateRange(DateTime.Today, DateTime.Today.AddDays(1), @event);
@@ -64,7 +64,7 @@ namespace BookingPlatform.Tests
 			var provider = new Scheduler(bookings.Object, rules.Object, times.Object);
 
 			bookings.Setup(p => p.GetBookings(DateTime.Now, DateTime.Now)).Returns(new List<Booking>());
-			rules.Setup(r => r.GetRules(DateTime.Now, DateTime.Now)).Returns(new List<IRule>());
+			rules.Setup(r => r.GetRules()).Returns(new List<IRule>());
 			times.Setup(t => t.GetTimes()).Returns(new List<TimeSpan>());
 
 			var dates = provider.GetBookingDateRange(DateTime.Today, DateTime.Today.AddDays(1), @event);
@@ -85,7 +85,7 @@ namespace BookingPlatform.Tests
 			var provider = new Scheduler(bookings.Object, rules.Object, times.Object);
 
 			bookings.Setup(p => p.GetBookings(from, to)).Returns(new List<Booking>());
-			rules.Setup(r => r.GetRules(from, to)).Returns(new List<IRule>());
+			rules.Setup(r => r.GetRules()).Returns(new List<IRule>());
 			times.Setup(t => t.GetTimes()).Returns(new List<TimeSpan>());
 
 			provider.GetBookingDateRange(from, to, @event);
@@ -103,7 +103,7 @@ namespace BookingPlatform.Tests
 			var provider = new Scheduler(bookings.Object, rules.Object, times.Object);
 
 			bookings.Setup(p => p.GetBookings(from, to)).Returns(new List<Booking>());
-			rules.Setup(r => r.GetRules(from, to)).Returns(new List<IRule>());
+			rules.Setup(r => r.GetRules()).Returns(new List<IRule>());
 			times.Setup(t => t.GetTimes()).Returns(new List<TimeSpan> { new TimeSpan(10, 0, 0) });
 
 			var dates = provider.GetBookingDateRange(from, to, @event);
@@ -124,7 +124,7 @@ namespace BookingPlatform.Tests
 			var provider = new Scheduler(bookings.Object, rules.Object, times.Object);
 
 			bookings.Setup(p => p.GetBookings(from, to)).Returns(new List<Booking>());
-			rules.Setup(r => r.GetRules(from, to)).Returns(new List<IRule>());
+			rules.Setup(r => r.GetRules()).Returns(new List<IRule>());
 			times.Setup(t => t.GetTimes()).Returns(new List<TimeSpan> { new TimeSpan(10, 0, 0) });
 
 			var dates = provider.GetBookingDateRange(from, to, @event);
@@ -146,7 +146,7 @@ namespace BookingPlatform.Tests
 			var provider = new Scheduler(bookings.Object, rules.Object, times.Object);
 
 			bookings.Setup(p => p.GetBookings(from, to)).Returns(new List<Booking>());
-			rules.Setup(r => r.GetRules(from, to)).Returns(new List<IRule>());
+			rules.Setup(r => r.GetRules()).Returns(new List<IRule>());
 			times.Setup(t => t.GetTimes()).Returns(new List<TimeSpan> { time });
 
 			var dates = provider.GetBookingDateRange(from, to, @event);
@@ -168,7 +168,7 @@ namespace BookingPlatform.Tests
 			var provider = new Scheduler(bookings.Object, rules.Object, times.Object);
 
 			bookings.Setup(p => p.GetBookings(from, to)).Returns(new List<Booking>());
-			rules.Setup(r => r.GetRules(from, to)).Returns(new List<IRule>());
+			rules.Setup(r => r.GetRules()).Returns(new List<IRule>());
 			times.Setup(t => t.GetTimes()).Returns(new List<TimeSpan> { time });
 
 			var dates = provider.GetBookingDateRange(from, to, @event);
@@ -187,7 +187,7 @@ namespace BookingPlatform.Tests
 			var provider = new Scheduler(bookings.Object, rules.Object, times.Object);
 
 			bookings.Setup(p => p.GetBookings(date, date)).Returns(new List<Booking> { new Booking { Date = date, Event = @event } });
-			rules.Setup(r => r.GetRules(date, date)).Returns(new List<IRule>());
+			rules.Setup(r => r.GetRules()).Returns(new List<IRule>());
 			times.Setup(t => t.GetTimes()).Returns(new List<TimeSpan> { date.TimeOfDay });
 
 			var dates = provider.GetBookingDateRange(date, date, @event);
@@ -208,7 +208,7 @@ namespace BookingPlatform.Tests
 
 			bookings.Setup(p => p.GetBookings(date, date)).Returns(new List<Booking>());
 			rule.Setup(r => r.GetStatus(date, @event)).Returns(AvailabilityStatus.Booked);
-			rules.Setup(r => r.GetRules(date, date)).Returns(new List<IRule> { rule.Object });
+			rules.Setup(r => r.GetRules()).Returns(new List<IRule> { rule.Object });
 			times.Setup(t => t.GetTimes()).Returns(new List<TimeSpan> { date.TimeOfDay });
 
 			var dates = provider.GetBookingDateRange(date, date, @event);
@@ -233,7 +233,7 @@ namespace BookingPlatform.Tests
 			bookedRule.Setup(r => r.GetStatus(date, @event)).Returns(AvailabilityStatus.Booked);
 			freeRule.Setup(r => r.GetStatus(date, @event)).Returns(AvailabilityStatus.Free);
 			notBookableRule.Setup(r => r.GetStatus(date, @event)).Returns(AvailabilityStatus.NotBookable);
-			rules.Setup(r => r.GetRules(date, date)).Returns(new List<IRule> { bookedRule.Object, freeRule.Object, notBookableRule.Object });
+			rules.Setup(r => r.GetRules()).Returns(new List<IRule> { bookedRule.Object, freeRule.Object, notBookableRule.Object });
 			times.Setup(t => t.GetTimes()).Returns(new List<TimeSpan> { date.TimeOfDay });
 
 			var dates = provider.GetBookingDateRange(date, date, @event);
@@ -256,7 +256,7 @@ namespace BookingPlatform.Tests
 			bookings.Setup(p => p.GetBookings(date, date)).Returns(new List<Booking>());
 			bookedRule.Setup(r => r.GetStatus(date, @event)).Returns(AvailabilityStatus.Booked);
 			notBookableRule.Setup(r => r.GetStatus(date, @event)).Returns(AvailabilityStatus.NotBookable);
-			rules.Setup(r => r.GetRules(date, date)).Returns(new List<IRule> { bookedRule.Object, notBookableRule.Object });
+			rules.Setup(r => r.GetRules()).Returns(new List<IRule> { bookedRule.Object, notBookableRule.Object });
 			times.Setup(t => t.GetTimes()).Returns(new List<TimeSpan> { date.TimeOfDay });
 
 			var dates = provider.GetBookingDateRange(date, date, @event);

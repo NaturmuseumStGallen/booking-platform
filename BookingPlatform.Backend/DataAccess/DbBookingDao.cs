@@ -24,6 +24,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Linq;
 using BookingPlatform.Backend.Entities;
 
 namespace BookingPlatform.Backend.DataAccess
@@ -38,9 +39,29 @@ namespace BookingPlatform.Backend.DataAccess
 			return ExecuteSingleQuery(sql, parameter);
 		}
 
+		public IList<Booking> GetByEvents(IList<int> eventIds)
+		{
+			var sql = "SELECT * FROM Booking WHERE IsActive = 1 AND EventId IN (%%PARAM_LIST%%)";
+			var sqlParamList = String.Empty;
+			var parameters = new List<SqlParameter>();
+			var ids = eventIds.Distinct().ToList();
+
+			foreach (var id in ids)
+			{
+				var paramId = "@EventId" + ids.IndexOf(id);
+
+				sqlParamList += paramId + (ids.Last() == id ? string.Empty : ", ");
+				parameters.Add(new SqlParameter(paramId, id));
+			}
+
+			sql = sql.Replace("%%PARAM_LIST%%", sqlParamList);
+
+			return ExecuteMultiQuery(sql, parameters.ToArray());
+		}
+
 		public IList<Booking> GetBookings(DateTime from, DateTime to)
 		{
-			var sql = "SELECT * FROM Booking WHERE @From <= Date AND Date <= @To";
+			var sql = "SELECT * FROM Booking WHERE @From <= [Date] AND [Date] <= @To";
 			var parameters = new[]
 			{
 				new SqlParameter("@From", from),

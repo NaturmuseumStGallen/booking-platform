@@ -51,7 +51,11 @@
     <Compile Include="DataAccess\DbSettingsDao.cs" />
     <Compile Include="DataAccess\DbTimeDao.cs" />
     <Compile Include="Entities\EmailRecipient.cs" />
-    <Compile Include="Entities\RuleData.cs" />
+    <Compile Include="Entities\RuleConfiguration.cs" />
+    <Compile Include="Entities\RuleConfigurations\WeeklyRuleConfiguration.cs" />
+    <Compile Include="Entities\RuleConfigurations\MinimumDateRuleConfiguration.cs" />
+    <Compile Include="Entities\RuleConfigurations\EventGroupRuleConfiguration.cs" />
+    <Compile Include="Entities\RuleConfigurations\DateRangeRuleConfiguration.cs" />
     <Compile Include="Entities\Settings.cs" />
     <Compile Include="Entities\TimeData.cs" />
     <Compile Include="Entities\EventGroup.cs" />

@@ -64,7 +64,7 @@ namespace BookingPlatform.Backend.DataAccess
 		{
 			var booking = new DbBookingDao().GetBy(id);
 
-			booking.Event = new DbEventDao().GetById(booking.EventId.Value);
+			booking.Event = new DbEventDao().GetBy(booking.EventId.Value);
 
 			return booking;
 		}
@@ -76,7 +76,7 @@ namespace BookingPlatform.Backend.DataAccess
 
 			foreach (var booking in bookings)
 			{
-				booking.Event = eventDao.GetById(booking.EventId.Value);
+				booking.Event = eventDao.GetBy(booking.EventId.Value);
 			}
 
 			return bookings;
@@ -89,12 +89,7 @@ namespace BookingPlatform.Backend.DataAccess
 
 		public Event GetEventBy(int id)
 		{
-			return new DbEventDao().GetById(id);
-		}
-
-		public IList<EventGroup> GetEventGroups()
-		{
-			return new DbEventGroupDao().GetAll();
+			return new DbEventDao().GetBy(id);
 		}
 
 		public Settings GetSettings()
@@ -102,19 +97,19 @@ namespace BookingPlatform.Backend.DataAccess
 			return new Settings { HtmlEmailContent = "Some content goes here" };
 		}
 
-		public IList<IRule> GetRules(DateTime from, DateTime to)
+		public IList<IRule> GetRules()
 		{
-			return new DbRuleDao().GetRules(from, to);
+			return new DbRuleDao().GetRules();
 		}
 
-		public RuleData GetRuleData(int id)
+		public RuleConfiguration GetRuleData(int id)
 		{
 			return new DbRuleDao().GetRuleData(id);
 		}
 
-		public IList<RuleData> GetRuleData()
+		public IList<RuleConfiguration> GetRuleData()
 		{
-			return new DbRuleDao().GetRuleData();
+			return new DbRuleDao().GetRuleConfigurations();
 		}
 
 		public IList<TimeSpan> GetTimes()
@@ -155,7 +150,7 @@ namespace BookingPlatform.Backend.DataAccess
 			new DbEventDao().SaveNew(@event);
 		}
 
-		public void SaveNew(RuleData ruleData)
+		public void SaveNew(RuleConfiguration ruleData)
 		{
 			new DbRuleDao().SaveNew(ruleData);
 		}
@@ -180,7 +175,7 @@ namespace BookingPlatform.Backend.DataAccess
 			new DbEventDao().Update(@event);
 		}
 
-		public void Update(RuleData ruleData)
+		public void Update(RuleConfiguration ruleData)
 		{
 			new DbRuleDao().Update(ruleData);
 		}

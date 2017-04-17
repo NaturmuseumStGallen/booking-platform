@@ -21,8 +21,10 @@
  * along with BookingPlatform. If not, see <http://www.gnu.org/licenses/>.
  */
 
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Linq;
 using BookingPlatform.Backend.Entities;
 
 namespace BookingPlatform.Backend.DataAccess
@@ -44,12 +46,32 @@ namespace BookingPlatform.Backend.DataAccess
 			return ExecuteMultiQuery(sql);
 		}
 
-		public Event GetById(int id)
+		public Event GetBy(int id)
 		{
 			var sql = "SELECT * FROM [Event] WHERE Id = @Id";
 			var parameter = new SqlParameter("@Id", id);
 
 			return ExecuteSingleQuery(sql, parameter);
+		}
+
+		public IList<Event> GetBy(IList<int> eventIds)
+		{
+			var sql = "SELECT * FROM [Event] WHERE IsActive = 1 AND Id IN (%%PARAM_LIST%%)";
+			var sqlParamList = String.Empty;
+			var parameters = new List<SqlParameter>();
+			var ids = eventIds.Distinct().ToList();
+
+			foreach (var id in ids)
+			{
+				var paramId = "@Id" + ids.IndexOf(id);
+
+				sqlParamList += paramId + (ids.Last() == id ? string.Empty : ", ");
+				parameters.Add(new SqlParameter(paramId, id));
+			}
+
+			sql = sql.Replace("%%PARAM_LIST%%", sqlParamList);
+
+			return ExecuteMultiQuery(sql, parameters.ToArray());
 		}
 
 		public void SaveNew(Event @event)

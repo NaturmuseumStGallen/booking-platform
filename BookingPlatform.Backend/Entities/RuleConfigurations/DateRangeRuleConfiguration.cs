@@ -21,14 +21,17 @@
  * along with BookingPlatform. If not, see <http://www.gnu.org/licenses/>.
  */
 
-using BookingPlatform.Backend.Constants;
+using System;
 
-namespace BookingPlatform.Backend.Entities
+namespace BookingPlatform.Backend.Entities.RuleConfigurations
 {
-	public class RuleData
+	public class DateRangeRuleConfiguration : RuleConfiguration
 	{
 		public int Id { get; set; }
-		public string Name { get; set; }
-		public RuleType Type { get; set; }
+		public AvailabilityStatus AvailabilityStatus { get; set; }
+		public DateTime? EndDate { get; set; }
+		public TimeSpan? EndTime { get; set; }
+		public DateTime StartDate { get; set; }
+		public TimeSpan? StartTime { get; set; }
 	}
 }

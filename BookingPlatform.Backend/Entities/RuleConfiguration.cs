@@ -21,19 +21,14 @@
  * along with BookingPlatform. If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System.Collections.Generic;
+using BookingPlatform.Backend.Constants;
 
 namespace BookingPlatform.Backend.Entities
 {
-	public class EventGroup
+	public class RuleConfiguration
 	{
-		public EventGroup()
-		{
-			Bookings = new List<Booking>();
-			Events = new List<Event>();
-		}
-
-		public IList<Booking> Bookings { get; set; }
-		public IList<Event> Events { get; set; }
+		public int RuleId { get; set; }
+		public string Name { get; set; }
+		public RuleType Type { get; set; }
 	}
 }

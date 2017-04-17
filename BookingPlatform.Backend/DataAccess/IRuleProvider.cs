@@ -21,7 +21,6 @@
  * along with BookingPlatform. If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System;
 using System.Collections.Generic;
 using BookingPlatform.Backend.Rules;
 
@@ -29,6 +28,6 @@ namespace BookingPlatform.Backend.DataAccess
 {
 	public interface IRuleProvider
 	{
-		IList<IRule> GetRules(DateTime from, DateTime to);
+		IList<IRule> GetRules();
 	}
 }

@@ -49,7 +49,6 @@ namespace BookingPlatform.Controllers
 			var model = new AdminEventOverviewModel();
 
 			model.Events = Database.Instance.GetActiveEvents();
-			model.EventGroups = Database.Instance.GetEventGroups();
 
 			return View(model);
 		}

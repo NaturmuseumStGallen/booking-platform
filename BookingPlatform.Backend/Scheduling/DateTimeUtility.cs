@@ -76,5 +76,17 @@ namespace BookingPlatform.Backend.Scheduling
 
 			return sunday;
 		}
+
+		/// <summary>
+		/// Creates a new <c>DateTime</c> struct initialized with the given date and time values.
+		/// If the time value is <c>null</c>, the time of day is set to <c>00:00:00</c>.
+		/// </summary>
+		public static DateTime NewFor(DateTime date, TimeSpan? time)
+		{
+			var hour = time.HasValue ? time.Value.Hours : 0;
+			var minute = time.HasValue ? time.Value.Minutes : 0;
+
+			return new DateTime(date.Year, date.Month, date.Day, hour, minute, 0);
+		}
 	}
 }

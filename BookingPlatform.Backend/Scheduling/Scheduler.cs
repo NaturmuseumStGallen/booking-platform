@@ -100,7 +100,7 @@ namespace BookingPlatform.Backend.Scheduling
 		private void InitializeProviders(DateTime from, DateTime to)
 		{
 			bookings = bookingProvider.GetBookings(from, to);
-			rules = ruleProvider.GetRules(from, to);
+			rules = ruleProvider.GetRules();
 			times = timeProvider.GetTimes();
 		}
 

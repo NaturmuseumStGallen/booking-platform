@@ -21,19 +21,14 @@
  * along with BookingPlatform. If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System.Collections.Generic;
+using System;
 
-namespace BookingPlatform.Backend.Entities
+namespace BookingPlatform.Backend.Entities.RuleConfigurations
 {
-	public class EventGroup
+	public class MinimumDateRuleConfiguration : RuleConfiguration
 	{
-		public EventGroup()
-		{
-			Bookings = new List<Booking>();
-			Events = new List<Event>();
-		}
-
-		public IList<Booking> Bookings { get; set; }
-		public IList<Event> Events { get; set; }
+		public int Id { get; set; }
+		public DateTime? Date { get; set; }
+		public int? Days { get; set; }
 	}
 }

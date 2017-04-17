@@ -76,7 +76,7 @@ namespace BookingPlatform.Models
 			model.Red = @event.ColorComponentRed;
 		}
 
-		public static void MapFromEntity(this AdminRuleDetailsModel model, RuleData rule)
+		public static void MapFromEntity(this AdminRuleDetailsModel model, RuleConfiguration rule)
 		{
 			switch (model.Type)
 			{
@@ -97,22 +97,22 @@ namespace BookingPlatform.Models
 			}
 		}
 
-		public static void MapFromEntity(this DateRangeRuleModel model, RuleData rule)
+		public static void MapFromEntity(this DateRangeRuleModel model, RuleConfiguration rule)
 		{
 
 		}
 
-		public static void MapFromEntity(this EventGroupRuleModel model, RuleData rule)
+		public static void MapFromEntity(this EventGroupRuleModel model, RuleConfiguration rule)
 		{
 
 		}
 
-		public static void MapFromEntity(this MinimumDateRuleModel model, RuleData rule)
+		public static void MapFromEntity(this MinimumDateRuleModel model, RuleConfiguration rule)
 		{
 
 		}
 
-		public static void MapFromEntity(this WeeklyRuleModel model, RuleData rule)
+		public static void MapFromEntity(this WeeklyRuleModel model, RuleConfiguration rule)
 		{
 
 		}
@@ -152,27 +152,27 @@ namespace BookingPlatform.Models
 			@event.ColorComponentRed = model.Red.Value;
 		}
 
-		public static void MapToEntity(this AdminRuleDetailsModel model, RuleData rule)
+		public static void MapToEntity(this AdminRuleDetailsModel model, RuleConfiguration rule)
 		{
 
 		}
 
-		public static void MapToEntity(this DateRangeRuleModel model, RuleData rule)
+		public static void MapToEntity(this DateRangeRuleModel model, RuleConfiguration rule)
 		{
 
 		}
 
-		public static void MapToEntity(this EventGroupRuleModel model, RuleData rule)
+		public static void MapToEntity(this EventGroupRuleModel model, RuleConfiguration rule)
 		{
 
 		}
 
-		public static void MapToEntity(this MinimumDateRuleModel model, RuleData rule)
+		public static void MapToEntity(this MinimumDateRuleModel model, RuleConfiguration rule)
 		{
 
 		}
 
-		public static void MapToEntity(this WeeklyRuleModel model, RuleData rule)
+		public static void MapToEntity(this WeeklyRuleModel model, RuleConfiguration rule)
 		{
 
 		}

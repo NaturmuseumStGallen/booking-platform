@@ -35,7 +35,7 @@ namespace BookingPlatform.Models
 		public AdminSettingsModel()
 		{
 			Recipients = new List<EmailRecipient>();
-			Rules = new List<RuleData>();
+			Rules = new List<RuleConfiguration>();
 			Times = new List<TimeData>();
 		}
 
@@ -44,7 +44,7 @@ namespace BookingPlatform.Models
 		public string HtmlContent { get; set; }
 
 		public IList<EmailRecipient> Recipients { get; set; }
-		public IList<RuleData> Rules { get; set; }
+		public IList<RuleConfiguration> Rules { get; set; }
 		public IList<TimeData> Times { get; set; }
 
 		public IEnumerable<SelectListItem> RuleTypes
@@ -58,7 +58,7 @@ namespace BookingPlatform.Models
 			}
 		}
 
-		public MvcHtmlString GetRuleDetails(RuleData rule)
+		public MvcHtmlString GetRuleDetails(RuleConfiguration rule)
 		{
 			return new MvcHtmlString("Rule details go here<br /> - Some property value <br /> - Yet another value");
 		}

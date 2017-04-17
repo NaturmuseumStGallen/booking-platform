@@ -23,17 +23,16 @@
 
 using System.Collections.Generic;
 
-namespace BookingPlatform.Backend.Entities
+namespace BookingPlatform.Backend.Entities.RuleConfigurations
 {
-	public class EventGroup
+	public class EventGroupRuleConfiguration : RuleConfiguration
 	{
-		public EventGroup()
+		public EventGroupRuleConfiguration()
 		{
-			Bookings = new List<Booking>();
-			Events = new List<Event>();
+			EventIds = new List<int>();
 		}
 
-		public IList<Booking> Bookings { get; set; }
-		public IList<Event> Events { get; set; }
+		public int Id { get; set; }
+		public IList<int> EventIds { get; set; }
 	}
 }

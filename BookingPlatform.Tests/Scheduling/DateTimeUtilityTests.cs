@@ -85,5 +85,36 @@ namespace BookingPlatform.Tests
 			Assert.IsTrue(sunday.Minute == 0);
 			Assert.IsTrue(sunday.Second == 0);
 		}
+
+		[TestMethod]
+		public void NewForDateOnlyTest()
+		{
+			var date = new DateTime(2017, 3, 12);
+			var @new = DateTimeUtility.NewFor(date, null);
+
+			Assert.IsTrue(@new.DayOfWeek == DayOfWeek.Sunday);
+			Assert.IsTrue(@new.Year == 2017);
+			Assert.IsTrue(@new.Month == 3);
+			Assert.IsTrue(@new.Day == 12);
+			Assert.IsTrue(@new.Hour == 0);
+			Assert.IsTrue(@new.Minute == 0);
+			Assert.IsTrue(@new.Second == 0);
+		}
+
+		[TestMethod]
+		public void NewForDateAndTimeTest()
+		{
+			var date = new DateTime(2017, 3, 14, 11, 45, 10);
+			var time = new TimeSpan(10, 30, 25);
+			var @new = DateTimeUtility.NewFor(date, time);
+
+			Assert.IsTrue(@new.DayOfWeek == DayOfWeek.Tuesday);
+			Assert.IsTrue(@new.Year == 2017);
+			Assert.IsTrue(@new.Month == 3);
+			Assert.IsTrue(@new.Day == 14);
+			Assert.IsTrue(@new.Hour == 10);
+			Assert.IsTrue(@new.Minute == 30);
+			Assert.IsTrue(@new.Second == 0);
+		}
 	}
 }
