@@ -22,6 +22,7 @@
  */
 
 using System;
+using BookingPlatform.Backend.Rules;
 
 namespace BookingPlatform.Backend.Entities.RuleConfigurations
 {
@@ -32,5 +33,10 @@ namespace BookingPlatform.Backend.Entities.RuleConfigurations
 		public DayOfWeek DayOfWeek { get; set; }
 		public DateTime? StartDate { get; set; }
 		public TimeSpan? Time { get; set; }
+
+		public override IRule ToRule()
+		{
+			return new WeeklyRule(DayOfWeek, AvailabilityStatus, Time, StartDate);
+		}
 	}
 }

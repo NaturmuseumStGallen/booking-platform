@@ -29,7 +29,6 @@ using BookingPlatform.Backend.Constants;
 using BookingPlatform.Backend.Entities;
 using BookingPlatform.Backend.Entities.RuleConfigurations;
 using BookingPlatform.Backend.Rules;
-using BookingPlatform.Backend.Scheduling;
 
 namespace BookingPlatform.Backend.DataAccess
 {
@@ -37,17 +36,47 @@ namespace BookingPlatform.Backend.DataAccess
 	{
 		public void Delete(int id)
 		{
-			
+			var config = GetConfigurationBy(id);
+			var sqls = new List<string>();
+			var parameters = new List<SqlParameter>();
+
+			switch (config.Type)
+			{
+				case RuleType.DateRange:
+					sqls.Add("DELETE FROM DateRangeRule WHERE RuleId = @Id");
+					break;
+				case RuleType.EventGroup:
+					sqls.Add("DELETE FROM Event2EventGroupRule WHERE EventGroupRuleId = @EventGroupRuleId");
+					sqls.Add("DELETE FROM EventGroupRule WHERE RuleId = @Id");
+					parameters.Add(new SqlParameter("@EventGroupRuleId", (config as EventGroupRuleConfiguration).Id));
+					break;
+				case RuleType.MinimumDate:
+					sqls.Add("DELETE FROM MinimumDateRule WHERE RuleId = @Id");
+					break;
+				case RuleType.Weekly:
+					sqls.Add("DELETE FROM WeeklyRule WHERE RuleId = @Id");
+					break;
+				default:
+					throw new InvalidOperationException(String.Format("Rule of type '{0}' not yet configured!", config.Type));
+			}
+
+			sqls.Add("DELETE FROM [Rule] WHERE Id = @Id");
+			parameters.Add(new SqlParameter("@Id", id));
+
+			foreach (var sql in sqls)
+			{
+				ExecuteNonQuery(sql, parameters.ToArray());
+			}
 		}
 
 		public IList<IRule> GetRules()
 		{
-			var ruleData = GetRuleConfigurations();
+			var configs = GetRuleConfigurations();
 			var rules = new List<IRule>();
 
-			foreach (var data in ruleData)
+			foreach (var config in configs)
 			{
-				rules.Add(ToRule(data));
+				rules.Add(config.ToRule());
 			}
 
 			return rules;
@@ -75,25 +104,102 @@ namespace BookingPlatform.Backend.DataAccess
 			return configs;
 		}
 
-		public RuleConfiguration GetRuleData(int id)
+		public RuleConfiguration GetConfigurationBy(int id)
 		{
-			return new RuleConfiguration { RuleId = 4, Name = "Some rule here", Type = RuleType.DateRange };
+			var sql = @"
+			SELECT *
+			FROM [Rule] AS r
+			FULL OUTER JOIN DateRangeRule AS dr ON r.Id = dr.RuleId
+			FULL OUTER JOIN EventGroupRule AS eg ON r.Id = eg.RuleId
+			FULL OUTER JOIN MinimumDateRule AS md ON r.Id = md.RuleId
+			FULL OUTER JOIN WeeklyRule AS wr ON r.Id = wr.RuleId
+			WHERE r.Id = @Id";
+			var parameter = new SqlParameter("@Id", id);
+			var config = ExecuteSingleQuery(sql, parameter);
+
+			if (config is EventGroupRuleConfiguration)
+			{
+				LoadEventGroupData(config as EventGroupRuleConfiguration);
+			}
+
+			return config;
 		}
 
 		public void SaveNew(RuleConfiguration config)
 		{
-			
+			var sql = @"
+			INSERT INTO
+				[Rule](RuleTypeId, Name)
+			VALUES
+				(@RuleTypeId, @Name);
+			SELECT SCOPE_IDENTITY()";
+			var parameters = new[]
+			{
+				new SqlParameter("@RuleTypeId", config.Type),
+				new SqlParameter("@Name", config.Name)
+			};
+
+			config.RuleId = Convert.ToInt32(ExecuteScalar(sql, parameters));
+
+			switch (config.Type)
+			{
+				case RuleType.DateRange:
+					SaveDateRange(config as DateRangeRuleConfiguration);
+					break;
+				case RuleType.EventGroup:
+					SaveEventGroup(config as EventGroupRuleConfiguration);
+					break;
+				case RuleType.MinimumDate:
+					SaveMinimumDate(config as MinimumDateRuleConfiguration);
+					break;
+				case RuleType.Weekly:
+					SaveWeekly(config as WeeklyRuleConfiguration);
+					break;
+				default:
+					throw new InvalidOperationException(String.Format("Rule of type '{0}' not yet configured!", config.Type));
+			}
 		}
 
 		public void Update(RuleConfiguration config)
 		{
-			
+			var sql = @"
+			UPDATE
+				[Rule]
+			SET
+				Name = @Name
+			WHERE
+				Id = @Id";
+			var parameters = new[]
+			{
+				new SqlParameter("@Id", config.RuleId),
+				new SqlParameter("@Name", config.Name)
+			};
+
+			ExecuteNonQuery(sql, parameters);
+
+			switch (config.Type)
+			{
+				case RuleType.DateRange:
+					UpdateDateRange(config as DateRangeRuleConfiguration);
+					break;
+				case RuleType.EventGroup:
+					UpdateEventGroup(config as EventGroupRuleConfiguration);
+					break;
+				case RuleType.MinimumDate:
+					UpdateMinimumDate(config as MinimumDateRuleConfiguration);
+					break;
+				case RuleType.Weekly:
+					UpdateWeekly(config as WeeklyRuleConfiguration);
+					break;
+				default:
+					throw new InvalidOperationException(String.Format("Rule of type '{0}' not yet configured!", config.Type));
+			}
 		}
 
 		protected override RuleConfiguration MapFrom(SqlDataReader reader)
 		{
 			RuleConfiguration config = null;
-			var type = (RuleType) reader["r.RuleTypeId"];
+			var type = (RuleType)reader["r.RuleTypeId"];
 
 			switch (type)
 			{
@@ -113,11 +219,160 @@ namespace BookingPlatform.Backend.DataAccess
 					throw new InvalidOperationException(String.Format("Rule of type '{0}' not yet configured!", type));
 			}
 
-			config.RuleId = (int) reader["r.Id"];
+			config.RuleId = (int)reader["r.Id"];
 			config.Type = type;
-			config.Name = (string) reader["r.Name"];
+			config.Name = (string)reader["r.Name"];
 
 			return config;
+		}
+
+		private void SaveDateRange(DateRangeRuleConfiguration config)
+		{
+			var sql = @"
+			INSERT INTO
+				DateRangeRule(RuleId, AvailabilityStatusId, EndDate, EndTime, StartDate, StartTime)
+			VALUES
+				(@RuleId, @AvailabilityStatusId, @EndDate, @EndTime, @StartDate, @StartTime)";
+			var parameters = new[]
+			{
+				new SqlParameter("@RuleId", config.RuleId),
+				new SqlParameter("@AvailabilityStatusId", config.AvailabilityStatus),
+				new SqlParameter("@EndDate", config.EndDate),
+				new SqlParameter("@EndTime", config.EndTime),
+				new SqlParameter("@StartDate", config.StartDate),
+				new SqlParameter("@StartTime", config.StartTime)
+			};
+
+			ExecuteNonQuery(sql, parameters);
+		}
+
+		private void SaveEventGroup(EventGroupRuleConfiguration config)
+		{
+			var sql = @"
+			INSERT INTO
+				EventGroupRule(RuleId)
+			VALUES
+				(@RuleId)";
+			var parameters = new[] { new SqlParameter("@RuleId", config.RuleId) };
+
+			config.Id = Convert.ToInt32(ExecuteScalar(sql, parameters));
+
+			SaveEventGroupData(config);
+		}
+
+		private void SaveMinimumDate(MinimumDateRuleConfiguration config)
+		{
+			var sql = @"
+			INSERT INTO
+				MinimumDateRule(RuleId, Date, Days)
+			VALUES
+				(@RuleId, @Date, @Days)";
+			var parameters = new[]
+			{
+				new SqlParameter("@RuleId", config.RuleId),
+				new SqlParameter("@Date", config.Date),
+				new SqlParameter("@Days", config.Days)
+			};
+
+			ExecuteNonQuery(sql, parameters);
+		}
+
+		private void SaveWeekly(WeeklyRuleConfiguration config)
+		{
+			var sql = @"
+			INSERT INTO
+				WeeklyRule(RuleId, AvailabilityStatusId, [DayOfWeek], StartDate, [Time])
+			VALUES
+				(@RuleId, @AvailabilityStatusId, @DayOfWeek, @StartDate, @Time)";
+			var parameters = new[]
+			{
+				new SqlParameter("@RuleId", config.RuleId),
+				new SqlParameter("@AvailabilityStatusId", config.AvailabilityStatus),
+				new SqlParameter("@DayOfWeek", config.DayOfWeek),
+				new SqlParameter("@StartDate", config.StartDate),
+				new SqlParameter("@Time", config.Time)
+			};
+
+			ExecuteNonQuery(sql, parameters);
+		}
+
+		private void UpdateDateRange(DateRangeRuleConfiguration config)
+		{
+			var sql = @"
+			UPDATE
+				DateRangeRule
+			SET
+				AvailabilityStatusId = @AvailabilityStatusId,
+				EndDate = @EndDate,
+				EndTime = @EndTime,
+				StartDate = @StartDate,
+				StartTime = @StartTime
+			WHERE
+				Id = @Id";
+			var parameters = new[]
+			{
+				new SqlParameter("@Id", config.Id),
+				new SqlParameter("@AvailabilityStatusId", config.AvailabilityStatus),
+				new SqlParameter("@EndDate", config.EndDate),
+				new SqlParameter("@EndTime", config.EndTime),
+				new SqlParameter("@StartDate", config.StartDate),
+				new SqlParameter("@StartTime", config.StartTime)
+			};
+
+			ExecuteNonQuery(sql, parameters);
+		}
+
+		private void UpdateEventGroup(EventGroupRuleConfiguration config)
+		{
+			var sql = "DELETE FROM Event2EventGroupRule WHERE EventGroupRuleId = @EventGroupRuleId";
+			var parameters = new[] { new SqlParameter("@EventGroupRuleId", config.Id) };
+
+			ExecuteNonQuery(sql, parameters);
+			SaveEventGroupData(config);
+		}
+
+		private void UpdateMinimumDate(MinimumDateRuleConfiguration config)
+		{
+			var sql = @"
+			UPDATE
+				MinimumDateRule
+			SET
+				[Date] = @Date,
+				[Days] = @Days
+			WHERE
+				Id = @Id";
+			var parameters = new[]
+			{
+				new SqlParameter("@Id", config.Id),
+				new SqlParameter("@Date", config.Date),
+				new SqlParameter("@Days", config.Days)
+			};
+
+			ExecuteNonQuery(sql, parameters);
+		}
+
+		private void UpdateWeekly(WeeklyRuleConfiguration config)
+		{
+			var sql = @"
+			UPDATE
+				WeeklyRule
+			SET
+				AvailabilityStatusId = @AvailabilityStatusId,
+				[DayOfWeek] = @DayOfWeek,
+				StartDate = @StartDate,
+				[Time] = @Time
+			WHERE
+				Id = @Id";
+			var parameters = new[]
+			{
+				new SqlParameter("@Id", config.Id),
+				new SqlParameter("@AvailabilityStatusId", config.AvailabilityStatus),
+				new SqlParameter("@DayOfWeek", config.DayOfWeek),
+				new SqlParameter("@StartDate", config.StartDate),
+				new SqlParameter("@Time", config.Time)
+			};
+
+			ExecuteNonQuery(sql, parameters);
 		}
 
 		private RuleConfiguration MapDateRange(SqlDataReader reader)
@@ -167,72 +422,6 @@ namespace BookingPlatform.Backend.DataAccess
 			return config;
 		}
 
-		private IRule ToRule(RuleConfiguration config)
-		{
-			IRule rule = null;
-
-			switch (config.Type)
-			{
-				case RuleType.DateRange:
-					rule = ToDateRangeRule(config as DateRangeRuleConfiguration);
-					break;
-				case RuleType.EventGroup:
-					rule = ToEventGroupRule(config as EventGroupRuleConfiguration);
-					break;
-				case RuleType.MinimumDate:
-					rule = ToMinimumDateRule(config as MinimumDateRuleConfiguration);
-					break;
-				case RuleType.Weekly:
-					rule = ToWeeklyRule(config as WeeklyRuleConfiguration);
-					break;
-				default:
-					throw new InvalidOperationException(String.Format("Rule of type '{0}' not yet configured!", config.Type));
-			}
-
-			return rule;
-		}
-
-		private IRule ToDateRangeRule(DateRangeRuleConfiguration config)
-		{
-			var from = DateTimeUtility.NewFor(config.StartDate, config.StartTime);
-			var to = new DateTime();
-
-			if (config.EndDate.HasValue)
-			{
-				to = DateTimeUtility.NewFor(config.EndDate.Value, config.EndTime);
-			}
-			else if (config.StartTime.HasValue)
-			{
-				to = from;
-			}
-			else
-			{
-				to = from.AddDays(1);
-			}
-
-			return new DateRangeRule(from, to, config.AvailabilityStatus);
-		}
-
-		private IRule ToEventGroupRule(EventGroupRuleConfiguration config)
-		{
-			var group = new EventGroup();
-
-			group.Bookings = new DbBookingDao().GetByEvents(config.EventIds);
-			group.Events = new DbEventDao().GetBy(config.EventIds);
-
-			return new EventGroupRule(group, AvailabilityStatus.Booked);
-		}
-
-		private IRule ToMinimumDateRule(MinimumDateRuleConfiguration config)
-		{
-			throw new NotImplementedException();
-		}
-
-		private IRule ToWeeklyRule(WeeklyRuleConfiguration config)
-		{
-			throw new NotImplementedException();
-		}
-
 		private void LoadEventGroupData(EventGroupRuleConfiguration config)
 		{
 			var sql = "SELECT * FROM Event2EventGroupRule WHERE EventGroupRuleId = @Id";
@@ -253,6 +442,26 @@ namespace BookingPlatform.Backend.DataAccess
 				}
 
 				transaction.Complete();
+			}
+		}
+
+		private void SaveEventGroupData(EventGroupRuleConfiguration config)
+		{
+			foreach (var id in config.EventIds)
+			{
+				var sql = @"
+				INSERT INTO
+					Event2EventGroupRule(EventId, EventGroupRuleId)
+				VALUES
+					(@EventId, @EventGroupRuleId)";
+
+				var parameters = new[]
+				{
+					new SqlParameter("@EventId", id),
+					new SqlParameter("@EventGroupRuleId", config.Id)
+				};
+
+				ExecuteNonQuery(sql, parameters);
 			}
 		}
 	}

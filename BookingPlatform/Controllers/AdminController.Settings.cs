@@ -117,7 +117,7 @@ namespace BookingPlatform.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				var ruleData = model.Id.HasValue ? Database.Instance.GetRuleData(model.Id.Value) : new RuleConfiguration();
+				var ruleData = model.Id.HasValue ? Database.Instance.GetRuleData(model.Id.Value) : ModelMapper.NewEntityFor(model.Type.Value);
 
 				model.MapToEntity(ruleData);
 

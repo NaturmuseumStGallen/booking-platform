@@ -22,13 +22,16 @@
  */
 
 using BookingPlatform.Backend.Constants;
+using BookingPlatform.Backend.Rules;
 
 namespace BookingPlatform.Backend.Entities
 {
-	public class RuleConfiguration
+	public abstract class RuleConfiguration
 	{
 		public int RuleId { get; set; }
 		public string Name { get; set; }
 		public RuleType Type { get; set; }
+
+		public abstract IRule ToRule();
 	}
 }

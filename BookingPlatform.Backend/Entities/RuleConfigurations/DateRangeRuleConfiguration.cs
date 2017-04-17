@@ -22,6 +22,8 @@
  */
 
 using System;
+using BookingPlatform.Backend.Rules;
+using BookingPlatform.Backend.Scheduling;
 
 namespace BookingPlatform.Backend.Entities.RuleConfigurations
 {
@@ -33,5 +35,26 @@ namespace BookingPlatform.Backend.Entities.RuleConfigurations
 		public TimeSpan? EndTime { get; set; }
 		public DateTime StartDate { get; set; }
 		public TimeSpan? StartTime { get; set; }
+
+		public override IRule ToRule()
+		{
+			var from = DateTimeUtility.NewFor(StartDate, StartTime);
+			var to = new DateTime();
+
+			if (EndDate.HasValue)
+			{
+				to = DateTimeUtility.NewFor(EndDate.Value, EndTime);
+			}
+			else if (StartTime.HasValue)
+			{
+				to = from;
+			}
+			else
+			{
+				to = from.AddDays(1);
+			}
+
+			return new DateRangeRule(from, to, AvailabilityStatus);
+		}
 	}
 }

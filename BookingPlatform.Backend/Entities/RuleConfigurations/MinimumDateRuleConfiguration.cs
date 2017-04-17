@@ -22,6 +22,7 @@
  */
 
 using System;
+using BookingPlatform.Backend.Rules;
 
 namespace BookingPlatform.Backend.Entities.RuleConfigurations
 {
@@ -30,5 +31,17 @@ namespace BookingPlatform.Backend.Entities.RuleConfigurations
 		public int Id { get; set; }
 		public DateTime? Date { get; set; }
 		public int? Days { get; set; }
+
+		public override IRule ToRule()
+		{
+			if (Date.HasValue)
+			{
+				return new MinimumDateRule(Date.Value);
+			}
+			else
+			{
+				return new MinimumDateRule(Days.Value);
+			}
+		}
 	}
 }

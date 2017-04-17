@@ -22,6 +22,8 @@
  */
 
 using System.Collections.Generic;
+using BookingPlatform.Backend.DataAccess;
+using BookingPlatform.Backend.Rules;
 
 namespace BookingPlatform.Backend.Entities.RuleConfigurations
 {
@@ -34,5 +36,15 @@ namespace BookingPlatform.Backend.Entities.RuleConfigurations
 
 		public int Id { get; set; }
 		public IList<int> EventIds { get; set; }
+
+		public override IRule ToRule()
+		{
+			var group = new EventGroup();
+
+			group.Bookings = new DbBookingDao().GetByEvents(EventIds);
+			group.Events = new DbEventDao().GetBy(EventIds);
+
+			return new EventGroupRule(group, AvailabilityStatus.Booked);
+		}
 	}
 }

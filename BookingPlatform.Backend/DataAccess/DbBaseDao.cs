@@ -29,27 +29,6 @@ namespace BookingPlatform.Backend.DataAccess
 {
 	internal abstract class DbBaseDao<TEntity>
 	{
-		protected TEntity ExecuteSingleQuery(string sql, params SqlParameter[] parameters)
-		{
-			using (var transaction = new TransactionScope())
-			using (var connection = NewSqlConnection())
-			using (var command = new SqlCommand(sql, connection))
-			{
-				command.Parameters.AddRange(parameters);
-
-				using (var reader = command.ExecuteReader())
-				{
-					TEntity entity;
-
-					reader.Read();
-					entity = MapFrom(reader);
-					transaction.Complete();
-
-					return entity;
-				}
-			}
-		}
-
 		protected IList<TEntity> ExecuteMultiQuery(string sql, params SqlParameter[] parameters)
 		{
 			using (var transaction = new TransactionScope())
@@ -84,6 +63,43 @@ namespace BookingPlatform.Backend.DataAccess
 				command.ExecuteNonQuery();
 
 				transaction.Complete();
+			}
+		}
+
+		protected object ExecuteScalar(string sql, params SqlParameter[] parameters)
+		{
+			using (var transaction = new TransactionScope())
+			using (var connection = NewSqlConnection())
+			using (var command = new SqlCommand(sql, connection))
+			{
+				object result;
+
+				command.Parameters.AddRange(parameters);
+				result = command.ExecuteScalar();
+				transaction.Complete();
+
+				return result;
+			}
+		}
+
+		protected TEntity ExecuteSingleQuery(string sql, params SqlParameter[] parameters)
+		{
+			using (var transaction = new TransactionScope())
+			using (var connection = NewSqlConnection())
+			using (var command = new SqlCommand(sql, connection))
+			{
+				command.Parameters.AddRange(parameters);
+
+				using (var reader = command.ExecuteReader())
+				{
+					TEntity entity;
+
+					reader.Read();
+					entity = MapFrom(reader);
+					transaction.Complete();
+
+					return entity;
+				}
 			}
 		}
 

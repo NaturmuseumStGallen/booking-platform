@@ -104,7 +104,7 @@ namespace BookingPlatform.Backend.DataAccess
 
 		public RuleConfiguration GetRuleData(int id)
 		{
-			return new DbRuleDao().GetRuleData(id);
+			return new DbRuleDao().GetConfigurationBy(id);
 		}
 
 		public IList<RuleConfiguration> GetRuleData()

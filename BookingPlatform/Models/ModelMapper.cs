@@ -25,6 +25,7 @@ using System;
 using BookingPlatform.Backend.Constants;
 using BookingPlatform.Backend.DataAccess;
 using BookingPlatform.Backend.Entities;
+using BookingPlatform.Backend.Entities.RuleConfigurations;
 
 namespace BookingPlatform.Models
 {
@@ -174,6 +175,24 @@ namespace BookingPlatform.Models
 
 		public static void MapToEntity(this WeeklyRuleModel model, RuleConfiguration rule)
 		{
+
+		}
+
+		public static RuleConfiguration NewEntityFor(RuleType type)
+		{
+			switch (type)
+			{
+				case RuleType.DateRange:
+					return new DateRangeRuleConfiguration();
+				case RuleType.EventGroup:
+					return new EventGroupRuleConfiguration();
+				case RuleType.MinimumDate:
+					return new MinimumDateRuleConfiguration();
+				case RuleType.Weekly:
+					return new WeeklyRuleConfiguration();
+				default:
+					throw new InvalidOperationException(String.Format("Rule of type '{0}' not yet configured!", type));
+			}
 
 		}
 

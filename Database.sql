@@ -132,7 +132,7 @@ CREATE TABLE WeeklyRule
 	RuleId INT NOT NULL FOREIGN KEY REFERENCES [Rule](Id),
 	AvailabilityStatusId INT NOT NULL FOREIGN KEY REFERENCES AvailabilityStatus(Id),
 	[DayOfWeek] INT NOT NULL,
-	[StartDate] DATE,
+	StartDate DATE,
 	[Time] TIME
 )
 
