@@ -31,6 +31,14 @@ namespace BookingPlatform.Backend.DataAccess
 {
 	internal class DbBookingDao : DbBaseDao<Booking>, IBookingProvider
 	{
+		public bool Exists(int id)
+		{
+			var sql = "SELECT COUNT(*) FROM Booking WHERE Id = @Id";
+			var parameter = new SqlParameter("@Id", id);
+
+			return Convert.ToInt32(ExecuteScalar(sql, parameter)) == 1;
+		}
+
 		public Booking GetBy(int id)
 		{
 			var sql = "SELECT * FROM Booking WHERE Id = @Id";
@@ -82,18 +90,18 @@ namespace BookingPlatform.Backend.DataAccess
 			{
 				new SqlParameter("@EventId", booking.EventId),
 				new SqlParameter("@IsActive", booking.IsActive),
-				new SqlParameter("@Address", booking.Address),
+				new SqlParameter("@Address", (object) booking.Address ?? DBNull.Value),
 				new SqlParameter("@Date", booking.Date),
 				new SqlParameter("@Email", booking.Email),
 				new SqlParameter("@FirstName", booking.FirstName),
 				new SqlParameter("@Grade", booking.Grade),
 				new SqlParameter("@LastName", booking.LastName),
-				new SqlParameter("@Notes", booking.Notes),
+				new SqlParameter("@Notes", (object) booking.Notes ?? DBNull.Value),
 				new SqlParameter("@NumberOfKids", booking.NumberOfKids),
 				new SqlParameter("@Phone", booking.Phone),
 				new SqlParameter("@School", booking.School),
 				new SqlParameter("@Town", booking.Town),
-				new SqlParameter("@ZipCode", booking.ZipCode)
+				new SqlParameter("@ZipCode", (object) booking.ZipCode ?? DBNull.Value)
 			};
 
 			ExecuteNonQuery(sql, parameters);
@@ -126,18 +134,18 @@ namespace BookingPlatform.Backend.DataAccess
 				new SqlParameter("@Id", booking.Id),
 				new SqlParameter("@EventId", booking.EventId),
 				new SqlParameter("@IsActive", booking.IsActive),
-				new SqlParameter("@Address", booking.Address),
+				new SqlParameter("@Address", (object) booking.Address ?? DBNull.Value),
 				new SqlParameter("@Date", booking.Date),
 				new SqlParameter("@Email", booking.Email),
 				new SqlParameter("@FirstName", booking.FirstName),
 				new SqlParameter("@Grade", booking.Grade),
 				new SqlParameter("@LastName", booking.LastName),
-				new SqlParameter("@Notes", booking.Notes),
+				new SqlParameter("@Notes", (object) booking.Notes ?? DBNull.Value),
 				new SqlParameter("@NumberOfKids", booking.NumberOfKids),
 				new SqlParameter("@Phone", booking.Phone),
 				new SqlParameter("@School", booking.School),
 				new SqlParameter("@Town", booking.Town),
-				new SqlParameter("@ZipCode", booking.ZipCode)
+				new SqlParameter("@ZipCode", (object) booking.ZipCode ?? DBNull.Value)
 			};
 
 			ExecuteNonQuery(sql, parameters);
@@ -162,18 +170,18 @@ namespace BookingPlatform.Backend.DataAccess
 			booking.Id = (int) reader[nameof(Booking.Id)];
 			booking.EventId = (int) reader[nameof(Booking.EventId)];
 			booking.IsActive = (bool) reader[nameof(Booking.IsActive)];
-			booking.Address = (string) reader[nameof(Booking.Address)];
+			booking.Address = reader[nameof(Booking.Address)] as string;
 			booking.Date = (DateTime) reader[nameof(Booking.Date)];
 			booking.Email = (string) reader[nameof(Booking.Email)];
 			booking.FirstName = (string) reader[nameof(Booking.FirstName)];
 			booking.Grade = (string) reader[nameof(Booking.Grade)];
 			booking.LastName = (string) reader[nameof(Booking.LastName)];
-			booking.Notes = (string) reader[nameof(Booking.Notes)];
+			booking.Notes = reader[nameof(Booking.Notes)] as string;
 			booking.NumberOfKids = (int) reader[nameof(Booking.NumberOfKids)];
 			booking.Phone = (string) reader[nameof(Booking.Phone)];
 			booking.School = (string) reader[nameof(Booking.School)];
 			booking.Town = (string) reader[nameof(Booking.Town)];
-			booking.ZipCode = (int?) reader[nameof(Booking.ZipCode)];
+			booking.ZipCode = reader[nameof(Booking.ZipCode)] as int?;
 
 			return booking;
 		}

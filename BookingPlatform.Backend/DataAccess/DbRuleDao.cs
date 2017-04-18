@@ -69,6 +69,14 @@ namespace BookingPlatform.Backend.DataAccess
 			}
 		}
 
+		public bool Exists(int id)
+		{
+			var sql = "SELECT COUNT(*) FROM [Rule] WHERE Id = @Id";
+			var parameter = new SqlParameter("@Id", id);
+
+			return Convert.ToInt32(ExecuteScalar(sql, parameter)) == 1;
+		}
+
 		public IList<IRule> GetRules()
 		{
 			var configs = GetRuleConfigurations();
@@ -85,12 +93,35 @@ namespace BookingPlatform.Backend.DataAccess
 		public IList<RuleConfiguration> GetRuleConfigurations()
 		{
 			var sql = @"
-			SELECT *
-			FROM [Rule] AS r
-			FULL OUTER JOIN DateRangeRule AS dr ON r.Id = dr.RuleId
-			FULL OUTER JOIN EventGroupRule AS eg ON r.Id = eg.RuleId
-			FULL OUTER JOIN MinimumDateRule AS md ON r.Id = md.RuleId
-			FULL OUTER JOIN WeeklyRule AS wr ON r.Id = wr.RuleId";
+			SELECT
+				r.Id AS r_Id,
+				r.RuleTypeId AS r_RuleTypeId,
+				r.Name AS r_Name,
+				dr.Id AS dr_Id,
+				dr.AvailabilityStatusId AS dr_AvailabilityStatusId,
+				dr.EndDate AS dr_EndDate,
+				dr.EndTime AS dr_EndTime,
+				dr.StartDate AS dr_StartDate,
+				dr.StartTime AS dr_StartTime,
+				eg.Id AS eg_Id,
+				md.Id AS md_Id,
+				md.Date AS md_Date,
+				md.Days AS md_Days,
+				wr.Id AS wr_Id,
+				wr.AvailabilityStatusId AS wr_AvailabilityStatusId,
+				wr.DayOfWeek AS wr_DayOfWeek,
+				wr.StartDate AS wr_StartDate,
+				wr.Time AS wr_Time
+			FROM
+				[Rule] AS r
+			FULL OUTER JOIN
+				DateRangeRule AS dr ON r.Id = dr.RuleId
+			FULL OUTER JOIN
+				EventGroupRule AS eg ON r.Id = eg.RuleId
+			FULL OUTER JOIN
+				MinimumDateRule AS md ON r.Id = md.RuleId
+			FULL OUTER JOIN
+				WeeklyRule AS wr ON r.Id = wr.RuleId";
 			var configs = ExecuteMultiQuery(sql);
 
 			foreach (var config in configs)
@@ -107,13 +138,37 @@ namespace BookingPlatform.Backend.DataAccess
 		public RuleConfiguration GetConfigurationBy(int id)
 		{
 			var sql = @"
-			SELECT *
-			FROM [Rule] AS r
-			FULL OUTER JOIN DateRangeRule AS dr ON r.Id = dr.RuleId
-			FULL OUTER JOIN EventGroupRule AS eg ON r.Id = eg.RuleId
-			FULL OUTER JOIN MinimumDateRule AS md ON r.Id = md.RuleId
-			FULL OUTER JOIN WeeklyRule AS wr ON r.Id = wr.RuleId
-			WHERE r.Id = @Id";
+			SELECT
+				r.Id AS r_Id,
+				r.RuleTypeId AS r_RuleTypeId,
+				r.Name AS r_Name,
+				dr.Id AS dr_Id,
+				dr.AvailabilityStatusId AS dr_AvailabilityStatusId,
+				dr.EndDate AS dr_EndDate,
+				dr.EndTime AS dr_EndTime,
+				dr.StartDate AS dr_StartDate,
+				dr.StartTime AS dr_StartTime,
+				eg.Id AS eg_Id,
+				md.Id AS md_Id,
+				md.Date AS md_Date,
+				md.Days AS md_Days,
+				wr.Id AS wr_Id,
+				wr.AvailabilityStatusId AS wr_AvailabilityStatusId,
+				wr.DayOfWeek AS wr_DayOfWeek,
+				wr.StartDate AS wr_StartDate,
+				wr.Time AS wr_Time
+			FROM
+				[Rule] AS r
+			FULL OUTER JOIN
+				DateRangeRule AS dr ON r.Id = dr.RuleId
+			FULL OUTER JOIN
+				EventGroupRule AS eg ON r.Id = eg.RuleId
+			FULL OUTER JOIN
+				MinimumDateRule AS md ON r.Id = md.RuleId
+			FULL OUTER JOIN
+				WeeklyRule AS wr ON r.Id = wr.RuleId
+			WHERE
+				r.Id = @Id";
 			var parameter = new SqlParameter("@Id", id);
 			var config = ExecuteSingleQuery(sql, parameter);
 
@@ -199,7 +254,7 @@ namespace BookingPlatform.Backend.DataAccess
 		protected override RuleConfiguration MapFrom(SqlDataReader reader)
 		{
 			RuleConfiguration config = null;
-			var type = (RuleType)reader["r.RuleTypeId"];
+			var type = (RuleType) reader["r_RuleTypeId"];
 
 			switch (type)
 			{
@@ -219,9 +274,9 @@ namespace BookingPlatform.Backend.DataAccess
 					throw new InvalidOperationException(String.Format("Rule of type '{0}' not yet configured!", type));
 			}
 
-			config.RuleId = (int)reader["r.Id"];
+			config.RuleId = (int) reader["r_Id"];
 			config.Type = type;
-			config.Name = (string)reader["r.Name"];
+			config.Name = (string) reader["r_Name"];
 
 			return config;
 		}
@@ -237,10 +292,10 @@ namespace BookingPlatform.Backend.DataAccess
 			{
 				new SqlParameter("@RuleId", config.RuleId),
 				new SqlParameter("@AvailabilityStatusId", config.AvailabilityStatus),
-				new SqlParameter("@EndDate", config.EndDate),
-				new SqlParameter("@EndTime", config.EndTime),
+				new SqlParameter("@EndDate", (object) config.EndDate ?? DBNull.Value),
+				new SqlParameter("@EndTime", (object) config.EndTime ?? DBNull.Value),
 				new SqlParameter("@StartDate", config.StartDate),
-				new SqlParameter("@StartTime", config.StartTime)
+				new SqlParameter("@StartTime", (object) config.StartTime ?? DBNull.Value)
 			};
 
 			ExecuteNonQuery(sql, parameters);
@@ -270,8 +325,8 @@ namespace BookingPlatform.Backend.DataAccess
 			var parameters = new[]
 			{
 				new SqlParameter("@RuleId", config.RuleId),
-				new SqlParameter("@Date", config.Date),
-				new SqlParameter("@Days", config.Days)
+				new SqlParameter("@Date", (object) config.Date ?? DBNull.Value),
+				new SqlParameter("@Days", (object) config.Days ?? DBNull.Value)
 			};
 
 			ExecuteNonQuery(sql, parameters);
@@ -289,8 +344,8 @@ namespace BookingPlatform.Backend.DataAccess
 				new SqlParameter("@RuleId", config.RuleId),
 				new SqlParameter("@AvailabilityStatusId", config.AvailabilityStatus),
 				new SqlParameter("@DayOfWeek", config.DayOfWeek),
-				new SqlParameter("@StartDate", config.StartDate),
-				new SqlParameter("@Time", config.Time)
+				new SqlParameter("@StartDate", (object) config.StartDate ?? DBNull.Value),
+				new SqlParameter("@Time", (object) config.Time ?? DBNull.Value)
 			};
 
 			ExecuteNonQuery(sql, parameters);
@@ -313,10 +368,10 @@ namespace BookingPlatform.Backend.DataAccess
 			{
 				new SqlParameter("@Id", config.Id),
 				new SqlParameter("@AvailabilityStatusId", config.AvailabilityStatus),
-				new SqlParameter("@EndDate", config.EndDate),
-				new SqlParameter("@EndTime", config.EndTime),
+				new SqlParameter("@EndDate", (object) config.EndDate ?? DBNull.Value),
+				new SqlParameter("@EndTime", (object) config.EndTime ?? DBNull.Value),
 				new SqlParameter("@StartDate", config.StartDate),
-				new SqlParameter("@StartTime", config.StartTime)
+				new SqlParameter("@StartTime", (object) config.StartTime ?? DBNull.Value)
 			};
 
 			ExecuteNonQuery(sql, parameters);
@@ -344,8 +399,8 @@ namespace BookingPlatform.Backend.DataAccess
 			var parameters = new[]
 			{
 				new SqlParameter("@Id", config.Id),
-				new SqlParameter("@Date", config.Date),
-				new SqlParameter("@Days", config.Days)
+				new SqlParameter("@Date", (object) config.Date ?? DBNull.Value),
+				new SqlParameter("@Days", (object) config.Days ?? DBNull.Value)
 			};
 
 			ExecuteNonQuery(sql, parameters);
@@ -368,8 +423,8 @@ namespace BookingPlatform.Backend.DataAccess
 				new SqlParameter("@Id", config.Id),
 				new SqlParameter("@AvailabilityStatusId", config.AvailabilityStatus),
 				new SqlParameter("@DayOfWeek", config.DayOfWeek),
-				new SqlParameter("@StartDate", config.StartDate),
-				new SqlParameter("@Time", config.Time)
+				new SqlParameter("@StartDate", (object) config.StartDate ?? DBNull.Value),
+				new SqlParameter("@Time", (object) config.Time ?? DBNull.Value)
 			};
 
 			ExecuteNonQuery(sql, parameters);
@@ -379,12 +434,12 @@ namespace BookingPlatform.Backend.DataAccess
 		{
 			var config = new DateRangeRuleConfiguration();
 
-			config.Id = (int) reader["dr.Id"];
-			config.AvailabilityStatus = (AvailabilityStatus) reader["dr.AvailabilityStatus"];
-			config.EndDate = (DateTime?) reader["dr.EndDate"];
-			config.EndTime = (TimeSpan?) reader["dr.EndTime"];
-			config.StartDate = (DateTime) reader["dr.StartDate"];
-			config.StartTime = (TimeSpan?) reader["dr.StartTime"];
+			config.Id = (int) reader["dr_Id"];
+			config.AvailabilityStatus = (AvailabilityStatus) reader["dr_AvailabilityStatusId"];
+			config.EndDate = reader["dr_EndDate"] as DateTime?;
+			config.EndTime = reader["dr_EndTime"] as TimeSpan?;
+			config.StartDate = (DateTime) reader["dr_StartDate"];
+			config.StartTime = reader["dr_StartTime"] as TimeSpan?;
 
 			return config;
 		}
@@ -393,7 +448,7 @@ namespace BookingPlatform.Backend.DataAccess
 		{
 			var config = new EventGroupRuleConfiguration();
 
-			config.Id = (int) reader["eg.Id"];
+			config.Id = (int) reader["eg_Id"];
 
 			return config;
 		}
@@ -402,9 +457,9 @@ namespace BookingPlatform.Backend.DataAccess
 		{
 			var config = new MinimumDateRuleConfiguration();
 
-			config.Id = (int) reader["md.Id"];
-			config.Date = (DateTime?) reader["md.Date"];
-			config.Days = (int?) reader["md.Days"];
+			config.Id = (int) reader["md_Id"];
+			config.Date = reader["md_Date"] as DateTime?;
+			config.Days = reader["md_Days"] as int?;
 
 			return config;
 		}
@@ -413,11 +468,11 @@ namespace BookingPlatform.Backend.DataAccess
 		{
 			var config = new WeeklyRuleConfiguration();
 
-			config.Id = (int) reader["wr.Id"];
-			config.AvailabilityStatus = (AvailabilityStatus) reader["wr.AvailabilityStatus"];
-			config.DayOfWeek = (DayOfWeek) reader["wr.DayOfWeek"];
-			config.StartDate = (DateTime?) reader["wr.StartDate"];
-			config.Time = (TimeSpan?) reader["wr.Time"];
+			config.Id = (int) reader["wr_Id"];
+			config.AvailabilityStatus = (AvailabilityStatus) reader["wr_AvailabilityStatusId"];
+			config.DayOfWeek = (DayOfWeek) reader["wr_DayOfWeek"];
+			config.StartDate = reader["wr_StartDate"] as DateTime?;
+			config.Time = reader["wr_Time"] as TimeSpan?;
 
 			return config;
 		}

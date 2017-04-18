@@ -23,19 +23,21 @@
 
 /* --- Initialization --- */
 
-DROP TABLE IF EXISTS AvailabilityStatus
 DROP TABLE IF EXISTS Booking
 DROP TABLE IF EXISTS DateRangeRule
 DROP TABLE IF EXISTS EmailRecipient
-DROP TABLE IF EXISTS [Event]
-DROP TABLE IF EXISTS EventGroupRule
 DROP TABLE IF EXISTS Event2EventGroupRule
 DROP TABLE IF EXISTS MinimumDateRule
-DROP TABLE IF EXISTS [Rule]
-DROP TABLE IF EXISTS RuleType
 DROP TABLE IF EXISTS Settings
 DROP TABLE IF EXISTS [Time]
 DROP TABLE IF EXISTS WeeklyRule
+
+-- Tables which are referenced by foreign key constraints
+DROP TABLE IF EXISTS AvailabilityStatus
+DROP TABLE IF EXISTS EventGroupRule
+DROP TABLE IF EXISTS [Event]
+DROP TABLE IF EXISTS [Rule]
+DROP TABLE IF EXISTS RuleType
 
 /* --- Table Creation --- */
 
@@ -143,6 +145,12 @@ CREATE TABLE Settings
 	EmailTitle VARCHAR(100) NOT NULL,
 	EmailHtmlContent VARCHAR(MAX) NOT NULL,
 	EmailPlaintextContent VARCHAR(MAX) NOT NULL
+)
+
+CREATE TABLE [Time]
+(
+	Id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	[Value] TIME NOT NULL
 )
 
 /* --- Default Values --- */

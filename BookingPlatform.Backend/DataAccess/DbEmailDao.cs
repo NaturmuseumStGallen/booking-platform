@@ -44,6 +44,14 @@ namespace BookingPlatform.Backend.DataAccess
 			return ExecuteMultiQuery(sql);
 		}
 
+		public void SaveNew(string email)
+		{
+			var sql = "INSERT INTO EmailRecipient(Address) VALUES (@Address)";
+			var parameter = new SqlParameter("@Address", email);
+
+			ExecuteNonQuery(sql, parameter);
+		}
+
 		protected override EmailRecipient MapFrom(SqlDataReader reader)
 		{
 			var recipient = new EmailRecipient();

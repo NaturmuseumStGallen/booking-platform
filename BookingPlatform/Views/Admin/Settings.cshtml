@@ -51,7 +51,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var time in Model.Times)
+            @foreach (var time in Model.Times.OrderBy(t => t.Value))
             {
                 <tr>
                     <td>@time.Value.ToString("hh\\:mm")</td>
@@ -126,7 +126,7 @@
                     <td>@rule.Name</td>
                     <td>@Strings.Admin.GetRuleTypeName(rule.Type)</td>
                     <td>@Model.GetRuleDetails(rule)</td>
-                    <td class="align-right">@Html.ActionLink(Strings.Admin.Edit, "RuleDetails", new { rule.Id })</td>
+                    <td class="align-right">@Html.ActionLink(Strings.Admin.Edit, "RuleDetails", new { rule.RuleId })</td>
                 </tr>
             }
         </tbody>

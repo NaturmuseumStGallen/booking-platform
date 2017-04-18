@@ -43,6 +43,8 @@ namespace BookingPlatform.Models
 		[Range(0, int.MaxValue, ErrorMessage = Strings.Admin.RuleDetails.InputErrorDays)]
 		public int? Days { get; set; }
 
+		public int? Id { get; set; }
+
 		public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
 		{
 			DateTime date;

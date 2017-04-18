@@ -51,6 +51,8 @@ namespace BookingPlatform.Models
 		[RegularExpression("^((0[1-9])|([1-2][0-9])|(3[0-1])).((0[1-9])|(1[0-2])).20[1-5][0-9]$", ErrorMessage = Strings.Admin.RuleDetails.InputErrorDate)]
 		public string StartDate { get; set; }
 
+		public int? Id { get; set; }
+
 		public IEnumerable<SelectListItem> DayOfWeekListItems
 		{
 			get

@@ -44,6 +44,7 @@ namespace BookingPlatform.Models
 		[Required(ErrorMessage = Strings.Admin.RuleDetails.InputErrorEvents)]
 		public IList<int> EventIds { get; set; }
 
+		public int? Id { get; set; }
 		public IList<Event> AvailableEvents { get; set; }
 		public IList<Event> SelectedEvents { get; set; }
 

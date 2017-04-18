@@ -22,10 +22,12 @@
  */
 
 using System;
+using System.Collections.Generic;
 using BookingPlatform.Backend.Constants;
 using BookingPlatform.Backend.DataAccess;
 using BookingPlatform.Backend.Entities;
 using BookingPlatform.Backend.Entities.RuleConfigurations;
+using BookingPlatform.Backend.Scheduling;
 
 namespace BookingPlatform.Models
 {
@@ -79,50 +81,66 @@ namespace BookingPlatform.Models
 
 		public static void MapFromEntity(this AdminRuleDetailsModel model, RuleConfiguration rule)
 		{
+			model.RuleId = rule.RuleId;
+			model.Name = rule.Name;
+			model.Type = rule.Type;
+
 			switch (model.Type)
 			{
 				case RuleType.DateRange:
-					(model as DateRangeRuleModel).MapFromEntity(rule);
+					(model as DateRangeRuleModel).MapFromEntity(rule as DateRangeRuleConfiguration);
 					break;
 				case RuleType.EventGroup:
-					(model as EventGroupRuleModel).MapFromEntity(rule);
+					(model as EventGroupRuleModel).MapFromEntity(rule as EventGroupRuleConfiguration);
 					break;
 				case RuleType.MinimumDate:
-					(model as MinimumDateRuleModel).MapFromEntity(rule);
+					(model as MinimumDateRuleModel).MapFromEntity(rule as MinimumDateRuleConfiguration);
 					break;
 				case RuleType.Weekly:
-					(model as WeeklyRuleModel).MapFromEntity(rule);
+					(model as WeeklyRuleModel).MapFromEntity(rule as WeeklyRuleConfiguration);
 					break;
 				default:
 					throw new InvalidOperationException(String.Format("Rule of type '{0}' not yet configured!", model.Type));
 			}
 		}
 
-		public static void MapFromEntity(this DateRangeRuleModel model, RuleConfiguration rule)
+		public static void MapFromEntity(this DateRangeRuleModel model, DateRangeRuleConfiguration rule)
 		{
-
+			model.Id = rule.Id;
+			model.EndDate = rule.EndDate.ToString("dd.MM.yyyy");
+			model.EndTime = rule.EndTime.ToString("hh\\:mm");
+			model.StartDate = rule.StartDate.ToString("dd.MM.yyyy");
+			model.StartTime = rule.StartTime.ToString("hh\\:mm");
+			model.Status = rule.AvailabilityStatus;
 		}
 
-		public static void MapFromEntity(this EventGroupRuleModel model, RuleConfiguration rule)
+		public static void MapFromEntity(this EventGroupRuleModel model, EventGroupRuleConfiguration rule)
 		{
-
+			model.Id = rule.Id;
+			model.EventIds = new List<int>(rule.EventIds);
 		}
 
-		public static void MapFromEntity(this MinimumDateRuleModel model, RuleConfiguration rule)
+		public static void MapFromEntity(this MinimumDateRuleModel model, MinimumDateRuleConfiguration rule)
 		{
-
+			model.Id = rule.Id;
+			model.Date = rule.Date.ToString("dd.MM.yyyy");
+			model.Days = rule.Days;
 		}
 
-		public static void MapFromEntity(this WeeklyRuleModel model, RuleConfiguration rule)
+		public static void MapFromEntity(this WeeklyRuleModel model, WeeklyRuleConfiguration rule)
 		{
-
+			model.Id = rule.Id;
+			model.Status = rule.AvailabilityStatus;
+			model.Day = rule.DayOfWeek;
+			model.StartDate = rule.StartDate.ToString("dd.MM.yyyy");
+			model.Time = rule.Time.ToString("hh\\:mm");
 		}
 
 		public static void MapFromEntity(this AdminSettingsModel model, Settings settings)
 		{
 			model.EmailTitle = settings.EmailTitle;
-			model.HtmlContent = settings.HtmlEmailContent;
-			model.PlaintextContent = settings.PlaintextEmailContent;
+			model.HtmlContent = settings.EmailHtmlContent;
+			model.PlaintextContent = settings.EmailPlaintextContent;
 		}
 
 		public static void MapToEntity(this AdminBookingDetailsModel model, Booking booking)
@@ -147,6 +165,7 @@ namespace BookingPlatform.Models
 		public static void MapToEntity(this AdminEventDetailsModel model, Event @event)
 		{
 			@event.Id = model.Id;
+			@event.IsActive = true;
 			@event.Name = model.Name;
 			@event.ColorComponentBlue = model.Blue.Value;
 			@event.ColorComponentGreen = model.Green.Value;
@@ -155,27 +174,97 @@ namespace BookingPlatform.Models
 
 		public static void MapToEntity(this AdminRuleDetailsModel model, RuleConfiguration rule)
 		{
+			if (model.RuleId.HasValue)
+			{
+				rule.RuleId = model.RuleId.Value;
+			}
 
+			rule.Name = model.Name;
+			rule.Type = model.Type.Value;
+
+			switch (model.Type)
+			{
+				case RuleType.DateRange:
+					(model as DateRangeRuleModel).MapToEntity(rule as DateRangeRuleConfiguration);
+					break;
+				case RuleType.EventGroup:
+					(model as EventGroupRuleModel).MapToEntity(rule as EventGroupRuleConfiguration);
+					break;
+				case RuleType.MinimumDate:
+					(model as MinimumDateRuleModel).MapToEntity(rule as MinimumDateRuleConfiguration);
+					break;
+				case RuleType.Weekly:
+					(model as WeeklyRuleModel).MapToEntity(rule as WeeklyRuleConfiguration);
+					break;
+				default:
+					throw new InvalidOperationException(String.Format("Rule of type '{0}' not yet configured!", model.Type));
+			}
 		}
 
-		public static void MapToEntity(this DateRangeRuleModel model, RuleConfiguration rule)
+		public static void MapToEntity(this DateRangeRuleModel model, DateRangeRuleConfiguration rule)
 		{
+			if (model.Id.HasValue)
+			{
+				rule.Id = model.Id.Value;
+			}
 
+			rule.AvailabilityStatus = model.Status.Value;
+			rule.EndDate = DateTimeUtility.NullableDateTimeFor(model.EndDate);
+			rule.EndTime = DateTimeUtility.NullableTimeSpanFor(model.EndTime);
+			rule.StartDate = DateTime.Parse(model.StartDate);
+			rule.StartTime = DateTimeUtility.NullableTimeSpanFor(model.StartTime);
 		}
 
-		public static void MapToEntity(this EventGroupRuleModel model, RuleConfiguration rule)
+		public static void MapToEntity(this EventGroupRuleModel model, EventGroupRuleConfiguration rule)
 		{
+			if (model.Id.HasValue)
+			{
+				rule.Id = model.Id.Value;
+			}
 
+			rule.EventIds = new List<int>(rule.EventIds);
 		}
 
-		public static void MapToEntity(this MinimumDateRuleModel model, RuleConfiguration rule)
+		public static void MapToEntity(this MinimumDateRuleModel model, MinimumDateRuleConfiguration rule)
 		{
+			if (model.Id.HasValue)
+			{
+				rule.Id = model.Id.Value;
+			}
 
+			rule.Date = DateTimeUtility.NullableDateTimeFor(model.Date);
+			rule.Days = model.Days;
 		}
 
-		public static void MapToEntity(this WeeklyRuleModel model, RuleConfiguration rule)
+		public static void MapToEntity(this WeeklyRuleModel model, WeeklyRuleConfiguration rule)
 		{
+			if (model.Id.HasValue)
+			{
+				rule.Id = model.Id.Value;
+			}
 
+			rule.AvailabilityStatus = model.Status.Value;
+			rule.DayOfWeek = model.Day.Value;
+			rule.StartDate = DateTimeUtility.NullableDateTimeFor(model.StartDate);
+			rule.Time = DateTimeUtility.NullableTimeSpanFor(model.Time);
+		}
+
+		public static void MapToEntity(this BookingModel model, Booking booking)
+		{
+			booking.Address = model.Address;
+			booking.Date = DateTimeUtility.NewFor(model.DateTicks.Value);
+			booking.Email = model.Email;
+			booking.EventId = model.EventId;
+			booking.FirstName = model.FirstName;
+			booking.Grade = model.Grade;
+			booking.IsActive = true;
+			booking.LastName = model.LastName;
+			booking.Notes = model.Notes;
+			booking.NumberOfKids = model.NumberOfKids.Value;
+			booking.Phone = model.Phone;
+			booking.School = model.School;
+			booking.Town = model.Town;
+			booking.ZipCode = model.ZipCode;
 		}
 
 		public static RuleConfiguration NewEntityFor(RuleType type)

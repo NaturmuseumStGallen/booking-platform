@@ -94,7 +94,7 @@ namespace BookingPlatform.Backend.DataAccess
 
 		public Settings GetSettings()
 		{
-			return new Settings { HtmlEmailContent = "Some content goes here" };
+			return new DbSettingsDao().Get();
 		}
 
 		public IList<IRule> GetRules()
@@ -124,20 +124,17 @@ namespace BookingPlatform.Backend.DataAccess
 
 		public bool IsValidBookingId(int id)
 		{
-			// TODO!
-			return id >= 0;
+			return new DbBookingDao().Exists(id);
 		}
 
 		public bool IsValidEventId(int id)
 		{
-			// TODO!
-			return id >= 0;
+			return new DbEventDao().Exists(id);
 		}
 
 		public bool IsValidRuleId(int id)
 		{
-			// TODO
-			return id >= 0;
+			return new DbRuleDao().Exists(id);
 		}
 
 		public void SaveNew(Booking booking)
@@ -157,7 +154,7 @@ namespace BookingPlatform.Backend.DataAccess
 
 		public void SaveNewEmailRecipient(string email)
 		{
-			// TODO!
+			new DbEmailDao().SaveNew(email);
 		}
 
 		public void SaveNewTime(TimeSpan time)
@@ -190,9 +187,9 @@ namespace BookingPlatform.Backend.DataAccess
 			new DbSettingsDao().UpdateEmailContent(title, plaintext, html);
 		}
 
-		public void UpdatePassword(string password)
+		public void UpdatePassword(string password, string hash)
 		{
-			new DbSettingsDao().UpdatePassword(password);
+			new DbSettingsDao().UpdatePassword(password, hash);
 		}
 	}
 }

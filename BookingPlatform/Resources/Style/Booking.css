@@ -156,6 +156,7 @@ table.calendar td.booked {
 
 table.calendar td.not-bookable {
     background-color: lightgray;
+    cursor: not-allowed;
 }
 
 table.calendar th, table.calendar td {

@@ -21,14 +21,30 @@
  * along with BookingPlatform. If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace BookingPlatform.Backend.Entities
+using System.Configuration;
+
+namespace BookingPlatform.Backend.Configuration
 {
-	public class Settings
+	public static class AppConfig
 	{
-		public string EmailTitle { get; set; }
-		public string EmailHtmlContent { get; set; }
-		public string EmailPlaintextContent { get; set; }
-		public string PasswordHash { get; set; }
-		public string PasswordSalt { get; set; }
+		public static string DataSource
+		{
+			get { return ConfigurationManager.AppSettings["DataSource"]; }
+		}
+
+		public static string UserId
+		{
+			get { return ConfigurationManager.AppSettings["UserId"]; }
+		}
+
+		public static string Password
+		{
+			get { return ConfigurationManager.AppSettings["Password"]; }
+		}
+
+		public static string InitialCatalog
+		{
+			get { return ConfigurationManager.AppSettings["InitialCatalog"]; }
+		}
 	}
 }

@@ -27,6 +27,11 @@
 @using BookingPlatform.Models;
 @using BookingPlatform.Constants;
 
+@if (!Model.IsNew)
+{
+    @Html.HiddenFor(m => m.Id)
+}
+
 @Html.LabelFor(m => m.Day, Strings.Admin.RuleDetails.InputLabelDayOfWeek)
 @Html.DropDownListFor(m => m.Day, Model.DayOfWeekListItems)
 @Html.ValidationMessageFor(m => m.Day)

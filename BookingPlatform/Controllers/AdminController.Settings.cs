@@ -88,9 +88,9 @@ namespace BookingPlatform.Controllers
 		}
 
 		[HttpGet]
-		public ActionResult RuleDetails(int? id, RuleType? type)
+		public ActionResult RuleDetails(int? ruleId, RuleType? type)
 		{
-			if (!id.HasValue && type.HasValue)
+			if (!ruleId.HasValue && type.HasValue)
 			{
 				var model = ModelMapper.NewModelFor(type.Value);
 
@@ -98,9 +98,9 @@ namespace BookingPlatform.Controllers
 
 				return View(model);
 			}
-			else if (id.HasValue && Database.Instance.IsValidRuleId(id.Value))
+			else if (ruleId.HasValue && Database.Instance.IsValidRuleId(ruleId.Value))
 			{
-				var ruleData = Database.Instance.GetRuleData(id.Value);
+				var ruleData = Database.Instance.GetRuleData(ruleId.Value);
 				var model = ModelMapper.NewModelFor(ruleData.Type);
 
 				model.InitializeFor(ruleData.Type);
@@ -117,11 +117,11 @@ namespace BookingPlatform.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				var ruleData = model.Id.HasValue ? Database.Instance.GetRuleData(model.Id.Value) : ModelMapper.NewEntityFor(model.Type.Value);
+				var ruleData = model.RuleId.HasValue ? Database.Instance.GetRuleData(model.RuleId.Value) : ModelMapper.NewEntityFor(model.Type.Value);
 
 				model.MapToEntity(ruleData);
 
-				if (model.Id.HasValue)
+				if (model.RuleId.HasValue)
 				{
 					Database.Instance.Update(ruleData);
 				}
@@ -167,7 +167,9 @@ namespace BookingPlatform.Controllers
 		{
 			if (ValidationUtility.IsValidPassword(password))
 			{
-				Database.Instance.UpdatePassword(password);
+				// TODO: Implement hashing & encryption, then save to DB...
+				//Database.Instance.UpdatePassword(password);
+				throw new NotImplementedException();
 			}
 
 			return RedirectToAction("Settings");

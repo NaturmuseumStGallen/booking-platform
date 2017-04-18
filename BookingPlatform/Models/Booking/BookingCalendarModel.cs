@@ -44,11 +44,11 @@ namespace BookingPlatform.Models
 
 		public IEnumerable<DateTime> Days
 		{
-			get { return Dates.GroupBy(d => d.Date.Date).Select(g => g.Key).ToList(); }
+			get { return Dates.GroupBy(d => d.Date.Date).Select(g => g.Key).OrderBy(d => d).ToList(); }
 		}
 		public IEnumerable<TimeSpan> Times
 		{
-			get { return Dates.GroupBy(d => d.Date.TimeOfDay).Select(g => g.Key).ToList(); }
+			get { return Dates.GroupBy(d => d.Date.TimeOfDay).Select(g => g.Key).OrderBy(t => t).ToList(); }
 		}
 
 		public enum Navigation

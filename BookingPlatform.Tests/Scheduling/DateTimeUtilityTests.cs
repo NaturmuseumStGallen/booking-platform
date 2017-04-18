@@ -116,5 +116,14 @@ namespace BookingPlatform.Tests
 			Assert.IsTrue(@new.Minute == 30);
 			Assert.IsTrue(@new.Second == 0);
 		}
+
+		[TestMethod]
+		public void NewForTicksTimeTest()
+		{
+			var @new = DateTimeUtility.NewFor(15614613513553);
+
+			Assert.IsTrue(@new.Second == 0);
+			Assert.IsTrue(@new.Millisecond == 0);
+		}
 	}
 }

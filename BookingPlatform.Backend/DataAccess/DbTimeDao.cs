@@ -23,16 +23,20 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using BookingPlatform.Backend.Entities;
 
 namespace BookingPlatform.Backend.DataAccess
 {
-	internal class DbTimeDao : ITimeProvider
+	internal class DbTimeDao : DbBaseDao<TimeData>, ITimeProvider
 	{
 		public void Delete(int id)
 		{
-			
+			var sql = "DELETE FROM [Time] WHERE Id = @Id";
+			var parameter = new SqlParameter("@Id", id);
+
+			ExecuteNonQuery(sql, parameter);
 		}
 
 		public IList<TimeSpan> GetTimes()
@@ -42,20 +46,27 @@ namespace BookingPlatform.Backend.DataAccess
 
 		public IList<TimeData> GetTimeData()
 		{
-			var times = new List<TimeData>();
+			var sql = "SELECT * FROM [Time]";
 
-			// TODO
-			times.Add(new TimeData { Id = 4, Value = new TimeSpan(9, 0, 0) });
-			times.Add(new TimeData { Id = 4, Value = new TimeSpan(10, 30, 0) });
-			times.Add(new TimeData { Id = 4, Value = new TimeSpan(13, 0, 0) });
-			times.Add(new TimeData { Id = 4, Value = new TimeSpan(15, 0, 0) });
-
-			return times;
+			return ExecuteMultiQuery(sql);
 		}
 
 		public void SaveNew(TimeSpan time)
 		{
-			
+			var sql = "INSERT INTO [Time]([Value]) VALUES (@Value)";
+			var parameter = new SqlParameter("@Value", time);
+
+			ExecuteNonQuery(sql, parameter);
+		}
+
+		protected override TimeData MapFrom(SqlDataReader reader)
+		{
+			var time = new TimeData();
+
+			time.Id = (int) reader[nameof(TimeData.Id)];
+			time.Value = (TimeSpan) reader[nameof(TimeData.Value)];
+
+			return time;
 		}
 	}
 }

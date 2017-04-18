@@ -24,6 +24,7 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Transactions;
+using BookingPlatform.Backend.Configuration;
 
 namespace BookingPlatform.Backend.DataAccess
 {
@@ -35,6 +36,7 @@ namespace BookingPlatform.Backend.DataAccess
 			using (var connection = NewSqlConnection())
 			using (var command = new SqlCommand(sql, connection))
 			{
+				connection.Open();
 				command.Parameters.AddRange(parameters);
 
 				using (var reader = command.ExecuteReader())
@@ -59,6 +61,8 @@ namespace BookingPlatform.Backend.DataAccess
 			using (var connection = NewSqlConnection())
 			using (var command = new SqlCommand(sql, connection))
 			{
+				connection.Open();
+
 				command.Parameters.AddRange(parameters);
 				command.ExecuteNonQuery();
 
@@ -74,6 +78,7 @@ namespace BookingPlatform.Backend.DataAccess
 			{
 				object result;
 
+				connection.Open();
 				command.Parameters.AddRange(parameters);
 				result = command.ExecuteScalar();
 				transaction.Complete();
@@ -88,6 +93,7 @@ namespace BookingPlatform.Backend.DataAccess
 			using (var connection = NewSqlConnection())
 			using (var command = new SqlCommand(sql, connection))
 			{
+				connection.Open();
 				command.Parameters.AddRange(parameters);
 
 				using (var reader = command.ExecuteReader())
@@ -107,10 +113,10 @@ namespace BookingPlatform.Backend.DataAccess
 		{
 			var builder = new SqlConnectionStringBuilder();
 
-			builder.DataSource = "your_server.database.windows.net";
-			builder.UserID = "your_user";
-			builder.Password = "your_password";
-			builder.InitialCatalog = "your_database";
+			builder.DataSource = AppConfig.DataSource;
+			builder.UserID = AppConfig.UserId;
+			builder.Password = AppConfig.Password;
+			builder.InitialCatalog = AppConfig.InitialCatalog;
 
 			return new SqlConnection(builder.ToString());
 		}

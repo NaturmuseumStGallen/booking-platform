@@ -49,7 +49,7 @@
 
         if (!Model.IsNew)
         {
-            @Html.HiddenFor(m => m.Id)
+            @Html.HiddenFor(m => m.RuleId)
         }
 
         @Html.LabelFor(m => m.Name, Strings.Admin.RuleDetails.InputLabelName)
@@ -63,7 +63,7 @@
 
             @if (!Model.IsNew)
             {
-                @(" - ") @Html.ActionLink(Strings.Admin.Delete, "DeleteRule", new { Model.Id }, new { data_safety_message = Strings.Admin.SafetyMessage })
+                @(" - ") @Html.ActionLink(Strings.Admin.Delete, "DeleteRule", new { Model.RuleId }, new { data_safety_message = Strings.Admin.SafetyMessage })
             }
         </div>
     }

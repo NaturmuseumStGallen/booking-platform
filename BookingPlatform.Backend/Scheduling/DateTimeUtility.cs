@@ -78,6 +78,15 @@ namespace BookingPlatform.Backend.Scheduling
 		}
 
 		/// <summary>
+		/// Parses the given string to a nullable <c>DateTime</c> struct. If the specified
+		/// string is null, empty or whitespace, <c>null</c> will be returned.
+		/// </summary>
+		public static DateTime? NullableDateTimeFor(string date)
+		{
+			return String.IsNullOrWhiteSpace(date) ? null : (DateTime?) DateTime.Parse(date);
+		}
+
+		/// <summary>
 		/// Creates a new <c>DateTime</c> struct initialized with the given date and time values.
 		/// If the time value is <c>null</c>, the time of day is set to <c>00:00:00</c>.
 		/// </summary>
@@ -87,6 +96,44 @@ namespace BookingPlatform.Backend.Scheduling
 			var minute = time.HasValue ? time.Value.Minutes : 0;
 
 			return new DateTime(date.Year, date.Month, date.Day, hour, minute, 0);
+		}
+
+		/// <summary>
+		/// Creates a new <c>DateTime</c> struct initialized with the given number of ticks.
+		/// The seconds will be ignored and set to 0.
+		/// </summary>
+		public static DateTime NewFor(long ticks)
+		{
+			var dateTime = new DateTime(ticks);
+
+			return NewFor(dateTime, dateTime.TimeOfDay);
+		}
+
+		/// <summary>
+		/// Parses the given string to a nullable <c>DateTime</c> struct. If the specified
+		/// string is null, empty or whitespace, <c>null</c> will be returned.
+		/// </summary>
+		public static TimeSpan? NullableTimeSpanFor(string time)
+		{
+			return String.IsNullOrWhiteSpace(time) ? null : (TimeSpan?) TimeSpan.Parse(time);
+		}
+
+		/// <summary>
+		/// Returns the given nullable <c>DateTime</c> formatted according to the specified format.
+		/// If the <c>DateTime</c>'s value is null, null will be returned.
+		/// </summary>
+		public static string ToString(this DateTime? date, string format)
+		{
+			return date.HasValue ? date.Value.ToString(format) : null;
+		}
+
+		/// <summary>
+		/// Returns the given nullable <c>TimeSpan</c> formatted according to the specified format.
+		/// If the <c>TimeSpan</c>'s value is null, null will be returned.
+		/// </summary>
+		public static string ToString(this TimeSpan? time, string format)
+		{
+			return time.HasValue ? time.Value.ToString(format) : null;
 		}
 	}
 }

@@ -36,12 +36,12 @@ namespace BookingPlatform.Models
 		[MaxLength(100, ErrorMessage = Strings.Admin.RuleDetails.InputErrorMaxLength100)]
 		public string Name { get; set; }
 
-		public int? Id { get; set; }
+		public int? RuleId { get; set; }
 		public RuleType? Type { get; set; }
 
 		public bool IsNew
 		{
-			get { return !Id.HasValue; }
+			get { return !RuleId.HasValue; }
 		}
 
 		public MvcHtmlString GetDescription()

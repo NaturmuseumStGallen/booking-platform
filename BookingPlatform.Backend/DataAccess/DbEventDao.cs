@@ -39,6 +39,14 @@ namespace BookingPlatform.Backend.DataAccess
 			ExecuteNonQuery(sql, parameter);
 		}
 
+		public bool Exists(int id)
+		{
+			var sql = "SELECT COUNT(*) FROM [Event] WHERE Id = @Id";
+			var parameter = new SqlParameter("@Id", id);
+
+			return Convert.ToInt32(ExecuteScalar(sql, parameter)) == 1;
+		}
+
 		public IList<Event> GetAllActive()
 		{
 			var sql = "SELECT * FROM [Event] WHERE IsActive = 1";

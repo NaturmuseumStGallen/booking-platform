@@ -27,6 +27,11 @@
 @using BookingPlatform.Models;
 @using BookingPlatform.Constants;
 
+@if (!Model.IsNew)
+{
+    @Html.HiddenFor(m => m.Id)
+}
+
 @Html.LabelFor(m => m.Date, Strings.Admin.RuleDetails.InputLabelDate)
 @Html.TextBoxFor(m => m.Date, new { data_date_picker = bool.TrueString })
 @Html.ValidationMessageFor(m => m.Date)

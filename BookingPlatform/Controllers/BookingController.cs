@@ -59,8 +59,13 @@ namespace BookingPlatform.Controllers
 		{
 			if (ModelState.IsValid)
 			{
+				var booking = new Booking();
+
+				model.MapToEntity(booking);
+
+				Database.Instance.SaveNew(booking);
+
 				// TODO:
-				// - Save booking
 				// - Send email
 				// - Return success page with most important booking information & note about email confirmation
 				return Content("Success!");

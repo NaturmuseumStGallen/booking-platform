@@ -21,20 +21,67 @@
  * along with BookingPlatform. If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System;
+using System.Data.SqlClient;
+using BookingPlatform.Backend.Entities;
 
 namespace BookingPlatform.Backend.DataAccess
 {
-	internal class DbSettingsDao
+	internal class DbSettingsDao : DbBaseDao<Settings>
 	{
-		public void UpdateEmailContent(string title, string plaintext, string html)
+		public Settings Get()
 		{
-			
+			var sql = "SELECT * FROM Settings";
+
+			return ExecuteSingleQuery(sql);
 		}
 
-		public void UpdatePassword(string password)
+		public void UpdateEmailContent(string title, string plaintext, string html)
 		{
-			
+			var sql = @"
+			UPDATE
+				Settings
+			SET
+				EmailTitle = @EmailTitle,
+				EmailHtmlContent = @EmailHtmlContent,
+				EmailPlaintextContent = @EmailPlaintextContent";
+			var parameters = new[]
+			{
+				new SqlParameter("@EmailTitle", title ?? string.Empty),
+				new SqlParameter("@EmailHtmlContent", html ?? string.Empty),
+				new SqlParameter("@EmailPlaintextContent", plaintext ?? string.Empty)
+			};
+
+			ExecuteNonQuery(sql, parameters);
+		}
+
+		public void UpdatePassword(string password, string hash)
+		{
+			var sql = @"
+			UPDATE
+				Settings
+			SET
+				PasswordHash = @PasswordHash,
+				PasswordSalt = @PasswordSalt";
+			var parameters = new[]
+			{
+				new SqlParameter("@PasswordHash", password),
+				new SqlParameter("@PasswordSalt", hash)
+			};
+
+			ExecuteNonQuery(sql, parameters);
+		}
+
+		protected override Settings MapFrom(SqlDataReader reader)
+		{
+			var settings = new Settings();
+
+			settings.EmailTitle = (string) reader[nameof(Settings.EmailTitle)];
+			settings.EmailHtmlContent = (string) reader[nameof(Settings.EmailHtmlContent)];
+			settings.EmailPlaintextContent = (string) reader[nameof(Settings.EmailPlaintextContent)];
+			settings.PasswordHash = (string) reader[nameof(Settings.PasswordHash)];
+			settings.PasswordSalt = (string) reader[nameof(Settings.PasswordSalt)];
+
+			return settings;
 		}
 	}
 }

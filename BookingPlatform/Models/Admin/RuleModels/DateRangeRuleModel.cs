@@ -54,6 +54,8 @@ namespace BookingPlatform.Models
 		[Required(ErrorMessage = Strings.Admin.RuleDetails.InputErrorStatus)]
 		public AvailabilityStatus? Status { get; set; }
 
+		public int? Id { get; set; }
+
 		public IEnumerable<SelectListItem> StatusListItems
 		{
 			get

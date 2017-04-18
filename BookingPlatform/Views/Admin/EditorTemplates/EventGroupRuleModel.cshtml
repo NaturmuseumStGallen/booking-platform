@@ -27,6 +27,11 @@
 @using BookingPlatform.Models;
 @using BookingPlatform.Constants;
 
+@if (!Model.IsNew)
+{
+    @Html.HiddenFor(m => m.Id)
+}
+
 @Html.LabelFor(m => m.EventIds, Strings.Admin.RuleDetails.InputLabelEvents)
 @Html.ListBoxFor(m => m.EventIds, Model.Events)
 @Html.ValidationMessageFor(m => m.EventIds)
