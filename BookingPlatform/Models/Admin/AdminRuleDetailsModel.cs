@@ -26,6 +26,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 using BookingPlatform.Backend.Constants;
 using BookingPlatform.Constants;
+using BookingPlatform.Utilities;
 
 namespace BookingPlatform.Models
 {

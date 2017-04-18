@@ -25,29 +25,26 @@ using System;
 using System.Web.Mvc;
 using BookingPlatform.Backend.DataAccess;
 using BookingPlatform.Backend.Entities;
-using BookingPlatform.Backend.Scheduling;
 using BookingPlatform.Models;
+using BookingPlatform.Utilities;
 
 namespace BookingPlatform.Controllers
 {
+	[RequireHttps]
 	public class BookingController : Controller
 	{
 		[HttpGet]
 		public ActionResult Form(int? id)
 		{
 			var model = new BookingModel();
-			var scheduler = Scheduler.CreateNew(Database.Instance);
-			var monday = DateTimeUtility.GetMondayOfWeekFor(DateTime.Today);
-			var sunday = DateTimeUtility.GetSundayOfWeekFor(DateTime.Today);
 
 			model.Events = Database.Instance.GetActiveEvents();
 			model.CalendarModel.CurrentDateTicks = DateTime.Today.Ticks;
+			model.CalendarModel.ShowEventSelectionMessage = !id.HasValue;
 
 			if (id.HasValue && Database.Instance.IsValidEventId(id.Value))
 			{
-				var @event = Database.Instance.GetEventBy(id.Value);
-
-				model.CalendarModel.Dates = scheduler.GetBookingDateRange(monday, sunday, @event);
+				model.CalendarModel.Dates = CalendarUtility.CalculateBookingDates(DateTime.Today, id.Value);
 			}
 
 			return View(model);
@@ -71,25 +68,20 @@ namespace BookingPlatform.Controllers
 				return Content("Success!");
 			}
 
-			var scheduler = Scheduler.CreateNew(Database.Instance);
-			var monday = DateTimeUtility.GetMondayOfWeekFor(DateTime.Today);
-			var sunday = DateTimeUtility.GetSundayOfWeekFor(DateTime.Today);
-
 			model.Events = Database.Instance.GetActiveEvents();
 			model.CalendarModel.CurrentDateTicks = DateTime.Today.Ticks;
+			model.CalendarModel.ShowEventSelectionMessage = !model.EventId.HasValue;
 
 			if (model.EventId.HasValue && Database.Instance.IsValidEventId(model.EventId.Value))
 			{
-				var @event = Database.Instance.GetEventBy(model.EventId.Value);
-
-				model.CalendarModel.Dates = scheduler.GetBookingDateRange(monday, sunday, @event);
+				model.CalendarModel.Dates = CalendarUtility.CalculateBookingDates(DateTime.Today, model.EventId.Value);
 			}
 
 			return View(model);
 		}
 
 		[HttpGet]
-		public ActionResult UpdateCalendar(int? eventId, long? ticks, BookingCalendarModel.Navigation? navigation)
+		public ActionResult UpdateCalendar(int? eventId, long? ticks, CalendarUtility.Navigation? navigation)
 		{
 			if (!ticks.HasValue)
 			{
@@ -97,45 +89,20 @@ namespace BookingPlatform.Controllers
 			}
 
 			var model = new BookingCalendarModel();
-			var current = new DateTime(ticks.Value);
+			var current = CalendarUtility.CalculateNewDate(new DateTime(ticks.Value), navigation);
+
+			model.CurrentDateTicks = current.Ticks;
 
 			if (eventId.HasValue && Database.Instance.IsValidEventId(eventId.Value))
 			{
-				var scheduler = Scheduler.CreateNew(Database.Instance);
-				var monday = DateTimeUtility.GetMondayOfWeekFor(current);
-				var sunday = DateTimeUtility.GetSundayOfWeekFor(current);
-
-				model.Dates = scheduler.GetBookingDateRange(monday, sunday, new Event());
-
-				model.CanNavigateToPreviousWeek = true;
-				model.CanNavigateToPreviousMonth = true;
-
-				if (navigation.HasValue && Enum.IsDefined(typeof(BookingCalendarModel.Navigation), navigation))
-				{
-					if (navigation == BookingCalendarModel.Navigation.PreviousMonth)
-					{
-						current = current.AddMonths(-1);
-					}
-					else if (navigation == BookingCalendarModel.Navigation.PreviousWeek)
-					{
-						current = current.AddDays(-7);
-					}
-					else if (navigation == BookingCalendarModel.Navigation.NextWeek)
-					{
-						current = current.AddDays(7);
-					}
-					else if (navigation == BookingCalendarModel.Navigation.NextMonth)
-					{
-						current = current.AddMonths(1);
-					}
-				}
+				model.Dates = CalendarUtility.CalculateBookingDates(current, eventId.Value);
+				model.CanNavigateToPreviousWeek = CalendarUtility.CanNavigateToPreviousWeek(current);
+				model.CanNavigateToPreviousMonth = CalendarUtility.CanNavigateToPreviousMonth(current);
 			}
 			else
 			{
 				model.ShowEventSelectionMessage = true;
 			}
-
-			model.CurrentDateTicks = current.Ticks;
 
 			return PartialView("_Calendar", model);
 		}

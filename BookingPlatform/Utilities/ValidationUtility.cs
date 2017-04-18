@@ -24,7 +24,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace BookingPlatform.Models
+namespace BookingPlatform.Utilities
 {
 	public static class ValidationUtility
 	{

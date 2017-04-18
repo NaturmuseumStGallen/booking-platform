@@ -26,8 +26,9 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Web.Mvc;
 using BookingPlatform.Backend.Constants;
+using BookingPlatform.Models;
 
-namespace BookingPlatform.Models
+namespace BookingPlatform.Utilities
 {
 	/// <summary>
 	/// An extension of the <c>DefaultModelBinder</c> to automatically detect and instantiate the right specialization

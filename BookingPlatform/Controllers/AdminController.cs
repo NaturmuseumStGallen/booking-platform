@@ -25,6 +25,7 @@ using System.Web.Mvc;
 
 namespace BookingPlatform.Controllers
 {
+	[RequireHttps]
 	public partial class AdminController : Controller
 	{
 		[HttpGet]

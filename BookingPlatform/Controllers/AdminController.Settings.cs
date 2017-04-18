@@ -25,8 +25,8 @@ using System;
 using System.Web.Mvc;
 using BookingPlatform.Backend.Constants;
 using BookingPlatform.Backend.DataAccess;
-using BookingPlatform.Backend.Entities;
 using BookingPlatform.Models;
+using BookingPlatform.Utilities;
 
 namespace BookingPlatform.Controllers
 {

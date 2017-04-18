@@ -50,14 +50,5 @@ namespace BookingPlatform.Models
 		{
 			get { return Dates.GroupBy(d => d.Date.TimeOfDay).Select(g => g.Key).OrderBy(t => t).ToList(); }
 		}
-
-		public enum Navigation
-		{
-			PreviousMonth = -2,
-			PreviousWeek = -1,
-			None = 0,
-			NextWeek = 1,
-			NextMonth = 2
-		}
 	}
 }

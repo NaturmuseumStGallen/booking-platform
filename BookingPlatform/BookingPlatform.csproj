@@ -17,7 +17,7 @@
     <AssemblyName>BookingPlatform</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort />
+    <IISExpressSSLPort>44394</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -131,8 +131,9 @@
     <Compile Include="Models\Booking\BookingCalendarModel.cs" />
     <Compile Include="Models\Booking\BookingModel.cs" />
     <Compile Include="Models\ModelMapper.cs" />
-    <Compile Include="Models\RuleModelBinder.cs" />
-    <Compile Include="Models\ValidationUtility.cs" />
+    <Compile Include="Utilities\CalendarUtility.cs" />
+    <Compile Include="Utilities\RuleModelBinder.cs" />
+    <Compile Include="Utilities\ValidationUtility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

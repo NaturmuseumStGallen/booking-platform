@@ -125,12 +125,9 @@ div.calendar div.day span.day {
 
 div.calendar div.day div.booking {
     align-items: center;
+    cursor: pointer;
     display: flex;
     padding: 0 5px;
-}
-
-div.calendar div.day div.booking div.time {
-    color: gray;
 }
 
 div.calendar div.day-of-month {

@@ -61,7 +61,7 @@ div.control.active:hover {
 
 div.control.inactive {
     color: lightgray;
-    cursor: not-allowed;
+    cursor: default;
 }
 
 div.progress-container {

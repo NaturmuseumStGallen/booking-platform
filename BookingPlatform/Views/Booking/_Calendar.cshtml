@@ -26,6 +26,7 @@
 @model BookingCalendarModel
 @using BookingPlatform.Constants
 @using BookingPlatform.Models
+@using BookingPlatform.Utilities
 @using BookingPlatform.Backend.Scheduling
 
 <div id="calendar-container">
@@ -69,22 +70,22 @@
         </table>
         <div class="calendar-controls">
            @{
-               var previousMonthTitle = Model.CanNavigateToPreviousWeek ? Strings.Public.NavigationPreviousMonth : string.Empty;
-               var previousMonthClick = Model.CanNavigateToPreviousWeek ? "booking.updateCalendar('" + BookingCalendarModel.Navigation.PreviousMonth + "')" : string.Empty;
-               var previousWeekTitle = Model.CanNavigateToPreviousMonth ? Strings.Public.NavigationPreviousWeek : string.Empty;
-               var previousWeekClick = Model.CanNavigateToPreviousWeek ? "booking.updateCalendar('" + BookingCalendarModel.Navigation.PreviousWeek + "')" : string.Empty;
+               var previousMonthTitle = Model.CanNavigateToPreviousMonth ? Strings.Public.NavigationPreviousMonth : string.Empty;
+               var previousMonthClick = Model.CanNavigateToPreviousMonth ? "booking.updateCalendar('" + CalendarUtility.Navigation.PreviousMonth + "')" : string.Empty;
+               var previousWeekTitle = Model.CanNavigateToPreviousWeek ? Strings.Public.NavigationPreviousWeek : string.Empty;
+               var previousWeekClick = Model.CanNavigateToPreviousWeek ? "booking.updateCalendar('" + CalendarUtility.Navigation.PreviousWeek + "')" : string.Empty;
             }
 
-            <div class="control @(Model.CanNavigateToPreviousWeek ? "active" : "inactive")" title="@previousMonthTitle" onclick="@previousMonthClick">
+            <div class="control @(Model.CanNavigateToPreviousMonth ? "active" : "inactive")" title="@previousMonthTitle" onclick="@previousMonthClick">
                 &laquo;&laquo;
             </div>
-            <div class="control @(Model.CanNavigateToPreviousMonth ? "active" : "inactive")" title="@previousWeekTitle" onclick="@previousWeekClick">
+            <div class="control @(Model.CanNavigateToPreviousWeek ? "active" : "inactive")" title="@previousWeekTitle" onclick="@previousWeekClick">
                 &laquo;
             </div>
-            <div class="control active" title="@Strings.Public.NavigationNextWeek" onclick="booking.updateCalendar('@BookingCalendarModel.Navigation.NextWeek')">
+            <div class="control active" title="@Strings.Public.NavigationNextWeek" onclick="booking.updateCalendar('@CalendarUtility.Navigation.NextWeek')">
                 &raquo;
             </div>
-            <div class="control active" title="@Strings.Public.NavigationNextMonth" onclick="booking.updateCalendar('@BookingCalendarModel.Navigation.NextMonth')">
+            <div class="control active" title="@Strings.Public.NavigationNextMonth" onclick="booking.updateCalendar('@CalendarUtility.Navigation.NextMonth')">
                 &raquo;&raquo;
             </div>
         </div>

@@ -76,7 +76,12 @@
                 <div class="day @cssClass" title="@currentDay.ToLongDateString()">
                     @foreach (var booking in bookings.OrderBy(b => b.Date.TimeOfDay))
                     {
-                        <div class="booking">
+                        var r = booking.Event.ColorComponentRed;
+                        var g = booking.Event.ColorComponentGreen;
+                        var b = booking.Event.ColorComponentBlue;
+                        var url = Url.Action("BookingDetails", new { booking.Id });
+
+                        <div class="booking" data-auto-color style="background-color: rgb(@r, @g, @b)" onclick="location.href='@url'">
                             <div class="time">
                                 @(booking.Date.TimeOfDay.ToString("hh\\:mm"))&nbsp;-&nbsp;
                             </div>
