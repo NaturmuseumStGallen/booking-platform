@@ -23,15 +23,21 @@
      */
 *@
 
-@model EventGroupRuleModel
-@using BookingPlatform.Models;
 @using BookingPlatform.Constants;
 
-@if (!Model.IsNew)
-{
-    @Html.HiddenFor(m => m.Id)
+@{
+    ViewBag.SectionTitle = Strings.Admin.Login.SectionTitle;
+    ViewBag.Title = Strings.Admin.Login.PageTitle;
+    ViewBag.HideMenu = true;
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-@Html.LabelFor(m => m.EventIds, Strings.Admin.RuleDetails.InputLabelEvents)
-@Html.ListBoxFor(m => m.EventIds, Model.Events, new { size = Model.AvailableEvents.Count })
-@Html.ValidationMessageFor(m => m.EventIds)
+<div class="content-1000px">
+    <h2>@ViewBag.Title</h2>
+    <p>@Strings.Admin.Login.LoginText</p>
+    @using (Html.BeginForm())
+    {
+        <input name="password" type="password" placeholder="@Strings.Admin.Login.InputLabelPassword" />
+        <input type="submit" value="@Strings.Admin.Login.Submit" />
+    }
+</div>

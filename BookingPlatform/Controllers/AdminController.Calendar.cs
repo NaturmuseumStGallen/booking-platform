@@ -22,6 +22,7 @@
  */
 
 using System;
+using System.Linq;
 using System.Web.Mvc;
 using BookingPlatform.Backend.DataAccess;
 using BookingPlatform.Backend.Scheduling;
@@ -40,7 +41,7 @@ namespace BookingPlatform.Controllers
 
 			model.FirstDayOfMonth = DateTimeUtility.GetFirstDayOfMonth(date.Value);
 			model.LastDayOfMonth = DateTimeUtility.GetLastDayOfMonth(date.Value);
-			model.Bookings = Database.Instance.GetBookings(model.FirstDayOfMonth, model.LastDayOfMonth);
+			model.Bookings = Database.Instance.GetBookings(model.FirstDayOfMonth, model.LastDayOfMonth).Where(b => b.IsActive).ToList();
 
 			return View(model);
 		}

@@ -68,8 +68,8 @@ namespace BookingPlatform.Models
 		public string Notes { get; set; }
 
 		[Required(ErrorMessage = Strings.Public.InputErrorNumberOfKids)]
-		[Range(5, 30, ErrorMessage = Strings.Public.InputErrorNumberOfKids)]
-		[RegularExpression("^(5|6|7|8|9|[1-2][0-9]|30)$", ErrorMessage = Strings.Public.InputErrorNumberOfKids)]
+		[Range(5, 25, ErrorMessage = Strings.Public.InputErrorNumberOfKids)]
+		[RegularExpression("^(5|6|7|8|9|1[0-9]|2[0-5])$", ErrorMessage = Strings.Public.InputErrorNumberOfKids)]
 		public int? NumberOfKids { get; set; }
 
 		[Required(ErrorMessage = Strings.Public.InputErrorPhone)]

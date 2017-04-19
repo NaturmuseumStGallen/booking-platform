@@ -140,8 +140,8 @@ CREATE TABLE WeeklyRule
 
 CREATE TABLE Settings
 (
-	PasswordHash VARCHAR(50) NOT NULL,
-	PasswordSalt VARCHAR(20) NOT NULL,
+	PasswordHash VARCHAR(40) NOT NULL,
+	PasswordSalt VARCHAR(32) NOT NULL,
 	EmailTitle VARCHAR(100) NOT NULL,
 	EmailHtmlContent VARCHAR(MAX) NOT NULL,
 	EmailPlaintextContent VARCHAR(MAX) NOT NULL

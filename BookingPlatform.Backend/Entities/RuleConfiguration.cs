@@ -32,6 +32,6 @@ namespace BookingPlatform.Backend.Entities
 		public string Name { get; set; }
 		public RuleType Type { get; set; }
 
-		public abstract IRule ToRule();
+		internal abstract IRule ToRule();
 	}
 }

@@ -54,6 +54,7 @@
             <div>@Strings.Admin.BookingOverview.TableHeadingName</div>
             <div>@Strings.Admin.BookingOverview.TableHeadingSchool</div>
             <div>@Strings.Admin.BookingOverview.TableHeadingTown</div>
+            <div>@Strings.Admin.BookingOverview.TableHeadingBookingState</div>
             <div></div>
         </div>
         @foreach(var booking in Model.Bookings.OrderBy(b => b.Date))
@@ -64,6 +65,7 @@
                 <div>@(booking.LastName + ", " + booking.FirstName)</div>
                 <div>@booking.School</div>
                 <div>@booking.Town</div>
+                <div>@(booking.IsActive ? Strings.Admin.BookingOverview.Active : Strings.Admin.BookingOverview.Cancelled)</div>
                 <div>@Html.ActionLink(Strings.Admin.BookingOverview.EditBooking, "BookingDetails", new { booking.Id })</div>
             </div>
         }

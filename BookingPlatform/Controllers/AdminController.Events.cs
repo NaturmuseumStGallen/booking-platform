@@ -36,8 +36,6 @@ namespace BookingPlatform.Controllers
 			if (id.HasValue)
 			{
 				Database.Instance.DeactivateEvent(id.Value);
-
-				return RedirectToAction("EventDetails", new { id });
 			}
 
 			return RedirectToAction("EventOverview");

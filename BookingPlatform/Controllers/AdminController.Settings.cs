@@ -22,9 +22,11 @@
  */
 
 using System;
+using System.Linq;
 using System.Web.Mvc;
 using BookingPlatform.Backend.Constants;
 using BookingPlatform.Backend.DataAccess;
+using BookingPlatform.Backend.Security;
 using BookingPlatform.Models;
 using BookingPlatform.Utilities;
 
@@ -142,11 +144,8 @@ namespace BookingPlatform.Controllers
 			var model = new AdminSettingsModel();
 			var settings = Database.Instance.GetSettings();
 
+			model.Initialize();
 			model.MapFromEntity(settings);
-
-			model.Recipients = Database.Instance.GetEmailRecipients();
-			model.Rules = Database.Instance.GetRuleData();
-			model.Times = Database.Instance.GetTimeData();
 
 			return View(model);
 		}
@@ -167,9 +166,10 @@ namespace BookingPlatform.Controllers
 		{
 			if (ValidationUtility.IsValidPassword(password))
 			{
-				// TODO: Implement hashing & encryption, then save to DB...
-				//Database.Instance.UpdatePassword(password);
-				throw new NotImplementedException();
+				var salt = Password.GenerateSalt();
+				var hash = Password.ComputeHash(password, salt);
+
+				Database.Instance.UpdatePassword(hash, salt);
 			}
 
 			return RedirectToAction("Settings");

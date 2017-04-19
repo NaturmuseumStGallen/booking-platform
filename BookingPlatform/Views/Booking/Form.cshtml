@@ -53,6 +53,8 @@
 
     <h2>@Strings.Public.Date</h2>
     
+    <p>@Strings.Public.InputDescriptionDate</p>
+
     @Html.Partial("_Calendar", Model.CalendarModel)
 
     @Html.HiddenFor(m => m.DateTicks, new { data_booking_date_ticks = bool.TrueString })
@@ -95,6 +97,8 @@
     @Html.ValidationMessageFor(m => m.Phone)
 
     <h2>@Strings.Public.AdditionalInformation</h2>
+
+    <p>@Strings.Public.BookingMessageGrade</p>
 
     @Html.LabelFor(m => m.NumberOfKids, Strings.Public.InputLabelNumberOfKids)
     @Html.TextBoxFor(m => m.NumberOfKids, new { placeholder = Strings.Public.InputDescriptionNumberOfKids })

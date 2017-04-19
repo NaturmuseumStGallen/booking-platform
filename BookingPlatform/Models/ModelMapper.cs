@@ -23,6 +23,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using BookingPlatform.Backend.Constants;
 using BookingPlatform.Backend.DataAccess;
 using BookingPlatform.Backend.Entities;
@@ -48,6 +49,14 @@ namespace BookingPlatform.Models
 				default:
 					throw new InvalidOperationException(String.Format("Rule of type '{0}' not yet configured!", model.Type));
 			}
+		}
+
+		public static void Initialize(this AdminSettingsModel model)
+		{
+			model.Recipients = Database.Instance.GetEmailRecipients();
+			model.Rules = Database.Instance.GetRuleData();
+			model.Times = Database.Instance.GetTimeData();
+			model.Events = Database.Instance.GetActiveEvents();
 		}
 
 		public static void MapFromEntity(this AdminBookingDetailsModel model, Booking booking)
@@ -117,7 +126,7 @@ namespace BookingPlatform.Models
 		public static void MapFromEntity(this EventGroupRuleModel model, EventGroupRuleConfiguration rule)
 		{
 			model.Id = rule.Id;
-			model.EventIds = new List<int>(rule.EventIds);
+			model.EventIds = rule.EventIds.Select(i => i.ToString()).ToArray();
 		}
 
 		public static void MapFromEntity(this MinimumDateRuleModel model, MinimumDateRuleConfiguration rule)
@@ -222,7 +231,7 @@ namespace BookingPlatform.Models
 				rule.Id = model.Id.Value;
 			}
 
-			rule.EventIds = new List<int>(rule.EventIds);
+			rule.EventIds = model.EventIds.Select(i => int.Parse(i)).ToList();
 		}
 
 		public static void MapToEntity(this MinimumDateRuleModel model, MinimumDateRuleConfiguration rule)

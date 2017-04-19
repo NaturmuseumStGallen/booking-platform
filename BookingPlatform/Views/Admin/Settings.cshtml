@@ -69,6 +69,34 @@
         <input type="submit" value="@Strings.Admin.Save" />
     }
     <hr />
+    <h2>@Strings.Admin.Settings.RuleOverview</h2>
+    <table>
+        <thead>
+            <tr>
+                <th class="align-left">@Strings.Admin.Settings.RuleName</th>
+                <th class="align-left">@Strings.Admin.Settings.RuleType</th>
+                <th class="align-left">@Strings.Admin.Settings.RuleSettings</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var rule in Model.Rules)
+            {
+                <tr>
+                    <td>@rule.Name</td>
+                    <td>@Strings.Admin.GetRuleTypeName(rule.Type)</td>
+                    <td>@Model.GetRuleDetails(rule)</td>
+                    <td class="align-right">@Html.ActionLink(Strings.Admin.Edit, "RuleDetails", new { rule.RuleId })</td>
+                </tr>}
+        </tbody>
+    </table>
+    @using (Html.BeginForm("RuleDetails", "Admin", FormMethod.Get))
+    {
+        <span>@Strings.Admin.Settings.CreateNewRule</span>
+        @Html.DropDownList("type", Model.RuleTypes)
+        <input type="submit" value="@Strings.Admin.Create" />
+    }
+    <hr />
     <h2>@Strings.Admin.Settings.EmailConfiguration</h2>
     <h3>@Strings.Admin.Settings.Recipients</h3>
     <table>
@@ -107,34 +135,5 @@
         <textarea class="wide" name="html" rows="20">@Model.HtmlContent</textarea>
         <p>@Strings.Admin.Settings.PlaceholderInfo</p>
         <input type="submit" value="@Strings.Admin.Save" />
-    }
-    <hr />
-    <h2>@Strings.Admin.Settings.RuleOverview</h2>
-    <table>
-        <thead>
-            <tr>
-                <th class="align-left">@Strings.Admin.Settings.RuleName</th>
-                <th class="align-left">@Strings.Admin.Settings.RuleType</th>
-                <th class="align-left">@Strings.Admin.Settings.RuleSettings</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var rule in Model.Rules)
-            {
-                <tr>
-                    <td>@rule.Name</td>
-                    <td>@Strings.Admin.GetRuleTypeName(rule.Type)</td>
-                    <td>@Model.GetRuleDetails(rule)</td>
-                    <td class="align-right">@Html.ActionLink(Strings.Admin.Edit, "RuleDetails", new { rule.RuleId })</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-    @using (Html.BeginForm("RuleDetails", "Admin", FormMethod.Get))
-    {
-        <span>@Strings.Admin.Settings.CreateNewRule</span>
-        @Html.DropDownList("type", Model.RuleTypes)
-        <input type="submit" value="@Strings.Admin.Create" />
     }
 </div>

@@ -107,7 +107,7 @@ namespace BookingPlatform.Controllers
 		{
 			if (id.HasValue && isActive.HasValue)
 			{
-				Database.Instance.UpdateBookingState(id.Value, isActive.Value);
+				Database.Instance.UpdateBookingState(id.Value, !isActive.Value);
 
 				return RedirectToAction("BookingDetails", new { id });
 			}

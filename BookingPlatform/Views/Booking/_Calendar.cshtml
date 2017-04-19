@@ -35,7 +35,7 @@
 
     @if (Model.ShowEventSelectionMessage)
     {
-        <p>@Strings.Public.PleaseSelectEvent</p>
+        <p><em>@Strings.Public.PleaseSelectEvent</em></p>
     }
     else
     {
@@ -44,7 +44,7 @@
                 <th></th>
                 @foreach(var day in Model.Days)
                 {
-                    <th>
+                    <th class="@(day.IsSameDateAs(DateTime.Today) ? "today" : string.Empty)">
                         @Html.Raw(day.ToLongDateString().Replace(", ", ",<br />"))
                     </th>
                 }

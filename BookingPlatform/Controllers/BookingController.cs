@@ -68,6 +68,7 @@ namespace BookingPlatform.Controllers
 				return Content("Success!");
 			}
 
+			model.DateTicks = null;
 			model.Events = Database.Instance.GetActiveEvents();
 			model.CalendarModel.CurrentDateTicks = DateTime.Today.Ticks;
 			model.CalendarModel.ShowEventSelectionMessage = !model.EventId.HasValue;

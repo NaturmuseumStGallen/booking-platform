@@ -50,6 +50,18 @@
     <Compile Include="DataAccess\DbEmailDao.cs" />
     <Compile Include="DataAccess\DbEventDao.cs" />
     <Compile Include="DataAccess\DbRuleDao.cs" />
+    <Compile Include="DataAccess\DbRuleDao.Weekly.cs">
+      <DependentUpon>DbRuleDao.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\DbRuleDao.MinimumDate.cs">
+      <DependentUpon>DbRuleDao.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\DbRuleDao.EventGroup.cs">
+      <DependentUpon>DbRuleDao.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\DbRuleDao.DateRange.cs">
+      <DependentUpon>DbRuleDao.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataAccess\DbSettingsDao.cs" />
     <Compile Include="DataAccess\DbTimeDao.cs" />
     <Compile Include="Entities\EmailRecipient.cs" />
@@ -77,6 +89,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rules\IRule.cs" />
     <Compile Include="DataAccess\IRuleProvider.cs" />
+    <Compile Include="Security\Password.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

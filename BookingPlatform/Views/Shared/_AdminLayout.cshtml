@@ -42,13 +42,18 @@
     <body>
         <nav>
             <h1>@Strings.Admin.BookingPlatform - @ViewBag.SectionTitle</h1>
-            <ul>
-                <li>@Html.ActionLink(Strings.Admin.Overview.PageTitle, "Overview", "Admin")</li>
-                <li>@Html.ActionLink(Strings.Admin.Calendar.PageTitle, "Calendar", "Admin")</li>
-                <li>@Html.ActionLink(Strings.Admin.BookingOverview.PageTitle, "BookingOverview", "Admin")</li>
-                <li>@Html.ActionLink(Strings.Admin.EventOverview.PageTitle, "EventOverview", "Admin")</li>
-                <li>@Html.ActionLink(Strings.Admin.Settings.PageTitle, "Settings", "Admin")</li>
-            </ul>
+
+            @if (ViewBag.HideMenu != true)
+            {
+                <ul>
+                    <li>@Html.ActionLink(Strings.Admin.Overview.PageTitle, "Overview", "Admin")</li>
+                    <li>@Html.ActionLink(Strings.Admin.Calendar.PageTitle, "Calendar", "Admin")</li>
+                    <li>@Html.ActionLink(Strings.Admin.BookingOverview.PageTitle, "BookingOverview", "Admin")</li>
+                    <li>@Html.ActionLink(Strings.Admin.EventOverview.PageTitle, "EventOverview", "Admin")</li>
+                    <li>@Html.ActionLink(Strings.Admin.Settings.PageTitle, "Settings", "Admin")</li>
+                    <li><a href="@Url.Action("Logout", "Admin")">@Strings.Admin.Login.LogoutText &#10162;</a></li>
+                </ul>
+            }
         </nav>
         <main>
             @RenderBody()

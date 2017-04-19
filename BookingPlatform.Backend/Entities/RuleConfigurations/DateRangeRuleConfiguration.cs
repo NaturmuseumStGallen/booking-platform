@@ -36,7 +36,7 @@ namespace BookingPlatform.Backend.Entities.RuleConfigurations
 		public DateTime StartDate { get; set; }
 		public TimeSpan? StartTime { get; set; }
 
-		public override IRule ToRule()
+		internal override IRule ToRule()
 		{
 			var from = DateTimeUtility.NewFor(StartDate, StartTime);
 			var to = new DateTime();

@@ -21,7 +21,9 @@
  * along with BookingPlatform. If not, see <http://www.gnu.org/licenses/>.
  */
 
+using System.Threading;
 using System.Web.Mvc;
+using BookingPlatform.Utilities;
 
 namespace BookingPlatform.Controllers
 {
@@ -32,6 +34,46 @@ namespace BookingPlatform.Controllers
 		public ActionResult Overview()
 		{
 			return View();
+		}
+
+		[HttpGet]
+		public ActionResult Login()
+		{
+			return View();
+		}
+
+		[HttpPost]
+		public ActionResult Login(string password)
+		{
+			if (Authenticator.IsAuthenticated() || Authenticator.TryToAuthenticate(password))
+			{
+				return RedirectToAction("Overview");
+			}
+
+			// A short delay to make brute force attacks less effective...
+			Thread.Sleep(2000);
+
+			return View();
+		}
+
+		[HttpGet]
+		public ActionResult Logout()
+		{
+			Authenticator.Logout();
+
+			return RedirectToAction("Login");
+		}
+
+		protected override void OnActionExecuting(ActionExecutingContext context)
+		{
+			if (context.ActionDescriptor.ActionName != nameof(Login) && !Authenticator.IsAuthenticated())
+			{
+				context.Result = RedirectToAction("Login");
+
+				return;
+			}
+
+			base.OnActionExecuting(context);
 		}
 	}
 }

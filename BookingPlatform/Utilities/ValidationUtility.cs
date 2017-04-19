@@ -57,7 +57,7 @@ namespace BookingPlatform.Utilities
 		{
 			TimeSpan timeSpan;
 
-			return TimeSpan.TryParse(time, out timeSpan);
+			return TimeSpan.TryParse(time, out timeSpan) && timeSpan.Days == 0 && timeSpan.Seconds == 0 && timeSpan.Milliseconds == 0;
 		}
 	}
 }

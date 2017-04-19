@@ -23,9 +23,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Text;
 using System.Web.Mvc;
 using BookingPlatform.Backend.Constants;
 using BookingPlatform.Backend.Entities;
+using BookingPlatform.Backend.Entities.RuleConfigurations;
 using BookingPlatform.Constants;
 
 namespace BookingPlatform.Models
@@ -34,6 +38,7 @@ namespace BookingPlatform.Models
 	{
 		public AdminSettingsModel()
 		{
+			Events = new List<Event>();
 			Recipients = new List<EmailRecipient>();
 			Rules = new List<RuleConfiguration>();
 			Times = new List<TimeData>();
@@ -43,6 +48,7 @@ namespace BookingPlatform.Models
 		public string PlaintextContent { get; set; }
 		public string HtmlContent { get; set; }
 
+		public IList<Event> Events { get; set; }
 		public IList<EmailRecipient> Recipients { get; set; }
 		public IList<RuleConfiguration> Rules { get; set; }
 		public IList<TimeData> Times { get; set; }
@@ -60,7 +66,66 @@ namespace BookingPlatform.Models
 
 		public MvcHtmlString GetRuleDetails(RuleConfiguration rule)
 		{
-			return new MvcHtmlString("Rule details go here<br /> - Some property value <br /> - Yet another value");
+			switch (rule.Type)
+			{
+				case RuleType.DateRange:
+					return DateRangeDetails(rule as DateRangeRuleConfiguration);
+				case RuleType.EventGroup:
+					return EventGroupDetails(rule as EventGroupRuleConfiguration);
+				case RuleType.MinimumDate:
+					return MinimumDateDetails(rule as MinimumDateRuleConfiguration);
+				case RuleType.Weekly:
+					return WeeklyDetails(rule as WeeklyRuleConfiguration);
+				default:
+					throw new InvalidOperationException(String.Format("Rule of type '{0}' not yet configured!", rule.Type));
+			}
+		}
+
+		private MvcHtmlString DateRangeDetails(DateRangeRuleConfiguration config)
+		{
+			var builder = new StringBuilder();
+
+			builder.AppendFormat("{0}: {1}<br />", Strings.Admin.RuleDetails.InputLabelStatus, Strings.Admin.GetStatusName(config.AvailabilityStatus));
+			builder.AppendFormat("{0}: {1}<br />", Strings.Admin.RuleDetails.InputLabelStartDate, config.StartDate.ToShortDateString());
+			builder.AppendFormat("{0}: {1}<br />", Strings.Admin.RuleDetails.InputLabelStartTime, config.StartTime.HasValue ? config.StartTime.Value.ToString("hh\\:mm") : "-");
+			builder.AppendFormat("{0}: {1}<br />", Strings.Admin.RuleDetails.InputLabelEndDate, config.EndDate.HasValue ? config.EndDate.Value.ToShortDateString() : "-");
+			builder.AppendFormat("{0}: {1}<br />", Strings.Admin.RuleDetails.InputLabelEndTime, config.EndTime.HasValue ? config.EndTime.Value.ToString("hh\\:mm") : "-");
+
+			return new MvcHtmlString(builder.ToString());
+		}
+
+		private MvcHtmlString EventGroupDetails(EventGroupRuleConfiguration config)
+		{
+			var builder = new StringBuilder();
+
+			foreach (var id in config.EventIds)
+			{
+				builder.AppendFormat("- {0}<br />", Events.First(e => e.Id == id).Name);
+			}
+
+			return new MvcHtmlString(builder.ToString());
+		}
+
+		private MvcHtmlString MinimumDateDetails(MinimumDateRuleConfiguration config)
+		{
+			var builder = new StringBuilder();
+
+			builder.AppendFormat("{0}: {1}<br />", Strings.Admin.RuleDetails.InputLabelDate, config.Date.HasValue ? config.Date.Value.ToShortDateString() : "-");
+			builder.AppendFormat("{0}: {1}<br />", Strings.Admin.RuleDetails.InputLabelDays, config.Days.HasValue ? config.Days.ToString() : "-");
+
+			return new MvcHtmlString(builder.ToString());
+		}
+
+		private MvcHtmlString WeeklyDetails(WeeklyRuleConfiguration config)
+		{
+			var builder = new StringBuilder();
+
+			builder.AppendFormat("{0}: {1}<br />", Strings.Admin.RuleDetails.InputLabelStatus, Strings.Admin.GetStatusName(config.AvailabilityStatus));
+			builder.AppendFormat("{0}: {1}<br />", Strings.Admin.RuleDetails.InputLabelDayOfWeek, DateTimeFormatInfo.CurrentInfo.GetDayName(config.DayOfWeek));
+			builder.AppendFormat("{0}: {1}<br />", Strings.Admin.RuleDetails.InputLabelTime, config.Time.HasValue ? config.Time.Value.ToString("hh\\:mm") : "-");
+			builder.AppendFormat("{0}: {1}<br />", Strings.Admin.RuleDetails.InputLabelStartDate, config.StartDate.HasValue ? config.StartDate.Value.ToShortDateString() : "-");
+
+			return new MvcHtmlString(builder.ToString());
 		}
 	}
 }

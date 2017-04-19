@@ -123,16 +123,18 @@ namespace BookingPlatform.Constants
 
 			public static class BookingOverview
 			{
+				public const string Active = "Aktiv";
+				public const string Cancelled = "Storniert";
 				public const string EditBooking = "Details";
 				public const string NewBooking = "Neue Buchung erfassen";
 				public const string Overview = "Übersicht";
 				public const string PageTitle = "Buchungen";
+				public const string TableHeadingBookingState = "Status";
 				public const string TableHeadingDate = "Datum";
 				public const string TableHeadingEvent = "Führung";
 				public const string TableHeadingName = "Nachname, Vorname";
 				public const string TableHeadingSchool = "Schule";
 				public const string TableHeadingTown = "Ortschaft";
-				public const string TableHeadingCancel = "Stornieren";
 			}
 
 			public static class Calendar
@@ -168,6 +170,16 @@ namespace BookingPlatform.Constants
 				public const string Name = "Name";
 				public const string NewEvent = "Neue Führung erfassen";
 				public const string PageTitle = "Führungen";
+			}
+
+			public static class Login
+			{
+				public const string InputLabelPassword = "Passwort";
+				public const string LoginText = "Für den Zugriff auf den Administrationsbereich müssen Sie sich authentifizieren.";
+				public const string LogoutText = "Abmelden";
+				public const string PageTitle = "Login";
+				public const string SectionTitle = "Administrationsbereich";
+				public const string Submit = "Einloggen";
 			}
 
 			public static class Overview
@@ -287,11 +299,13 @@ namespace BookingPlatform.Constants
 			public const string AdditionalInformation = "Zusätzliche Informationen";
 			public const string AvailabilityBooked = "Ausgebucht";
 			public const string AvailabilityNotBookable = "Nicht buchbar";
+			public const string BookingMessageGrade = "Bitte buchen Sie pro Klassenverband nur eine Führung. Für Ausnahmen benutzen Sie bitte das Kommentarfeld.";
 			public const string ContactInformation = "Kontaktinformationen";
 			public const string Date = "Datum";
 			public const string Event = "Führung";
+			public const string InputDescriptionDate = "Sie können ein Datum durch Anklicken eines freien Termins im untenstehenden Kalender reservieren. Bitte beachten Sie, dass die Verfügbarkeit je nach Führung variiert.";
 			public const string InputDescriptionGrade = "z.B. \"Mittelstufe, 5. + 6. Klasse\"";
-			public const string InputDescriptionNumberOfKids = "min. 5 bis max. 30";
+			public const string InputDescriptionNumberOfKids = "min. 5 bis max. 25";
 			public const string InputErrorDate = "Bitte wählen Sie einen Termin!";
 			public const string InputErrorEmail = "Bitte geben Sie eine gültige E-Mail-Adresse an!";
 			public const string InputErrorEvent = "Bitte wählen Sie eine Führung!";
@@ -300,7 +314,7 @@ namespace BookingPlatform.Constants
 			public const string InputErrorLastName = "Bitte geben Sie einen Nachnamen ein!";
 			public const string InputErrorMaxLength100 = "Bitte geben Sie maximal 100 Zeichen ein!";
 			public const string InputErrorMaxLength5000 = "Bitte geben Sie maximal 5'000 Zeichen ein!";
-			public const string InputErrorNumberOfKids = "Bitte geben Sie eine gültige Anzahl Kinder an (5 - 30)!";
+			public const string InputErrorNumberOfKids = "Bitte geben Sie eine gültige Anzahl Kinder an (5 - 25)!";
 			public const string InputErrorPhone = "Bitte geben Sie eine gültige Telefonnummer an!";
 			public const string InputErrorSchool = "Bitte geben Sie den Namen Ihrer Schule an!";
 			public const string InputErrorTown = "Bitte geben Sie einen Wohnort an!";

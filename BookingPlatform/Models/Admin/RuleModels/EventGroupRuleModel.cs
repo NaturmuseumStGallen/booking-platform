@@ -42,7 +42,7 @@ namespace BookingPlatform.Models
 		}
 
 		[Required(ErrorMessage = Strings.Admin.RuleDetails.InputErrorEvents)]
-		public IList<int> EventIds { get; set; }
+		public string[] EventIds { get; set; }
 
 		public int? Id { get; set; }
 		public IList<Event> AvailableEvents { get; set; }
@@ -57,7 +57,7 @@ namespace BookingPlatform.Models
 		{
 			var results = new List<ValidationResult>();
 
-			if (EventIds == null || EventIds.Count < 2)
+			if (EventIds == null || EventIds.Length < 2)
 			{
 				results.Add(new ValidationResult(Strings.Admin.RuleDetails.InputErrorEvents, new[] { nameof(EventIds) }));
 			}

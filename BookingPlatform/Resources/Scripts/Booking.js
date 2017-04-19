@@ -23,6 +23,20 @@
 
 var booking = booking || {};
 
+$(document).ready(function () {
+    autoSelectOnPostFailure();
+
+    function autoSelectOnPostFailure() {
+        var ticks = $('[data-booking-date-ticks]').val();
+
+        if (ticks != undefined && ticks != null) {
+            var td = $('td[data-ticks="' + ticks + '"]');
+
+            booking.selectDate(td);
+        }
+    }
+});
+
 booking.selectDate = function (td) {
     var date = $(td).attr('data-ticks');
 

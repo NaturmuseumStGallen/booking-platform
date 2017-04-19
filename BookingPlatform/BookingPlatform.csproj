@@ -131,6 +131,7 @@
     <Compile Include="Models\Booking\BookingCalendarModel.cs" />
     <Compile Include="Models\Booking\BookingModel.cs" />
     <Compile Include="Models\ModelMapper.cs" />
+    <Compile Include="Utilities\Authenticator.cs" />
     <Compile Include="Utilities\CalendarUtility.cs" />
     <Compile Include="Utilities\RuleModelBinder.cs" />
     <Compile Include="Utilities\ValidationUtility.cs" />
@@ -155,6 +156,7 @@
     <Content Include="Views\Admin\EditorTemplates\EventGroupRuleModel.cshtml" />
     <Content Include="Views\Admin\EditorTemplates\MinimumDateRuleModel.cshtml" />
     <Content Include="Views\Admin\EditorTemplates\WeeklyRuleModel.cshtml" />
+    <Content Include="Views\Admin\Login.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

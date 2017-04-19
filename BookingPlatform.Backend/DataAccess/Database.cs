@@ -38,6 +38,7 @@ namespace BookingPlatform.Backend.DataAccess
 		public void DeactivateEvent(int id)
 		{
 			new DbEventDao().Deactivate(id);
+			new DbRuleDao().RemoveFromEventGroups(id);
 		}
 
 		public void DeleteEmailRecipient(int id)
@@ -90,6 +91,11 @@ namespace BookingPlatform.Backend.DataAccess
 		public Event GetEventBy(int id)
 		{
 			return new DbEventDao().GetBy(id);
+		}
+
+		public IList<Event> GetEventsBy(IList<int> ids)
+		{
+			return new DbEventDao().GetBy(ids);
 		}
 
 		public Settings GetSettings()
@@ -187,9 +193,9 @@ namespace BookingPlatform.Backend.DataAccess
 			new DbSettingsDao().UpdateEmailContent(title, plaintext, html);
 		}
 
-		public void UpdatePassword(string password, string hash)
+		public void UpdatePassword(string hash, string salt)
 		{
-			new DbSettingsDao().UpdatePassword(password, hash);
+			new DbSettingsDao().UpdatePassword(hash, salt);
 		}
 	}
 }

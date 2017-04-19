@@ -32,7 +32,7 @@ namespace BookingPlatform.Backend.Entities.RuleConfigurations
 		public DateTime? Date { get; set; }
 		public int? Days { get; set; }
 
-		public override IRule ToRule()
+		internal override IRule ToRule()
 		{
 			if (Date.HasValue)
 			{

@@ -63,7 +63,7 @@
 
             @if (!Model.IsNew)
             {
-                @(" - ") @Html.ActionLink(Strings.Admin.Delete, "DeleteRule", new { Model.RuleId }, new { data_safety_message = Strings.Admin.SafetyMessage })
+                @(" - ") @Html.ActionLink(Strings.Admin.Delete, "DeleteRule", new { id = Model.RuleId }, new { data_safety_message = Strings.Admin.SafetyMessage })
             }
         </div>
     }

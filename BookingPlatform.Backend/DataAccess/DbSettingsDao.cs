@@ -54,7 +54,7 @@ namespace BookingPlatform.Backend.DataAccess
 			ExecuteNonQuery(sql, parameters);
 		}
 
-		public void UpdatePassword(string password, string hash)
+		public void UpdatePassword(string hash, string salt)
 		{
 			var sql = @"
 			UPDATE
@@ -64,8 +64,8 @@ namespace BookingPlatform.Backend.DataAccess
 				PasswordSalt = @PasswordSalt";
 			var parameters = new[]
 			{
-				new SqlParameter("@PasswordHash", password),
-				new SqlParameter("@PasswordSalt", hash)
+				new SqlParameter("@PasswordHash", hash),
+				new SqlParameter("@PasswordSalt", salt)
 			};
 
 			ExecuteNonQuery(sql, parameters);

@@ -22,21 +22,48 @@
  */
 
 using System;
-using BookingPlatform.Backend.Rules;
+using System.Web;
+using BookingPlatform.Backend.DataAccess;
+using BookingPlatform.Backend.Security;
 
-namespace BookingPlatform.Backend.Entities.RuleConfigurations
+namespace BookingPlatform.Utilities
 {
-	public class WeeklyRuleConfiguration : RuleConfiguration
+	public static class Authenticator
 	{
-		public int Id { get; set; }
-		public AvailabilityStatus AvailabilityStatus { get; set; }
-		public DayOfWeek DayOfWeek { get; set; }
-		public DateTime? StartDate { get; set; }
-		public TimeSpan? Time { get; set; }
+		private const string AUTHENTICATED = "Authenticated";
 
-		internal override IRule ToRule()
+		public static bool IsAuthenticated()
 		{
-			return new WeeklyRule(DayOfWeek, AvailabilityStatus, Time, StartDate);
+			return HttpContext.Current.Session[AUTHENTICATED] as bool? == true;
+		}
+
+		public static bool TryToAuthenticate(string password)
+		{
+			var hash = string.Empty;
+			var settings = Database.Instance.GetSettings();
+
+			try
+			{
+				hash = Password.ComputeHash(password, settings.PasswordSalt);
+			}
+			catch (Exception)
+			{
+				// Password validation failed
+			}
+
+			if (Password.AreEqual(settings.PasswordHash, hash))
+			{
+				HttpContext.Current.Session[AUTHENTICATED] = true;
+
+				return true;
+			}
+
+			return false;
+		}
+
+		public static void Logout()
+		{
+			HttpContext.Current.Session[AUTHENTICATED] = false;
 		}
 	}
 }

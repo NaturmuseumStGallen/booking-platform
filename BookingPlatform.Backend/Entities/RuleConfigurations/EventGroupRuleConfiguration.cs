@@ -37,7 +37,7 @@ namespace BookingPlatform.Backend.Entities.RuleConfigurations
 		public int Id { get; set; }
 		public IList<int> EventIds { get; set; }
 
-		public override IRule ToRule()
+		internal override IRule ToRule()
 		{
 			var group = new EventGroup();
 
