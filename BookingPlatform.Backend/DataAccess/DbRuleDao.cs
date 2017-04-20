@@ -141,6 +141,13 @@ namespace BookingPlatform.Backend.DataAccess
 			return config;
 		}
 
+		public int GetTotalCount()
+		{
+			var sql = "SELECT COUNT(*) FROM [Rule]";
+
+			return Convert.ToInt32(ExecuteScalar(sql));
+		}
+
 		public void SaveNew(RuleConfiguration config)
 		{
 			var sql = @"

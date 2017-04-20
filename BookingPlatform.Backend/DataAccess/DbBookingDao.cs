@@ -79,18 +79,47 @@ namespace BookingPlatform.Backend.DataAccess
 			return ExecuteMultiQuery(sql, parameters);
 		}
 
+		public Booking GetNewestActive()
+		{
+			var sql = "SELECT TOP(1) * FROM Booking WHERE IsActive = 1 ORDER BY Id";
+
+			return ExecuteSingleQuery(sql);
+		}
+
+		public int GetPendingCount()
+		{
+			var sql = "SELECT COUNT(*) FROM Booking WHERE IsActive = 1 AND [Date] >= GETDATE()";
+
+			return Convert.ToInt32(ExecuteScalar(sql));
+		}
+
+		public int GetTotalCount()
+		{
+			var sql = "SELECT COUNT(*) FROM Booking";
+
+			return Convert.ToInt32(ExecuteScalar(sql));
+		}
+
+		public IList<Booking> GetUpcomingBookings(DateTime date)
+		{
+			var sql = "SELECT TOP(3) * FROM Booking WHERE IsActive = 1 AND [Date] >= @Date";
+
+			return ExecuteMultiQuery(sql, new SqlParameter("@Date", date));
+		}
+
 		public void SaveNew(Booking booking)
 		{
 			var sql = @"
 			INSERT INTO
-				Booking(EventId, IsActive, [Address], [Date], Email, FirstName, Grade, LastName, Notes, NumberOfKids, Phone, School, Town, ZipCode)
+				Booking(EventId, IsActive, [Address], Canton, [Date], Email, FirstName, Grade, LastName, Notes, NumberOfKids, Phone, School, Town, ZipCode)
 			VALUES
-				(@EventId, @IsActive, @Address, @Date, @Email, @FirstName, @Grade, @LastName, @Notes, @NumberOfKids, @Phone, @School, @Town, @ZipCode)";
+				(@EventId, @IsActive, @Address, @Canton, @Date, @Email, @FirstName, @Grade, @LastName, @Notes, @NumberOfKids, @Phone, @School, @Town, @ZipCode)";
 			var parameters = new[]
 			{
 				new SqlParameter("@EventId", booking.EventId),
 				new SqlParameter("@IsActive", booking.IsActive),
 				new SqlParameter("@Address", (object) booking.Address ?? DBNull.Value),
+				new SqlParameter("@Canton", booking.Canton),
 				new SqlParameter("@Date", booking.Date),
 				new SqlParameter("@Email", booking.Email),
 				new SqlParameter("@FirstName", booking.FirstName),
@@ -116,6 +145,7 @@ namespace BookingPlatform.Backend.DataAccess
 				EventId = @EventId,
 				IsActive = @IsActive,
 				[Address] = @Address,
+				Canton = @Canton,
 				[Date] = @Date,
 				Email = @Email,
 				FirstName = @FirstName,
@@ -135,6 +165,7 @@ namespace BookingPlatform.Backend.DataAccess
 				new SqlParameter("@EventId", booking.EventId),
 				new SqlParameter("@IsActive", booking.IsActive),
 				new SqlParameter("@Address", (object) booking.Address ?? DBNull.Value),
+				new SqlParameter("@Canton", booking.Canton),
 				new SqlParameter("@Date", booking.Date),
 				new SqlParameter("@Email", booking.Email),
 				new SqlParameter("@FirstName", booking.FirstName),
@@ -171,6 +202,7 @@ namespace BookingPlatform.Backend.DataAccess
 			booking.EventId = (int) reader[nameof(Booking.EventId)];
 			booking.IsActive = (bool) reader[nameof(Booking.IsActive)];
 			booking.Address = reader[nameof(Booking.Address)] as string;
+			booking.Canton = (string) reader[nameof(Booking.Canton)];
 			booking.Date = (DateTime) reader[nameof(Booking.Date)];
 			booking.Email = (string) reader[nameof(Booking.Email)];
 			booking.FirstName = (string) reader[nameof(Booking.FirstName)];

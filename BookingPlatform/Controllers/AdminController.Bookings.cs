@@ -81,7 +81,7 @@ namespace BookingPlatform.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				var booking = model.Id.HasValue ? Database.Instance.GetBookingBy(model.Id.Value) : new Booking();
+				var booking = model.Id.HasValue ? Database.Instance.GetBookingBy(model.Id.Value) : new Booking { IsActive = true };
 
 				model.MapToEntity(booking);
 

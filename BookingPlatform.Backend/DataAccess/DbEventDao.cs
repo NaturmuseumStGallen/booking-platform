@@ -47,6 +47,13 @@ namespace BookingPlatform.Backend.DataAccess
 			return Convert.ToInt32(ExecuteScalar(sql, parameter)) == 1;
 		}
 
+		public int GetActiveCount()
+		{
+			var sql = "SELECT COUNT(*) FROM [Event] WHERE IsActive = 1";
+
+			return Convert.ToInt32(ExecuteScalar(sql));
+		}
+
 		public IList<Event> GetAllActive()
 		{
 			var sql = "SELECT * FROM [Event] WHERE IsActive = 1";

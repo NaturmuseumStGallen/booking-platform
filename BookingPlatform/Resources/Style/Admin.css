@@ -68,7 +68,11 @@ div.booking-overview div.header {
 
 div.booking-overview div div {
     padding: 2px 5px;
-    width: 18%;
+    width: 16%;
+}
+
+div.booking-overview div div:nth-last-child(-n+2) {
+    width: 10%;
 }
 
 div.booking-overview div div:last-child {
@@ -386,6 +390,11 @@ select {
 span.field-validation-error {
     color: red;
     font-style: italic;
+}
+
+span.warning {
+    color: orange;
+    font-weight: bold;
 }
 
 table {

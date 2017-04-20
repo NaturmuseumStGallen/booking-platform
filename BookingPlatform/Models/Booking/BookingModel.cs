@@ -21,15 +21,18 @@
  * along with BookingPlatform. If not, see <http://www.gnu.org/licenses/>.
  */
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Web.Mvc;
 using BookingPlatform.Backend.Entities;
 using BookingPlatform.Constants;
+using BookingPlatform.Utilities;
 
 namespace BookingPlatform.Models
 {
-	public class BookingModel
+	public class BookingModel : IValidatableObject
 	{
 		public BookingModel()
 		{
@@ -39,6 +42,13 @@ namespace BookingPlatform.Models
 
 		[MaxLength(100, ErrorMessage = Strings.Public.InputErrorMaxLength100)]
 		public string Address { get; set; }
+
+		[Required(ErrorMessage = Strings.Public.InputErrorCanton)]
+		[MaxLength(100, ErrorMessage = Strings.Public.InputErrorMaxLength100)]
+		public string Canton { get; set; }
+
+		[Required(ErrorMessage = Strings.Public.InputErrorCaptcha)]
+		public int? CaptchaResponse { get; set; }
 
 		[Required(ErrorMessage = Strings.Public.InputErrorDate)]
 		public long? DateTicks { get; set; }
@@ -88,8 +98,8 @@ namespace BookingPlatform.Models
 		[RegularExpression("([1-9][0-9]{3})", ErrorMessage = Strings.Public.InputErrorZipCode)]
 		public int? ZipCode { get; set; }
 		
+		public CaptchaUtility.Captcha Captcha { get; set; }
 		public IList<Event> Events { get; set; }
-
 		public BookingCalendarModel CalendarModel { get; set; }
 
 		public IEnumerable<SelectListItem> EventListItems
@@ -103,6 +113,39 @@ namespace BookingPlatform.Models
 					yield return new SelectListItem { Text = @event.Name, Value = @event.Id.ToString(), Selected = EventId == @event.Id };
 				}
 			}
+		}
+
+		public IEnumerable<SelectListItem> CantonListItems
+		{
+			get
+			{
+				yield return new SelectListItem { Text = Strings.Public.Canton.SG, Value = nameof(Strings.Public.Canton.SG) };
+				yield return new SelectListItem { Text = Strings.Public.Canton.AR, Value = Strings.Public.Canton.AR };
+				yield return new SelectListItem { Text = Strings.Public.Canton.AI, Value = Strings.Public.Canton.AI };
+				yield return new SelectListItem { Text = Strings.Public.Canton.TG, Value = Strings.Public.Canton.TG };
+				yield return new SelectListItem { Text = Strings.Public.Canton.ZH, Value = Strings.Public.Canton.ZH };
+				yield return new SelectListItem { Text = Strings.Public.Canton.GR, Value = Strings.Public.Canton.GR };
+				yield return new SelectListItem { Text = Strings.Public.Canton.Other, Value = Strings.Public.Canton.Other };
+			}
+		}
+
+		public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+		{
+			CaptchaUtility.Captcha captcha;
+			var results = new List<ValidationResult>();
+			var hasCaptcha = CaptchaUtility.TryGetFromSession(out captcha);
+
+			if (!CaptchaResponse.HasValue || !hasCaptcha || CaptchaResponse != captcha.Solution)
+			{
+				results.Add(new ValidationResult(Strings.Public.InputErrorCaptcha, new[] { nameof(CaptchaResponse) }));
+			}
+
+			if (results.Any())
+			{
+				results.Add(ValidationResult.Success);
+			}
+
+			return results;
 		}
 	}
 }

@@ -28,6 +28,7 @@ namespace BookingPlatform.Backend.Entities
 	public class Booking
 	{
 		public string Address { get; set; }
+		public string Canton { get; set; }
 		public DateTime Date { get; set; }
 		public string Email { get; set; }
 		public Event Event { get; set; }

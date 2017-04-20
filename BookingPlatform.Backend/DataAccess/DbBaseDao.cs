@@ -98,10 +98,15 @@ namespace BookingPlatform.Backend.DataAccess
 
 				using (var reader = command.ExecuteReader())
 				{
-					TEntity entity;
+					TEntity entity = default(TEntity);
 
 					reader.Read();
-					entity = MapFrom(reader);
+
+					if (reader.HasRows)
+					{
+						entity = MapFrom(reader);
+					}
+
 					transaction.Complete();
 
 					return entity;

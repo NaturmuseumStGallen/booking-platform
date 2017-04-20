@@ -41,6 +41,10 @@ namespace BookingPlatform.Models
 		[MaxLength(100, ErrorMessage = Strings.Admin.BookingDetails.InputErrorMaxLength100)]
 		public string Address { get; set; }
 
+		[Required(ErrorMessage = Strings.Admin.BookingDetails.InputErrorCanton)]
+		[MaxLength(100, ErrorMessage = Strings.Admin.BookingDetails.InputErrorMaxLength100)]
+		public string Canton { get; set; }
+
 		[Required(ErrorMessage = Strings.Admin.BookingDetails.InputErrorDate)]
 		[RegularExpression("^((0[1-9])|([1-2][0-9])|(3[0-1])).((0[1-9])|(1[0-2])).20[1-5][0-9]$", ErrorMessage = Strings.Admin.BookingDetails.InputErrorDate)]
 		public string Date { get; set; }

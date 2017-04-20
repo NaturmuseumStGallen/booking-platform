@@ -93,6 +93,10 @@
         @Html.TextBoxFor(m => m.Town)
         @Html.ValidationMessageFor(m => m.Town)
 
+        @Html.LabelFor(m => m.Canton, Strings.Admin.BookingDetails.InputLabelCanton)
+        @Html.TextBoxFor(m => m.Canton)
+        @Html.ValidationMessageFor(m => m.Canton)
+
         <h3>@Strings.Admin.BookingDetails.ContactInformation</h3>
 
         @Html.LabelFor(m => m.Email, Strings.Admin.BookingDetails.InputLabelEmail)

@@ -87,6 +87,7 @@ namespace BookingPlatform.Constants
 				public const string Cancelled = "Storniert";
 				public const string ContactInformation = "Kontaktinformationen";
 				public const string Event = "Führung";
+				public const string InputErrorCanton = "Bitte gültigen Kanton eingeben!";
 				public const string InputErrorDate = "Bitte gültiges Datum eingeben (dd.mm.yyyy)!";
 				public const string InputErrorEmail = "Bitte gültige E-Mail-Adresse eingeben!";
 				public const string InputErrorEvent = "Bitte Führung auswählen!";
@@ -102,6 +103,7 @@ namespace BookingPlatform.Constants
 				public const string InputErrorTown = "Bitte Wohnort eingeben!";
 				public const string InputErrorZipCode = "Bitte gültige Postleitzahl eingeben!";
 				public const string InputLabelAddress = "Adresse";
+				public const string InputLabelCanton = "Kanton*";
 				public const string InputLabelDate = "Datum*";
 				public const string InputLabelEmail = "E-Mail*";
 				public const string InputLabelFirstName = "Vorname*";
@@ -184,8 +186,21 @@ namespace BookingPlatform.Constants
 
 			public static class Overview
 			{
+				public const string ActiveEventsCount = "Anzahl aktiver Führungen:";
+				public const string CurrentData = "Aktuelle Daten";
+				public const string NewestBooking = "Neueste Buchung:";
+				public const string NoWarnings = "Keine Meldungen oder Warnungen verfügbar.";
 				public const string PageTitle = "Übersicht";
+				public const string StatisticalInfos = "Statistische Informationen";
+				public const string PendingBookingsCount = "Anzahl ausstehender, aktiver Buchungen:";
+				public const string RulesCount = "Anzahl konfigurierter Buchungsregeln:";
+				public const string SystemMessages = "System-Meldungen";
 				public const string SystemStatus = "System-Status";
+				public const string TotalBookingCount = "Gesamtzahl im System gespeicherter Buchungen:";
+				public const string Warning = "WARNUNG";
+				public const string WarningNoEmails = "Keine E-Mail-EmpfängerInnen konfiguriert! Systemnachrichten werden nicht versandt!";
+				public const string WarningNoEvents = "Keine Führungen konfiguriert!";
+				public const string WarningNoTimes = "Keine Buchungszeiten konfiguriert! Die BenutzerInnen können keine Buchung vornehmen!";
 			}
 
 			public static class RuleDetails
@@ -306,6 +321,8 @@ namespace BookingPlatform.Constants
 			public const string InputDescriptionDate = "Sie können ein Datum durch Anklicken eines freien Termins im untenstehenden Kalender reservieren. Bitte beachten Sie, dass die Verfügbarkeit je nach Führung variiert.";
 			public const string InputDescriptionGrade = "z.B. \"Mittelstufe, 5. + 6. Klasse\"";
 			public const string InputDescriptionNumberOfKids = "min. 5 bis max. 25";
+			public const string InputErrorCanton = "Bitte wählen Sie einen Kanton!";
+			public const string InputErrorCaptcha = "Die eingegebene Antwort war nicht korrekt. Bitte versuchen Sie es erneut!";
 			public const string InputErrorDate = "Bitte wählen Sie einen Termin!";
 			public const string InputErrorEmail = "Bitte geben Sie eine gültige E-Mail-Adresse an!";
 			public const string InputErrorEvent = "Bitte wählen Sie eine Führung!";
@@ -320,6 +337,8 @@ namespace BookingPlatform.Constants
 			public const string InputErrorTown = "Bitte geben Sie einen Wohnort an!";
 			public const string InputErrorZipCode = "Bitte geben Sie eine gültige Postleitzahl an!";
 			public const string InputLabelAddress = "Adresse";
+			public const string InputLabelCanton = "Kanton*";
+			public const string InputLabelCaptcha = "Sicherheitsfrage";
 			public const string InputLabelEmail = "E-Mail*";
 			public const string InputLabelFirstName = "Vorname*";
 			public const string InputLabelGrade = "Klassenbezeichnung*";
@@ -339,6 +358,17 @@ namespace BookingPlatform.Constants
 			public const string PleaseSelect = " - Bitte wählen - ";
 			public const string PleaseSelectEvent = "Bitte wählen Sie eine Führung aus!";
 			public const string Submit = "Abschicken";
+
+			public static class Canton
+			{
+				public const string AI = "AI";
+				public const string AR = "AR";
+				public const string GR = "GR";
+				public const string TG = "TG";
+				public const string SG = "SG";
+				public const string ZH = "ZH";
+				public const string Other = "Anderer";
+			}
 		}
 	}
 }

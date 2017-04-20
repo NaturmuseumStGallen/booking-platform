@@ -23,6 +23,8 @@
 
 using System.Threading;
 using System.Web.Mvc;
+using BookingPlatform.Backend.DataAccess;
+using BookingPlatform.Models;
 using BookingPlatform.Utilities;
 
 namespace BookingPlatform.Controllers
@@ -33,7 +35,11 @@ namespace BookingPlatform.Controllers
 		[HttpGet]
 		public ActionResult Overview()
 		{
-			return View();
+			var model = new AdminOverviewModel();
+
+			model.Initialize();
+
+			return View(model);
 		}
 
 		[HttpGet]

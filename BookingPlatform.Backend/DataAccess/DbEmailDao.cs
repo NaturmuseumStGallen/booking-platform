@@ -21,6 +21,7 @@
  * along with BookingPlatform. If not, see <http://www.gnu.org/licenses/>.
  */
 
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using BookingPlatform.Backend.Entities;
@@ -42,6 +43,13 @@ namespace BookingPlatform.Backend.DataAccess
 			var sql = "SELECT * FROM EmailRecipient";
 
 			return ExecuteMultiQuery(sql);
+		}
+
+		public int GetCount()
+		{
+			var sql = "SELECT COUNT(*) FROM EmailRecipient";
+
+			return Convert.ToInt32(ExecuteScalar(sql));
 		}
 
 		public void SaveNew(string email)

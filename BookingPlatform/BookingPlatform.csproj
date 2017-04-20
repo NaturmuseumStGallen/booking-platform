@@ -133,6 +133,7 @@
     <Compile Include="Models\ModelMapper.cs" />
     <Compile Include="Utilities\Authenticator.cs" />
     <Compile Include="Utilities\CalendarUtility.cs" />
+    <Compile Include="Utilities\CaptchaUtility.cs" />
     <Compile Include="Utilities\RuleModelBinder.cs" />
     <Compile Include="Utilities\ValidationUtility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

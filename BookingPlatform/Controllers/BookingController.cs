@@ -38,6 +38,7 @@ namespace BookingPlatform.Controllers
 		{
 			var model = new BookingModel();
 
+			model.Captcha = CaptchaUtility.GenerateAndStoreInSession();
 			model.Events = Database.Instance.GetActiveEvents();
 			model.CalendarModel.CurrentDateTicks = DateTime.Today.Ticks;
 			model.CalendarModel.ShowEventSelectionMessage = !id.HasValue;
@@ -68,7 +69,7 @@ namespace BookingPlatform.Controllers
 				return Content("Success!");
 			}
 
-			model.DateTicks = null;
+			model.Captcha = CaptchaUtility.GenerateAndStoreInSession();
 			model.Events = Database.Instance.GetActiveEvents();
 			model.CalendarModel.CurrentDateTicks = DateTime.Today.Ticks;
 			model.CalendarModel.ShowEventSelectionMessage = !model.EventId.HasValue;

@@ -51,6 +51,31 @@ namespace BookingPlatform.Models
 			}
 		}
 
+		public static void Initialize(this AdminOverviewModel model)
+		{
+			model.ActiveEventsCount = Database.Instance.GetActiveEventsCount();
+			model.NewestBooking = Database.Instance.GetNewestActiveBooking();
+			model.PendingBookingsCount = Database.Instance.GetPendingBookingsCount();
+			model.RulesCount = Database.Instance.GetRuleCount();
+			model.TotalBookingCount = Database.Instance.GetTotalBookingCount();
+			model.UpcomingBookings = Database.Instance.GetUpcomingBookingsFor(DateTime.Today);
+
+			if (Database.Instance.GetEmailRecipientsCount() == 0)
+			{
+				model.Warnings.Add(AdminOverviewModel.Warning.NO_EMAILS_CONFIGURED);
+			}
+
+			if (model.ActiveEventsCount == 0)
+			{
+				model.Warnings.Add(AdminOverviewModel.Warning.NO_EVENTS_CONFIGURED);
+			}
+
+			if (Database.Instance.GetTimesCount() == 0)
+			{
+				model.Warnings.Add(AdminOverviewModel.Warning.NO_TIMES_CONFIGURED);
+			}
+		}
+
 		public static void Initialize(this AdminSettingsModel model)
 		{
 			model.Recipients = Database.Instance.GetEmailRecipients();
@@ -62,6 +87,7 @@ namespace BookingPlatform.Models
 		public static void MapFromEntity(this AdminBookingDetailsModel model, Booking booking)
 		{
 			model.Address = booking.Address;
+			model.Canton = booking.Canton;
 			model.Date = booking.Date.ToString("dd.MM.yyyy");
 			model.Email = booking.Email;
 			model.EventId = booking.Event.Id;
@@ -155,13 +181,13 @@ namespace BookingPlatform.Models
 		public static void MapToEntity(this AdminBookingDetailsModel model, Booking booking)
 		{
 			booking.Address = model.Address;
+			booking.Canton = model.Canton;
 			booking.Date = DateTime.Parse(model.Date + " " + model.Time);
 			booking.Email = model.Email;
 			booking.EventId = model.EventId;
 			booking.FirstName = model.FirstName;
 			booking.Grade = model.Grade;
 			booking.Id = model.Id;
-			booking.IsActive = model.IsActive;
 			booking.LastName = model.LastName;
 			booking.Notes = model.Notes;
 			booking.NumberOfKids = model.NumberOfKids.Value;
@@ -261,6 +287,7 @@ namespace BookingPlatform.Models
 		public static void MapToEntity(this BookingModel model, Booking booking)
 		{
 			booking.Address = model.Address;
+			booking.Canton = model.Canton;
 			booking.Date = DateTimeUtility.NewFor(model.DateTicks.Value);
 			booking.Email = model.Email;
 			booking.EventId = model.EventId;

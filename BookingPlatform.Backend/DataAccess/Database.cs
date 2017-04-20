@@ -61,6 +61,11 @@ namespace BookingPlatform.Backend.DataAccess
 			return new DbEventDao().GetAllActive();
 		}
 
+		public int GetActiveEventsCount()
+		{
+			return new DbEventDao().GetActiveCount();
+		}
+
 		public Booking GetBookingBy(int id)
 		{
 			var booking = new DbBookingDao().GetBy(id);
@@ -88,6 +93,11 @@ namespace BookingPlatform.Backend.DataAccess
 			return new DbEmailDao().GetAll();
 		}
 
+		public int GetEmailRecipientsCount()
+		{
+			return new DbEmailDao().GetCount();
+		}
+
 		public Event GetEventBy(int id)
 		{
 			return new DbEventDao().GetBy(id);
@@ -98,6 +108,23 @@ namespace BookingPlatform.Backend.DataAccess
 			return new DbEventDao().GetBy(ids);
 		}
 
+		public Booking GetNewestActiveBooking()
+		{
+			var booking = new DbBookingDao().GetNewestActive();
+
+			if (booking != null)
+			{
+				booking.Event = new DbEventDao().GetBy(booking.EventId.Value);
+			}
+
+			return booking;
+		}
+
+		public int GetPendingBookingsCount()
+		{
+			return new DbBookingDao().GetPendingCount();
+		}
+
 		public Settings GetSettings()
 		{
 			return new DbSettingsDao().Get();
@@ -106,6 +133,11 @@ namespace BookingPlatform.Backend.DataAccess
 		public IList<IRule> GetRules()
 		{
 			return new DbRuleDao().GetRules();
+		}
+
+		public int GetRuleCount()
+		{
+			return new DbRuleDao().GetTotalCount();
 		}
 
 		public RuleConfiguration GetRuleData(int id)
@@ -123,9 +155,32 @@ namespace BookingPlatform.Backend.DataAccess
 			return new DbTimeDao().GetTimes();
 		}
 
+		public int GetTimesCount()
+		{
+			return new DbTimeDao().GetCount();
+		}
+
 		public IList<TimeData> GetTimeData()
 		{
 			return new DbTimeDao().GetTimeData();
+		}
+
+		public int GetTotalBookingCount()
+		{
+			return new DbBookingDao().GetTotalCount();
+		}
+
+		public IList<Booking> GetUpcomingBookingsFor(DateTime date)
+		{
+			var bookings = new DbBookingDao().GetUpcomingBookings(date);
+			var eventDao = new DbEventDao();
+
+			foreach (var booking in bookings)
+			{
+				booking.Event = eventDao.GetBy(booking.EventId.Value);
+			}
+
+			return bookings;
 		}
 
 		public bool IsValidBookingId(int id)

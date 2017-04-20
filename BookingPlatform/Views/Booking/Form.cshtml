@@ -86,6 +86,10 @@
     @Html.TextBoxFor(m => m.Town)
     @Html.ValidationMessageFor(m => m.Town)
 
+    @Html.LabelFor(m => m.Canton, Strings.Public.InputLabelCanton)
+    @Html.DropDownListFor(m => m.Canton, Model.CantonListItems)
+    @Html.ValidationMessageFor(m => m.Canton)
+
     <h2>@Strings.Public.ContactInformation</h2>
 
     @Html.LabelFor(m => m.Email, Strings.Public.InputLabelEmail)
@@ -111,6 +115,11 @@
     @Html.LabelFor(m => m.Notes, Strings.Public.InputLabelNotes)
     @Html.TextAreaFor(m => m.Notes, new { rows = 5 })
     @Html.ValidationMessageFor(m => m.Notes)
+
+    @Html.LabelFor(m => m.CaptchaResponse, Strings.Public.InputLabelCaptcha)
+    <img alt="captcha" src="data:image/png;base64,@Model.Captcha.ImageData" />
+    <input type="text" name="@Html.NameFor(m => m.CaptchaResponse)" />
+    @Html.ValidationMessageFor(m => m.CaptchaResponse)
 
     <input type="submit" value="@Strings.Public.Submit" />
 }

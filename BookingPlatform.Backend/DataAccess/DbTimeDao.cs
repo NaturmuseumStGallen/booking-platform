@@ -39,6 +39,13 @@ namespace BookingPlatform.Backend.DataAccess
 			ExecuteNonQuery(sql, parameter);
 		}
 
+		public int GetCount()
+		{
+			var sql = "SELECT COUNT(*) FROM [Time]";
+
+			return Convert.ToInt32(ExecuteScalar(sql));
+		}
+
 		public IList<TimeSpan> GetTimes()
 		{
 			return GetTimeData().Select(t => t.Value).ToList();
