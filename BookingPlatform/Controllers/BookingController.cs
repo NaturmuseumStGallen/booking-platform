@@ -24,6 +24,7 @@
 using System;
 using System.Web.Mvc;
 using BookingPlatform.Backend.DataAccess;
+using BookingPlatform.Backend.Emails;
 using BookingPlatform.Backend.Entities;
 using BookingPlatform.Models;
 using BookingPlatform.Utilities;
@@ -66,7 +67,7 @@ namespace BookingPlatform.Controllers
 				// TODO:
 				// - Send email
 				// - Return success page with most important booking information & note about email confirmation
-				return Content("Success!");
+				return RedirectToAction(nameof(Confirmation));
 			}
 
 			model.Captcha = CaptchaUtility.GenerateAndStoreInSession();
@@ -78,6 +79,20 @@ namespace BookingPlatform.Controllers
 			{
 				model.CalendarModel.Dates = CalendarUtility.CalculateBookingDates(DateTime.Today, model.EventId.Value);
 			}
+
+			return View(model);
+		}
+
+		[HttpGet]
+		public ActionResult Confirmation()
+		{
+			var model = new BookingConfirmationModel();
+			var settings = Database.Instance.GetSettings();
+			var contents = Database.Instance.GetTextContents();
+			var pageContent = settings.ConfirmationPageContent;
+
+			pageContent = ContentParser.Replace(pageContent, contents);
+			model.PageContent = ContentParser.ToMarkup(pageContent);
 
 			return View(model);
 		}

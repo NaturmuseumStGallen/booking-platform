@@ -53,7 +53,7 @@ namespace BookingPlatform.Controllers
 		{
 			if (Authenticator.IsAuthenticated() || Authenticator.TryToAuthenticate(password))
 			{
-				return RedirectToAction("Overview");
+				return RedirectToAction(nameof(Overview));
 			}
 
 			// A short delay to make brute force attacks less effective...
@@ -67,14 +67,14 @@ namespace BookingPlatform.Controllers
 		{
 			Authenticator.Logout();
 
-			return RedirectToAction("Login");
+			return RedirectToAction(nameof(Login));
 		}
 
 		protected override void OnActionExecuting(ActionExecutingContext context)
 		{
 			if (context.ActionDescriptor.ActionName != nameof(Login) && !Authenticator.IsAuthenticated())
 			{
-				context.Result = RedirectToAction("Login");
+				context.Result = RedirectToAction(nameof(Login));
 
 				return;
 			}

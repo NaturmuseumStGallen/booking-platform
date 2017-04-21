@@ -22,10 +22,10 @@
  */
 
 using System;
-using System.Linq;
 using System.Web.Mvc;
 using BookingPlatform.Backend.Constants;
 using BookingPlatform.Backend.DataAccess;
+using BookingPlatform.Backend.Entities;
 using BookingPlatform.Backend.Security;
 using BookingPlatform.Models;
 using BookingPlatform.Utilities;
@@ -42,7 +42,7 @@ namespace BookingPlatform.Controllers
 				Database.Instance.DeleteEmailRecipient(id.Value);
 			}
 
-			return RedirectToAction("Settings");
+			return RedirectToAction(nameof(Settings));
 		}
 
 		[HttpGet]
@@ -53,7 +53,18 @@ namespace BookingPlatform.Controllers
 				Database.Instance.DeleteRule(id.Value);
 			}
 
-			return RedirectToAction("Settings");
+			return RedirectToAction(nameof(Settings));
+		}
+
+		[HttpGet]
+		public ActionResult DeleteText(int? id)
+		{
+			if (id.HasValue)
+			{
+				Database.Instance.DeleteTextContent(id.Value);
+			}
+
+			return RedirectToAction(nameof(Settings));
 		}
 
 		[HttpGet]
@@ -64,7 +75,7 @@ namespace BookingPlatform.Controllers
 				Database.Instance.DeleteTime(id.Value);
 			}
 
-			return RedirectToAction("Settings");
+			return RedirectToAction(nameof(Settings));
 		}
 
 		[HttpPost]
@@ -75,7 +86,18 @@ namespace BookingPlatform.Controllers
 				Database.Instance.SaveNewEmailRecipient(email);
 			}
 
-			return RedirectToAction("Settings");
+			return RedirectToAction(nameof(Settings));
+		}
+
+		[HttpPost]
+		public ActionResult NewTextContent(TextContent content)
+		{
+			if (ValidationUtility.AreNotNullOrWhitespace(content.Key, content.Value))
+			{
+				Database.Instance.SaveNew(content);
+			}
+
+			return RedirectToAction(nameof(Settings));
 		}
 
 		[HttpPost]
@@ -86,7 +108,7 @@ namespace BookingPlatform.Controllers
 				Database.Instance.SaveNewTime(TimeSpan.Parse(time));
 			}
 
-			return RedirectToAction("Settings");
+			return RedirectToAction(nameof(Settings));
 		}
 
 		[HttpGet]
@@ -111,7 +133,7 @@ namespace BookingPlatform.Controllers
 				return View(model);
 			}
 
-			return RedirectToAction("Settings");
+			return RedirectToAction(nameof(Settings));
 		}
 
 		[HttpPost]
@@ -132,7 +154,7 @@ namespace BookingPlatform.Controllers
 					Database.Instance.SaveNew(ruleData);
 				}
 
-				return RedirectToAction("Settings");
+				return RedirectToAction(nameof(Settings));
 			}
 
 			return View(model);
@@ -151,14 +173,25 @@ namespace BookingPlatform.Controllers
 		}
 
 		[HttpPost]
-		public ActionResult UpdateEmailContent(string title, string plaintext, string html)
+		public ActionResult UpdateConfirmationPageContent(string content)
 		{
-			if (ValidationUtility.AreNotNullOrWhitespace(title, plaintext, html))
+			if (ValidationUtility.AreNotNullOrWhitespace(content))
 			{
-				Database.Instance.UpdateEmailContent(title, plaintext, html);
+				Database.Instance.UpdateConfirmationPageContent(content);
 			}
 
-			return RedirectToAction("Settings");
+			return RedirectToAction(nameof(Settings));
+		}
+
+		[HttpPost]
+		public ActionResult UpdateEmailContent(string title, string content)
+		{
+			if (ValidationUtility.AreNotNullOrWhitespace(title, content))
+			{
+				Database.Instance.UpdateEmailContent(title, content);
+			}
+
+			return RedirectToAction(nameof(Settings));
 		}
 
 		[HttpPost]
@@ -172,7 +205,7 @@ namespace BookingPlatform.Controllers
 				Database.Instance.UpdatePassword(hash, salt);
 			}
 
-			return RedirectToAction("Settings");
+			return RedirectToAction(nameof(Settings));
 		}
 	}
 }

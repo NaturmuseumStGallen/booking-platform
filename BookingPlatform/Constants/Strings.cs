@@ -283,7 +283,8 @@ namespace BookingPlatform.Constants
 				public const string AdminPassword = "Admin-Passwort";
 				public const string BookingTimes = "Buchungszeiten";
 				public const string ChangePassword = "Passwort ändern:";
-				public const string Content = "Inhalt Bestätigungsmail";
+				public const string ConfirmationPageContent = "Konfiguration der Bestätigungsseite";
+				public const string EmailContent = "Inhalt Bestätigungsmail";
 				public const string CreateNewRule = "Neue Regel erstellen:";
 				public const string CurrentPassword = "Momentanes Passwort:";
 				public const string DateRangeRule = "Einzeldatum / Zeitperiode";
@@ -301,6 +302,7 @@ namespace BookingPlatform.Constants
 				public const string RuleOverview = "Übersicht Buchungsregeln";
 				public const string RuleSettings = "Konfigurationswerte";
 				public const string RuleType = "Typ";
+				public const string TextConfiguration = "Konfiguration Textinhalte";
 				public const string Time = "Zeit";
 				public const string WeeklyRule = "Wöchentliche Regel";
 			}
@@ -315,6 +317,7 @@ namespace BookingPlatform.Constants
 			public const string AvailabilityBooked = "Ausgebucht";
 			public const string AvailabilityNotBookable = "Nicht buchbar";
 			public const string BookingMessageGrade = "Bitte buchen Sie pro Klassenverband nur eine Führung. Für Ausnahmen benutzen Sie bitte das Kommentarfeld.";
+			public const string ConfirmationPageTitle = "Buchung gespeichert";
 			public const string ContactInformation = "Kontaktinformationen";
 			public const string Date = "Datum";
 			public const string Event = "Führung";

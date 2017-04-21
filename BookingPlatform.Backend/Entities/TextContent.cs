@@ -22,41 +22,14 @@
  */
 
 using System;
-using System.ComponentModel.DataAnnotations;
 
-namespace BookingPlatform.Utilities
+namespace BookingPlatform.Backend.Entities
 {
-	public static class ValidationUtility
+	public class TextContent
 	{
-		public static bool AreNotNullOrWhitespace(params string[] strings)
-		{
-			var valid = true;
-
-			foreach (var @string in strings)
-			{
-				valid &= !String.IsNullOrWhiteSpace(@string);
-			}
-
-			return valid;
-		}
-
-		public static bool IsValidEmail(string email)
-		{
-			const int MAX_LENGTH = 100;
-
-			return new EmailAddressAttribute().IsValid(email) && email.Length <= MAX_LENGTH;
-		}
-
-		public static bool IsValidPassword(string password)
-		{
-			return !String.IsNullOrWhiteSpace(password);
-		}
-
-		public static bool IsValidTime(string time)
-		{
-			TimeSpan timeSpan;
-
-			return TimeSpan.TryParse(time, out timeSpan) && timeSpan.Days == 0 && timeSpan.Seconds == 0 && timeSpan.Milliseconds == 0;
-		}
+		public int Id { get; set; }
+		public string Key { get; set; }
+		public string Value { get; set; }
+		public DayOfWeek? DisplayDay { get; set; }
 	}
 }

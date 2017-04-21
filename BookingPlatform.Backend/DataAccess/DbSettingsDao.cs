@@ -35,20 +35,30 @@ namespace BookingPlatform.Backend.DataAccess
 			return ExecuteSingleQuery(sql);
 		}
 
-		public void UpdateEmailContent(string title, string plaintext, string html)
+		public void UpdateConfirmationPageContent(string content)
+		{
+			var sql = @"
+			UPDATE
+				Settings
+			SET
+				ConfirmationPageContent = @ConfirmationPageContent";
+			var parameter = new SqlParameter("@ConfirmationPageContent", content ?? string.Empty);
+
+			ExecuteNonQuery(sql, parameter);
+		}
+
+		public void UpdateEmailContent(string title, string content)
 		{
 			var sql = @"
 			UPDATE
 				Settings
 			SET
 				EmailTitle = @EmailTitle,
-				EmailHtmlContent = @EmailHtmlContent,
-				EmailPlaintextContent = @EmailPlaintextContent";
+				EmailContent = @EmailContent";
 			var parameters = new[]
 			{
 				new SqlParameter("@EmailTitle", title ?? string.Empty),
-				new SqlParameter("@EmailHtmlContent", html ?? string.Empty),
-				new SqlParameter("@EmailPlaintextContent", plaintext ?? string.Empty)
+				new SqlParameter("@EmailContent", content ?? string.Empty)
 			};
 
 			ExecuteNonQuery(sql, parameters);
@@ -76,8 +86,8 @@ namespace BookingPlatform.Backend.DataAccess
 			var settings = new Settings();
 
 			settings.EmailTitle = (string) reader[nameof(Settings.EmailTitle)];
-			settings.EmailHtmlContent = (string) reader[nameof(Settings.EmailHtmlContent)];
-			settings.EmailPlaintextContent = (string) reader[nameof(Settings.EmailPlaintextContent)];
+			settings.EmailContent = (string) reader[nameof(Settings.EmailContent)];
+			settings.ConfirmationPageContent = (string) reader[nameof(Settings.ConfirmationPageContent)];
 			settings.PasswordHash = (string) reader[nameof(Settings.PasswordHash)];
 			settings.PasswordSalt = (string) reader[nameof(Settings.PasswordSalt)];
 

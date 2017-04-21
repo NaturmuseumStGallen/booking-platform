@@ -53,10 +53,10 @@ namespace BookingPlatform.Controllers
 			{
 				var date = new DateTime(model.Year.Value, model.Month.Value, 1);
 
-				return RedirectToAction("Calendar", new { date });
+				return RedirectToAction(nameof(Calendar), new { date });
 			}
 
-			return RedirectToAction("Calendar");
+			return RedirectToAction(nameof(Calendar));
 		}
 	}
 }

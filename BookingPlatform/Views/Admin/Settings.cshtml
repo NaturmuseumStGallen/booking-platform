@@ -124,16 +124,22 @@
         <input type="email" name="email" />
         <input type="submit" value="@Strings.Admin.Save" />
     }
-    <h3>@Strings.Admin.Settings.Content</h3>
+    <hr />
+    <h2>@Strings.Admin.Settings.TextConfiguration</h2>
+    <h3>@Strings.Admin.Settings.EmailContent</h3>
     @using (Html.BeginForm("UpdateEmailContent", "Admin", FormMethod.Post, new { @class = "big" }))
     {
         <label for="title">@Strings.Admin.Settings.EmailTitle</label>
         <input name="title" type="text" value="@Model.EmailTitle" />
-        <label for="plaintext">@Strings.Admin.Settings.PlainText</label>
-        <textarea class="wide" name="plaintext" rows="20">@Model.PlaintextContent</textarea>
-        <label for="html">@Strings.Admin.Settings.Html</label>
-        <textarea class="wide" name="html" rows="20">@Model.HtmlContent</textarea>
+        <label for="content">@Strings.Admin.Settings.PlainText</label>
+        <textarea class="wide" name="content" rows="20">@Model.EmailContent</textarea>
         <p>@Strings.Admin.Settings.PlaceholderInfo</p>
         <input type="submit" value="@Strings.Admin.Save" />
+    }
+    <h3>@Strings.Admin.Settings.ConfirmationPageContent</h3>
+    @using (Html.BeginForm("UpdateConfirmationPageContent", "Admin", FormMethod.Post, new { @class = "big" }))
+    {
+        <label for="content">@Strings.Admin.Settings.Html</label>
+        <textarea class="wide" name="content" rows="20">@Model.ConfirmationPageContent</textarea>
     }
 </div>

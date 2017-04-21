@@ -26,8 +26,8 @@ namespace BookingPlatform.Backend.Entities
 	public class Settings
 	{
 		public string EmailTitle { get; set; }
-		public string EmailHtmlContent { get; set; }
-		public string EmailPlaintextContent { get; set; }
+		public string EmailContent { get; set; }
+		public string ConfirmationPageContent { get; set; }
 		public string PasswordHash { get; set; }
 		public string PasswordSalt { get; set; }
 	}

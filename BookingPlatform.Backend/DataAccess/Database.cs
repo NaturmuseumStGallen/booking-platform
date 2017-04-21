@@ -51,6 +51,11 @@ namespace BookingPlatform.Backend.DataAccess
 			new DbRuleDao().Delete(id);
 		}
 
+		public void DeleteTextContent(int id)
+		{
+			new DbTextContentDao().Delete(id);
+		}
+
 		public void DeleteTime(int id)
 		{
 			new DbTimeDao().Delete(id);
@@ -150,6 +155,11 @@ namespace BookingPlatform.Backend.DataAccess
 			return new DbRuleDao().GetRuleConfigurations();
 		}
 
+		public IList<TextContent> GetTextContents()
+		{
+			return new DbTextContentDao().GetAll();
+		}
+
 		public IList<TimeSpan> GetTimes()
 		{
 			return new DbTimeDao().GetTimes();
@@ -213,6 +223,11 @@ namespace BookingPlatform.Backend.DataAccess
 			new DbRuleDao().SaveNew(ruleData);
 		}
 
+		public void SaveNew(TextContent content)
+		{
+			new DbTextContentDao().SaveNew(content);
+		}
+
 		public void SaveNewEmailRecipient(string email)
 		{
 			new DbEmailDao().SaveNew(email);
@@ -243,9 +258,14 @@ namespace BookingPlatform.Backend.DataAccess
 			new DbBookingDao().UpdateState(id, isActive);
 		}
 
-		public void UpdateEmailContent(string title, string plaintext, string html)
+		public void UpdateConfirmationPageContent(string content)
 		{
-			new DbSettingsDao().UpdateEmailContent(title, plaintext, html);
+			new DbSettingsDao().UpdateConfirmationPageContent(content);
+		}
+
+		public void UpdateEmailContent(string title, string content)
+		{
+			new DbSettingsDao().UpdateEmailContent(title, content);
 		}
 
 		public void UpdatePassword(string hash, string salt)

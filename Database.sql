@@ -29,6 +29,7 @@ DROP TABLE IF EXISTS EmailRecipient
 DROP TABLE IF EXISTS Event2EventGroupRule
 DROP TABLE IF EXISTS MinimumDateRule
 DROP TABLE IF EXISTS Settings
+DROP TABLE IF EXISTS TextContent
 DROP TABLE IF EXISTS [Time]
 DROP TABLE IF EXISTS WeeklyRule
 
@@ -144,8 +145,16 @@ CREATE TABLE Settings
 	PasswordHash VARCHAR(40) NOT NULL,
 	PasswordSalt VARCHAR(32) NOT NULL,
 	EmailTitle VARCHAR(100) NOT NULL,
-	EmailHtmlContent VARCHAR(MAX) NOT NULL,
-	EmailPlaintextContent VARCHAR(MAX) NOT NULL
+	EmailContent VARCHAR(MAX) NOT NULL,
+	ConfirmationPageContent VARCHAR(MAX) NOT NULL
+)
+
+CREATE TABLE TextContent
+(
+	Id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	[Key] VARCHAR(100) NOT NULL,
+	[Value] VARCHAR(MAX) NOT NULL,
+	DisplayDay INT
 )
 
 CREATE TABLE [Time]
@@ -172,6 +181,6 @@ VALUES
 	(4, 'Weekly')
 
 INSERT INTO
-	Settings(PasswordHash, PasswordSalt, EmailTitle, EmailHtmlContent, EmailPlaintextContent)
+	Settings(PasswordHash, PasswordSalt, EmailTitle, EmailContent, ConfirmationPageContent)
 VALUES
 	('', '', '', '', '')

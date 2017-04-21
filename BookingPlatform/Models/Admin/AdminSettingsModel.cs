@@ -45,8 +45,8 @@ namespace BookingPlatform.Models
 		}
 
 		public string EmailTitle { get; set; }
-		public string PlaintextContent { get; set; }
-		public string HtmlContent { get; set; }
+		public string EmailContent { get; set; }
+		public string ConfirmationPageContent { get; set; }
 
 		public IList<Event> Events { get; set; }
 		public IList<EmailRecipient> Recipients { get; set; }

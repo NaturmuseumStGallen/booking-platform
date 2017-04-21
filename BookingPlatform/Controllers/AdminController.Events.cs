@@ -38,7 +38,7 @@ namespace BookingPlatform.Controllers
 				Database.Instance.DeactivateEvent(id.Value);
 			}
 
-			return RedirectToAction("EventOverview");
+			return RedirectToAction(nameof(EventOverview));
 		}
 
 		[HttpGet]
@@ -84,7 +84,7 @@ namespace BookingPlatform.Controllers
 					Database.Instance.SaveNew(@event);
 				}
 
-				return RedirectToAction("EventOverview");
+				return RedirectToAction(nameof(EventOverview));
 			}
 
 			return View(model);

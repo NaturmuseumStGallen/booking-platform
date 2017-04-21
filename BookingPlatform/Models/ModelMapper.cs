@@ -22,7 +22,6 @@
  */
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using BookingPlatform.Backend.Constants;
 using BookingPlatform.Backend.DataAccess;
@@ -174,8 +173,8 @@ namespace BookingPlatform.Models
 		public static void MapFromEntity(this AdminSettingsModel model, Settings settings)
 		{
 			model.EmailTitle = settings.EmailTitle;
-			model.HtmlContent = settings.EmailHtmlContent;
-			model.PlaintextContent = settings.EmailPlaintextContent;
+			model.EmailContent = settings.EmailContent;
+			model.ConfirmationPageContent = settings.ConfirmationPageContent;
 		}
 
 		public static void MapToEntity(this AdminBookingDetailsModel model, Booking booking)

@@ -53,10 +53,10 @@ namespace BookingPlatform.Controllers
 			{
 				var date = new DateTime(model.Year.Value, model.Month.Value, 1);
 
-				return RedirectToAction("BookingOverview", new { date });
+				return RedirectToAction(nameof(BookingOverview), new { date });
 			}
 
-			return RedirectToAction("BookingOverview");
+			return RedirectToAction(nameof(BookingOverview));
 		}
 
 		[HttpGet]
@@ -94,7 +94,7 @@ namespace BookingPlatform.Controllers
 					Database.Instance.SaveNew(booking);
 				}
 
-				return RedirectToAction("BookingOverview", new { model.Date });
+				return RedirectToAction(nameof(BookingOverview), new { model.Date });
 			}
 
 			model.Events = Database.Instance.GetActiveEvents();
@@ -109,10 +109,10 @@ namespace BookingPlatform.Controllers
 			{
 				Database.Instance.UpdateBookingState(id.Value, !isActive.Value);
 
-				return RedirectToAction("BookingDetails", new { id });
+				return RedirectToAction(nameof(BookingDetails), new { id });
 			}
 
-			return RedirectToAction("BookingOverview");
+			return RedirectToAction(nameof(BookingOverview));
 		}
 	}
 }
