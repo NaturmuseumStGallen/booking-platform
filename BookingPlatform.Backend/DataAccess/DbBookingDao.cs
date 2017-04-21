@@ -69,7 +69,7 @@ namespace BookingPlatform.Backend.DataAccess
 
 		public IList<Booking> GetBookings(DateTime from, DateTime to)
 		{
-			var sql = "SELECT * FROM Booking WHERE @From <= [Date] AND [Date] <= @To";
+			var sql = "SELECT * FROM Booking WHERE CAST(@From AS DATE) <= CAST([Date] AS DATE) AND CAST([Date] AS DATE) <= CAST(@To AS DATE)";
 			var parameters = new[]
 			{
 				new SqlParameter("@From", from),
@@ -81,7 +81,7 @@ namespace BookingPlatform.Backend.DataAccess
 
 		public Booking GetNewestActive()
 		{
-			var sql = "SELECT TOP(1) * FROM Booking WHERE IsActive = 1 ORDER BY Id";
+			var sql = "SELECT TOP(1) * FROM Booking WHERE IsActive = 1 ORDER BY Id DESC";
 
 			return ExecuteSingleQuery(sql);
 		}

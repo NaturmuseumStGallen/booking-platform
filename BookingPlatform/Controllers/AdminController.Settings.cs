@@ -173,11 +173,11 @@ namespace BookingPlatform.Controllers
 		}
 
 		[HttpPost]
-		public ActionResult UpdateTextContent(string title, string emailContent, string pageContent)
+		public ActionResult UpdateTextContent(string emailSubject, string emailContent, string pageContent)
 		{
-			if (ValidationUtility.AreNotNullOrWhitespace(title, emailContent, pageContent))
+			if (ValidationUtility.AreNotNullOrWhitespace(emailSubject, emailContent, pageContent))
 			{
-				Database.Instance.UpdateEmailContent(title, emailContent);
+				Database.Instance.UpdateEmailContent(emailSubject, emailContent);
 				Database.Instance.UpdateConfirmationPageContent(pageContent);
 			}
 

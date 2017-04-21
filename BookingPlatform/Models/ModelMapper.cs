@@ -77,7 +77,7 @@ namespace BookingPlatform.Models
 				model.Warnings.Add(AdminOverviewModel.Warning.NO_TIMES_CONFIGURED);
 			}
 
-			if (!ValidationUtility.AreNotNullOrWhitespace(settings.EmailContent, settings.EmailTitle))
+			if (!ValidationUtility.AreNotNullOrWhitespace(settings.EmailContent, settings.EmailSubject))
 			{
 				model.Warnings.Add(AdminOverviewModel.Warning.NO_EMAIL_CONTENT_CONFIGURED);
 			}
@@ -186,7 +186,7 @@ namespace BookingPlatform.Models
 
 		public static void MapFromEntity(this AdminSettingsModel model, Settings settings)
 		{
-			model.EmailTitle = settings.EmailTitle;
+			model.EmailSubject = settings.EmailSubject;
 			model.EmailContent = settings.EmailContent;
 			model.ConfirmationPageContent = settings.ConfirmationPageContent;
 		}

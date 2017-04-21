@@ -35,7 +35,7 @@ namespace BookingPlatform.Tests.Emails
 		[TestMethod]
 		public void DoesNotReturnNull()
 		{
-			var html = ContentParser.ToMarkup(null);
+			var html = ContentParser.ToHtml(null);
 			var plain = ContentParser.ToPlaintext(null);
 
 			Assert.IsNotNull(html);
@@ -45,7 +45,7 @@ namespace BookingPlatform.Tests.Emails
 		[TestMethod]
 		public void ReturnsEmptyString()
 		{
-			var html = ContentParser.ToMarkup("");
+			var html = ContentParser.ToHtml("");
 			var plain = ContentParser.ToPlaintext("");
 
 			Assert.AreEqual(string.Empty, html);
@@ -55,8 +55,8 @@ namespace BookingPlatform.Tests.Emails
 		[TestMethod]
 		public void CreatesHeading1()
 		{
-			var html1 = ContentParser.ToMarkup("# Hello World");
-			var html2 = ContentParser.ToMarkup("Some Text" + NewLine + "# Hello World");
+			var html1 = ContentParser.ToHtml("# Hello World");
+			var html2 = ContentParser.ToHtml("Some Text" + NewLine + "# Hello World");
 
 			Assert.AreEqual(@"<h1>Hello World</h1>", html1);
 			Assert.AreEqual(@"<p>Some Text</p><h1>Hello World</h1>", html2);
@@ -65,8 +65,8 @@ namespace BookingPlatform.Tests.Emails
 		[TestMethod]
 		public void CreatesHeading2()
 		{
-			var html1 = ContentParser.ToMarkup("## Hello World");
-			var html2 = ContentParser.ToMarkup("Some Text" + NewLine + "## Hello World");
+			var html1 = ContentParser.ToHtml("## Hello World");
+			var html2 = ContentParser.ToHtml("Some Text" + NewLine + "## Hello World");
 
 			Assert.AreEqual(@"<h2>Hello World</h2>", html1);
 			Assert.AreEqual(@"<p>Some Text</p><h2>Hello World</h2>", html2);
@@ -75,9 +75,9 @@ namespace BookingPlatform.Tests.Emails
 		[TestMethod]
 		public void CreatesHorizontalRule()
 		{
-			var html1 = ContentParser.ToMarkup("---");
-			var html2 = ContentParser.ToMarkup("Some Text" + NewLine + "---");
-			var html3 = ContentParser.ToMarkup("Some Text" + NewLine + "---" + NewLine + "And even more");
+			var html1 = ContentParser.ToHtml("---");
+			var html2 = ContentParser.ToHtml("Some Text" + NewLine + "---");
+			var html3 = ContentParser.ToHtml("Some Text" + NewLine + "---" + NewLine + "And even more");
 
 			Assert.AreEqual(@"<hr />", html1);
 			Assert.AreEqual(@"<p>Some Text</p><hr />", html2);
@@ -87,7 +87,7 @@ namespace BookingPlatform.Tests.Emails
 		[TestMethod]
 		public void CreatesLineBreak()
 		{
-			var html = ContentParser.ToMarkup("Some text\\\\" + NewLine + "And even more" + NewLine + NewLine + @"\\" + NewLine + "A new paragraph");
+			var html = ContentParser.ToHtml("Some text\\\\" + NewLine + "And even more" + NewLine + NewLine + @"\\" + NewLine + "A new paragraph");
 
 			Assert.AreEqual(@"<p>Some text<br /> And even more</p><br /><p>A new paragraph</p>", html);
 		}
@@ -95,7 +95,7 @@ namespace BookingPlatform.Tests.Emails
 		[TestMethod]
 		public void CreatesLinks()
 		{
-			var html = ContentParser.ToMarkup(@"Some paragraph with a https://www.yoursite.net/link in it...");
+			var html = ContentParser.ToHtml(@"Some paragraph with a https://www.yoursite.net/link in it...");
 
 			Assert.AreEqual("<p>Some paragraph with a <a href=\"https://www.yoursite.net/link\">https://www.yoursite.net/link</a> in it...</p>", html);
 		}
@@ -105,7 +105,7 @@ namespace BookingPlatform.Tests.Emails
 		{
 			var markdown = "Some text here." + NewLine + "In the same paragraph." + NewLine + NewLine + "Then a new paragraph.";
 			var expected = @"<p>Some text here. In the same paragraph.</p><p>Then a new paragraph.</p>";
-			var html = ContentParser.ToMarkup(markdown);
+			var html = ContentParser.ToHtml(markdown);
 
 			Assert.AreEqual(expected, html);
 		}

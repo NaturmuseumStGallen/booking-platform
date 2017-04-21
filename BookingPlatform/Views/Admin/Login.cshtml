@@ -39,5 +39,10 @@
     {
         <input name="password" type="password" placeholder="@Strings.Admin.Login.InputLabelPassword" />
         <input type="submit" value="@Strings.Admin.Login.Submit" />
+        if (ViewBag.LoginFailed == true)
+        {
+            <br />
+            <span class="field-validation-error">@Strings.Admin.Login.WrongPassword</span>
+        }
     }
 </div>

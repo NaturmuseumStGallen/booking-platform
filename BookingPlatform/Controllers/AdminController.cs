@@ -58,6 +58,7 @@ namespace BookingPlatform.Controllers
 
 			// A short delay to make brute force attacks less effective...
 			Thread.Sleep(2000);
+			ViewBag.LoginFailed = true;
 
 			return View();
 		}

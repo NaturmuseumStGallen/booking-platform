@@ -47,17 +47,17 @@ namespace BookingPlatform.Backend.DataAccess
 			ExecuteNonQuery(sql, parameter);
 		}
 
-		public void UpdateEmailContent(string title, string content)
+		public void UpdateEmailContent(string subject, string content)
 		{
 			var sql = @"
 			UPDATE
 				Settings
 			SET
-				EmailTitle = @EmailTitle,
+				EmailSubject = @EmailSubject,
 				EmailContent = @EmailContent";
 			var parameters = new[]
 			{
-				new SqlParameter("@EmailTitle", title ?? string.Empty),
+				new SqlParameter("@EmailSubject", subject ?? string.Empty),
 				new SqlParameter("@EmailContent", content ?? string.Empty)
 			};
 
@@ -85,7 +85,7 @@ namespace BookingPlatform.Backend.DataAccess
 		{
 			var settings = new Settings();
 
-			settings.EmailTitle = (string) reader[nameof(Settings.EmailTitle)];
+			settings.EmailSubject = (string) reader[nameof(Settings.EmailSubject)];
 			settings.EmailContent = (string) reader[nameof(Settings.EmailContent)];
 			settings.ConfirmationPageContent = (string) reader[nameof(Settings.ConfirmationPageContent)];
 			settings.PasswordHash = (string) reader[nameof(Settings.PasswordHash)];

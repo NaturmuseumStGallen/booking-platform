@@ -45,7 +45,7 @@ namespace BookingPlatform.Models
 			Times = new List<TimeData>();
 		}
 
-		public string EmailTitle { get; set; }
+		public string EmailSubject { get; set; }
 		public string EmailContent { get; set; }
 		public string ConfirmationPageContent { get; set; }
 

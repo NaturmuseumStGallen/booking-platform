@@ -183,6 +183,7 @@ namespace BookingPlatform.Constants
 				public const string PageTitle = "Login";
 				public const string SectionTitle = "Administrationsbereich";
 				public const string Submit = "Einloggen";
+				public const string WrongPassword = "Falsches Passwort!";
 			}
 
 			public static class Overview
@@ -296,7 +297,7 @@ namespace BookingPlatform.Constants
 				public const string DateRangeRule = "Einzeldatum / Zeitperiode";
 				public const string DisplayAlways = "An jedem Tag anzeigen";
 				public const string EmailConfiguration = "E-Mail Konfiguration";
-				public const string EmailTitle = "Titel";
+				public const string EmailSubject = "Betreff";
 				public const string EventGroupRule = "Führungsgruppe";
 				public const string GlobalSettings = "Globale Einstellungen";
 				public const string MinimumDateRule = "Mindestdatum";
@@ -323,7 +324,8 @@ namespace BookingPlatform.Constants
 					"\"" + ContentParser.EventNamePlaceholder + "\" → Name der Führung",
 					"\"" + ContentParser.EventDatePlaceholder + "\" → Datum der Führung",
 					"\"" + ContentParser.FirstNamePlaceholder + "\" → Vorname der Person",
-					"\"" + ContentParser.LastNamePlaceholder + "\" → Nachname der Person"
+					"\"" + ContentParser.LastNamePlaceholder + "\" → Nachname der Person",
+					"\"" + ContentParser.EmailPlaceholder + "\" → E-Mail-Adresse"
 				};
 			}
 		}

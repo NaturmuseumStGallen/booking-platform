@@ -137,8 +137,8 @@
     @using (Html.BeginForm("UpdateTextContent", "Admin", FormMethod.Post, new { @class = "big" }))
     {
         <h3>@Strings.Admin.Settings.EmailContent</h3>
-        <label for="title">@Strings.Admin.Settings.EmailTitle</label>
-        <input name="title" type="text" value="@Model.EmailTitle" />
+        <label for="emailSubject">@Strings.Admin.Settings.EmailSubject</label>
+        <input name="emailSubject" type="text" value="@Model.EmailSubject" />
         <label for="emailContent">@Strings.Admin.Settings.Content</label>
         <textarea class="wide" name="emailContent" rows="20">@Model.EmailContent</textarea>
         <h3>@Strings.Admin.Settings.ConfirmationPageContent</h3>

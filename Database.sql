@@ -144,7 +144,7 @@ CREATE TABLE Settings
 (
 	PasswordHash VARCHAR(40) NOT NULL,
 	PasswordSalt VARCHAR(32) NOT NULL,
-	EmailTitle VARCHAR(100) NOT NULL,
+	EmailSubject VARCHAR(100) NOT NULL,
 	EmailContent VARCHAR(MAX) NOT NULL,
 	ConfirmationPageContent VARCHAR(MAX) NOT NULL
 )
@@ -181,6 +181,6 @@ VALUES
 	(4, 'Weekly')
 
 INSERT INTO
-	Settings(PasswordHash, PasswordSalt, EmailTitle, EmailContent, ConfirmationPageContent)
+	Settings(PasswordHash, PasswordSalt, EmailSubject, EmailContent, ConfirmationPageContent)
 VALUES
 	('', '', '', '', '')

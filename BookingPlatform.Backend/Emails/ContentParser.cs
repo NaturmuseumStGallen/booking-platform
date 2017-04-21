@@ -35,6 +35,7 @@ namespace BookingPlatform.Backend.Emails
 		private const string HORIZONTAL_RULE = "---";
 		private const string NEW_LINE = @"\\";
 
+		public const string EmailPlaceholder = "%%Email%%";
 		public const string EventNamePlaceholder = "%%EventName%%";
 		public const string EventDatePlaceholder = "%%EventDate%%";
 		public const string FirstNamePlaceholder = "%%FirstName%%";
@@ -53,6 +54,7 @@ namespace BookingPlatform.Backend.Emails
 
 			if (booking != null)
 			{
+				result = result.Replace(EmailPlaceholder, booking.Email);
 				result = result.Replace(EventNamePlaceholder, booking.Event.Name);
 				result = result.Replace(EventDatePlaceholder, booking.Date.ToLongDateString() + " " + booking.Date.TimeOfDay.ToString("hh\\:mm"));
 				result = result.Replace(FirstNamePlaceholder, booking.FirstName);
@@ -62,7 +64,7 @@ namespace BookingPlatform.Backend.Emails
 			return result;
 		}
 
-		public static string ToMarkup(string markdown)
+		public static string ToHtml(string markdown)
 		{
 			markdown = markdown ?? string.Empty;
 

@@ -96,7 +96,7 @@ namespace BookingPlatform.Controllers
 			var pageContent = settings.ConfirmationPageContent;
 
 			pageContent = ContentParser.ReplacePlaceholders(pageContent, contents, booking);
-			model.PageContent = ContentParser.ToMarkup(pageContent);
+			model.PageContent = ContentParser.ToHtml(pageContent);
 
 			return View(model);
 		}

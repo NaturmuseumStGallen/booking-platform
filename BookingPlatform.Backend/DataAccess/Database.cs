@@ -263,9 +263,9 @@ namespace BookingPlatform.Backend.DataAccess
 			new DbSettingsDao().UpdateConfirmationPageContent(content);
 		}
 
-		public void UpdateEmailContent(string title, string content)
+		public void UpdateEmailContent(string subject, string content)
 		{
-			new DbSettingsDao().UpdateEmailContent(title, content);
+			new DbSettingsDao().UpdateEmailContent(subject, content);
 		}
 
 		public void UpdatePassword(string hash, string salt)

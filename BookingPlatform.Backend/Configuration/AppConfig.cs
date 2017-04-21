@@ -27,14 +27,19 @@ namespace BookingPlatform.Backend.Configuration
 {
 	public static class AppConfig
 	{
+		public static string EmailSenderAddress
+		{
+			get { return ConfigurationManager.AppSettings["EmailSenderAddress"]; }
+		}
+
 		public static string DataSource
 		{
 			get { return ConfigurationManager.AppSettings["DataSource"]; }
 		}
 
-		public static string UserId
+		public static string InitialCatalog
 		{
-			get { return ConfigurationManager.AppSettings["UserId"]; }
+			get { return ConfigurationManager.AppSettings["InitialCatalog"]; }
 		}
 
 		public static string Password
@@ -42,9 +47,14 @@ namespace BookingPlatform.Backend.Configuration
 			get { return ConfigurationManager.AppSettings["Password"]; }
 		}
 
-		public static string InitialCatalog
+		public static string SendGridApiKey
 		{
-			get { return ConfigurationManager.AppSettings["InitialCatalog"]; }
+			get { return ConfigurationManager.AppSettings["SendGridApiKey"]; }
+		}
+
+		public static string UserId
+		{
+			get { return ConfigurationManager.AppSettings["UserId"]; }
 		}
 	}
 }
