@@ -21,29 +21,20 @@
  * along with BookingPlatform. If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System;
+using BookingPlatform.Backend.Entities;
 
-namespace BookingPlatform.Backend.Entities
+namespace BookingPlatform.Backend.Emails
 {
-	[Serializable]
-	public class Booking
+	public static class Mailer
 	{
-		public string Address { get; set; }
-		public string Canton { get; set; }
-		public DateTime Date { get; set; }
-		public string Email { get; set; }
-		public Event Event { get; set; }
-		public int? EventId { get; set; }
-		public string FirstName { get; set; }
-		public string Grade { get; set; }
-		public int? Id { get; set; }
-		public bool IsActive { get; set; }
-		public string LastName { get; set; }
-		public string Notes { get; set; }
-		public int NumberOfKids { get; set; }
-		public string Phone { get; set; }
-		public string School { get; set; }
-		public string Town { get; set; }
-		public int? ZipCode { get; set; }
+		public static void SendConfirmationMail(Booking booking)
+		{
+			// TODO
+		}
+
+		public static void SendNewBookingAlert(Booking booking)
+		{
+			// TODO
+		}
 	}
 }

@@ -66,6 +66,7 @@
     <Compile Include="DataAccess\DbTextContentDao.cs" />
     <Compile Include="DataAccess\DbTimeDao.cs" />
     <Compile Include="Emails\ContentParser.cs" />
+    <Compile Include="Emails\Mailer.cs" />
     <Compile Include="Entities\EmailRecipient.cs" />
     <Compile Include="Entities\RuleConfiguration.cs" />
     <Compile Include="Entities\RuleConfigurations\WeeklyRuleConfiguration.cs" />

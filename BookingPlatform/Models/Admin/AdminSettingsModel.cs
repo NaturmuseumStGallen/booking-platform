@@ -41,6 +41,7 @@ namespace BookingPlatform.Models
 			Events = new List<Event>();
 			Recipients = new List<EmailRecipient>();
 			Rules = new List<RuleConfiguration>();
+			TextContent = new List<TextContent>();
 			Times = new List<TimeData>();
 		}
 
@@ -51,6 +52,7 @@ namespace BookingPlatform.Models
 		public IList<Event> Events { get; set; }
 		public IList<EmailRecipient> Recipients { get; set; }
 		public IList<RuleConfiguration> Rules { get; set; }
+		public IList<TextContent> TextContent { get; set; }
 		public IList<TimeData> Times { get; set; }
 
 		public IEnumerable<SelectListItem> RuleTypes
@@ -60,6 +62,23 @@ namespace BookingPlatform.Models
 				foreach (RuleType type in Enum.GetValues(typeof(RuleType)))
 				{
 					yield return new SelectListItem { Text = Strings.Admin.GetRuleTypeName(type), Value = type.ToString() };
+				}
+			}
+		}
+
+		public IEnumerable<SelectListItem> DisplayDayListItems
+		{
+			get
+			{
+				yield return new SelectListItem { Text = Strings.Admin.Settings.DisplayAlways, Value = string.Empty };
+
+				foreach (var day in Enumerable.Range(1, 6).Concat(Enumerable.Range(0, 1)).Cast<DayOfWeek>())
+				{
+					yield return new SelectListItem
+					{
+						Text = DateTimeFormatInfo.CurrentInfo.GetDayName(day),
+						Value = day.ToString()
+					};
 				}
 			}
 		}

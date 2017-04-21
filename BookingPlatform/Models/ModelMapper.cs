@@ -28,6 +28,7 @@ using BookingPlatform.Backend.DataAccess;
 using BookingPlatform.Backend.Entities;
 using BookingPlatform.Backend.Entities.RuleConfigurations;
 using BookingPlatform.Backend.Scheduling;
+using BookingPlatform.Utilities;
 
 namespace BookingPlatform.Models
 {
@@ -52,6 +53,8 @@ namespace BookingPlatform.Models
 
 		public static void Initialize(this AdminOverviewModel model)
 		{
+			var settings = Database.Instance.GetSettings();
+
 			model.ActiveEventsCount = Database.Instance.GetActiveEventsCount();
 			model.NewestBooking = Database.Instance.GetNewestActiveBooking();
 			model.PendingBookingsCount = Database.Instance.GetPendingBookingsCount();
@@ -61,7 +64,7 @@ namespace BookingPlatform.Models
 
 			if (Database.Instance.GetEmailRecipientsCount() == 0)
 			{
-				model.Warnings.Add(AdminOverviewModel.Warning.NO_EMAILS_CONFIGURED);
+				model.Warnings.Add(AdminOverviewModel.Warning.NO_EMAIL_RECIPIENTS_CONFIGURED);
 			}
 
 			if (model.ActiveEventsCount == 0)
@@ -73,14 +76,25 @@ namespace BookingPlatform.Models
 			{
 				model.Warnings.Add(AdminOverviewModel.Warning.NO_TIMES_CONFIGURED);
 			}
+
+			if (!ValidationUtility.AreNotNullOrWhitespace(settings.EmailContent, settings.EmailTitle))
+			{
+				model.Warnings.Add(AdminOverviewModel.Warning.NO_EMAIL_CONTENT_CONFIGURED);
+			}
+
+			if (!ValidationUtility.AreNotNullOrWhitespace(settings.ConfirmationPageContent))
+			{
+				model.Warnings.Add(AdminOverviewModel.Warning.NO_CONFIRMATION_PAGE_CONTENT_CONFIGURED);
+			}
 		}
 
 		public static void Initialize(this AdminSettingsModel model)
 		{
+			model.Events = Database.Instance.GetActiveEvents();
 			model.Recipients = Database.Instance.GetEmailRecipients();
 			model.Rules = Database.Instance.GetRuleData();
+			model.TextContent = Database.Instance.GetTextContent();
 			model.Times = Database.Instance.GetTimeData();
-			model.Events = Database.Instance.GetActiveEvents();
 		}
 
 		public static void MapFromEntity(this AdminBookingDetailsModel model, Booking booking)
@@ -290,6 +304,7 @@ namespace BookingPlatform.Models
 			booking.Date = DateTimeUtility.NewFor(model.DateTicks.Value);
 			booking.Email = model.Email;
 			booking.EventId = model.EventId;
+			booking.Event = Database.Instance.GetEventBy(model.EventId.Value);
 			booking.FirstName = model.FirstName;
 			booking.Grade = model.Grade;
 			booking.IsActive = true;

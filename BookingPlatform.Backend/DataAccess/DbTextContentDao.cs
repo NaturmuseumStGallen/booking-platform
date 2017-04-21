@@ -65,11 +65,12 @@ namespace BookingPlatform.Backend.DataAccess
 		protected override TextContent MapFrom(SqlDataReader reader)
 		{
 			var content = new TextContent();
+			var displayDay = reader[nameof(TextContent.DisplayDay)];
 
 			content.Id = (int) reader[nameof(TextContent.Id)];
 			content.Key = (string) reader[nameof(TextContent.Key)];
 			content.Value = (string) reader[nameof(TextContent.Value)];
-			content.DisplayDay = reader[nameof(TextContent.DisplayDay)] as DayOfWeek?;
+			content.DisplayDay = displayDay != DBNull.Value ? (DayOfWeek) displayDay : (DayOfWeek?) null;
 
 			return content;
 		}

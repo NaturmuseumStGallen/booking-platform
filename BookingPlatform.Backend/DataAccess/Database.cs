@@ -155,7 +155,7 @@ namespace BookingPlatform.Backend.DataAccess
 			return new DbRuleDao().GetRuleConfigurations();
 		}
 
-		public IList<TextContent> GetTextContents()
+		public IList<TextContent> GetTextContent()
 		{
 			return new DbTextContentDao().GetAll();
 		}

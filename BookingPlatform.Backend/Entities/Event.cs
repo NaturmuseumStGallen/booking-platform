@@ -21,8 +21,11 @@
  * along with BookingPlatform. If not, see <http://www.gnu.org/licenses/>.
  */
 
+using System;
+
 namespace BookingPlatform.Backend.Entities
 {
+	[Serializable]
 	public class Event
 	{
 		public int? Id { get; set; }

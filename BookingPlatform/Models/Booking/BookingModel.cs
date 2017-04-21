@@ -55,6 +55,7 @@ namespace BookingPlatform.Models
 
 		[Required(ErrorMessage = Strings.Public.InputErrorEmail)]
 		[EmailAddress(ErrorMessage = Strings.Public.InputErrorEmail)]
+		[RegularExpression(@"^.+@.+\..+$", ErrorMessage = Strings.Public.InputErrorEmail)]
 		[MaxLength(100, ErrorMessage = Strings.Public.InputErrorMaxLength100)]
 		public string Email { get; set; }
 
@@ -84,6 +85,7 @@ namespace BookingPlatform.Models
 
 		[Required(ErrorMessage = Strings.Public.InputErrorPhone)]
 		[Phone(ErrorMessage = Strings.Public.InputErrorPhone)]
+		[RegularExpression(@"^\+?[0-9 ]+$", ErrorMessage = Strings.Public.InputErrorPhone)]
 		[MaxLength(100, ErrorMessage = Strings.Public.InputErrorMaxLength100)]
 		public string Phone { get; set; }
 

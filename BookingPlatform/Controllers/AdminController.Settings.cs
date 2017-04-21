@@ -57,7 +57,7 @@ namespace BookingPlatform.Controllers
 		}
 
 		[HttpGet]
-		public ActionResult DeleteText(int? id)
+		public ActionResult DeleteTextContent(int? id)
 		{
 			if (id.HasValue)
 			{
@@ -173,22 +173,12 @@ namespace BookingPlatform.Controllers
 		}
 
 		[HttpPost]
-		public ActionResult UpdateConfirmationPageContent(string content)
+		public ActionResult UpdateTextContent(string title, string emailContent, string pageContent)
 		{
-			if (ValidationUtility.AreNotNullOrWhitespace(content))
+			if (ValidationUtility.AreNotNullOrWhitespace(title, emailContent, pageContent))
 			{
-				Database.Instance.UpdateConfirmationPageContent(content);
-			}
-
-			return RedirectToAction(nameof(Settings));
-		}
-
-		[HttpPost]
-		public ActionResult UpdateEmailContent(string title, string content)
-		{
-			if (ValidationUtility.AreNotNullOrWhitespace(title, content))
-			{
-				Database.Instance.UpdateEmailContent(title, content);
+				Database.Instance.UpdateEmailContent(title, emailContent);
+				Database.Instance.UpdateConfirmationPageContent(pageContent);
 			}
 
 			return RedirectToAction(nameof(Settings));

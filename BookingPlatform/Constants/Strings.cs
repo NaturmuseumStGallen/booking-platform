@@ -24,6 +24,7 @@
 using System;
 using System.Web.Mvc;
 using BookingPlatform.Backend.Constants;
+using BookingPlatform.Backend.Emails;
 
 namespace BookingPlatform.Constants
 {
@@ -198,7 +199,9 @@ namespace BookingPlatform.Constants
 				public const string SystemStatus = "System-Status";
 				public const string TotalBookingCount = "Gesamtzahl im System gespeicherter Buchungen:";
 				public const string Warning = "WARNUNG";
-				public const string WarningNoEmails = "Keine E-Mail-EmpfängerInnen konfiguriert! Systemnachrichten werden nicht versandt!";
+				public const string WarningNoConfirmationContent = "Kein Inhalt für die Bestätigungsseite konfiguriert!";
+				public const string WarningNoEmailContent = "Kein Inhalt für das Bestätigungsmail konfiguriert!";
+				public const string WarningNoEmailRecipients = "Keine E-Mail-EmpfängerInnen konfiguriert! Systemnachrichten werden nicht versandt!";
 				public const string WarningNoEvents = "Keine Führungen konfiguriert!";
 				public const string WarningNoTimes = "Keine Buchungszeiten konfiguriert! Die BenutzerInnen können keine Buchung vornehmen!";
 			}
@@ -283,28 +286,45 @@ namespace BookingPlatform.Constants
 				public const string AdminPassword = "Admin-Passwort";
 				public const string BookingTimes = "Buchungszeiten";
 				public const string ChangePassword = "Passwort ändern:";
-				public const string ConfirmationPageContent = "Konfiguration der Bestätigungsseite";
-				public const string EmailContent = "Inhalt Bestätigungsmail";
+				public const string ConfirmationPageContent = "Inhalt der Bestätigungsseite";
+				public const string Content = "Inhalt";
+				public const string DynamicContent = "Dynamische Textinhalte";
+				public const string DynamicContentDescription = "Für alle Textinhalte können Platzhalter definiert werden, welche ggf. nur am gewünschten Tag angezeigt werden.";
+				public const string EmailContent = "Inhalt des Bestätigungsmails";
 				public const string CreateNewRule = "Neue Regel erstellen:";
 				public const string CurrentPassword = "Momentanes Passwort:";
 				public const string DateRangeRule = "Einzeldatum / Zeitperiode";
+				public const string DisplayAlways = "An jedem Tag anzeigen";
 				public const string EmailConfiguration = "E-Mail Konfiguration";
 				public const string EmailTitle = "Titel";
 				public const string EventGroupRule = "Führungsgruppe";
 				public const string GlobalSettings = "Globale Einstellungen";
-				public const string Html = "HTML-Inhalt";
 				public const string MinimumDateRule = "Mindestdatum";
 				public const string PageTitle = "Einstellungen";
-				public const string PlaceholderInfo = "Platzhalter: %%NAME%%, %%DATE%%, %%EVENT%%";
-				public const string PlainText = "Nur-Text-Inhalt";
 				public const string Recipients = "EmpfängerInnen von System-Meldungen";
 				public const string RuleName = "Name";
 				public const string RuleOverview = "Übersicht Buchungsregeln";
 				public const string RuleSettings = "Konfigurationswerte";
 				public const string RuleType = "Typ";
 				public const string TextConfiguration = "Konfiguration Textinhalte";
+				public const string TextConfigurationInfo = "Die Inhalte vom Bestätigungsmail und der Bestätigungsseite können dynamisch mittels Markdown konfiguriert werden:";
+				public const string TextContentDisplayDay = "Wird angezeigt am";
+				public const string TextContentKey = "Platzhalter";
+				public const string TextContentValue = "Text";
 				public const string Time = "Zeit";
 				public const string WeeklyRule = "Wöchentliche Regel";
+
+				public static readonly string[] MarkdownInfos = new string[]
+				{
+					"\"# Titel 1\" → Eine grosse Überschrift mit Text \"Titel 1\"",
+					"\"## Titel 2\" → Eine kleinere Überschrift mit Text \"Titel 2\"",
+					"\"---\" → Eine horizontale Linie",
+					"\"\\\\\" → Einen Zeilenumbruch",
+					"\"" + ContentParser.EventNamePlaceholder + "\" → Name der Führung",
+					"\"" + ContentParser.EventDatePlaceholder + "\" → Datum der Führung",
+					"\"" + ContentParser.FirstNamePlaceholder + "\" → Vorname der Person",
+					"\"" + ContentParser.LastNamePlaceholder + "\" → Nachname der Person"
+				};
 			}
 		}
 
@@ -317,7 +337,7 @@ namespace BookingPlatform.Constants
 			public const string AvailabilityBooked = "Ausgebucht";
 			public const string AvailabilityNotBookable = "Nicht buchbar";
 			public const string BookingMessageGrade = "Bitte buchen Sie pro Klassenverband nur eine Führung. Für Ausnahmen benutzen Sie bitte das Kommentarfeld.";
-			public const string ConfirmationPageTitle = "Buchung gespeichert";
+			public const string ConfirmationPageTitle = "Buchung erfolgreich!";
 			public const string ContactInformation = "Kontaktinformationen";
 			public const string Date = "Datum";
 			public const string Event = "Führung";

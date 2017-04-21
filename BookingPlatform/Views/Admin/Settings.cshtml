@@ -24,6 +24,7 @@
 *@
 
 @model AdminSettingsModel
+@using System.Globalization;
 @using BookingPlatform.Constants;
 @using BookingPlatform.Models;
 
@@ -126,20 +127,58 @@
     }
     <hr />
     <h2>@Strings.Admin.Settings.TextConfiguration</h2>
-    <h3>@Strings.Admin.Settings.EmailContent</h3>
-    @using (Html.BeginForm("UpdateEmailContent", "Admin", FormMethod.Post, new { @class = "big" }))
+    <p>@Strings.Admin.Settings.TextConfigurationInfo</p>
+    <ul>
+        @foreach (var info in Strings.Admin.Settings.MarkdownInfos)
+        {
+            <li>@info</li>
+        }
+    </ul>
+    @using (Html.BeginForm("UpdateTextContent", "Admin", FormMethod.Post, new { @class = "big" }))
     {
+        <h3>@Strings.Admin.Settings.EmailContent</h3>
         <label for="title">@Strings.Admin.Settings.EmailTitle</label>
         <input name="title" type="text" value="@Model.EmailTitle" />
-        <label for="content">@Strings.Admin.Settings.PlainText</label>
-        <textarea class="wide" name="content" rows="20">@Model.EmailContent</textarea>
-        <p>@Strings.Admin.Settings.PlaceholderInfo</p>
+        <label for="emailContent">@Strings.Admin.Settings.Content</label>
+        <textarea class="wide" name="emailContent" rows="20">@Model.EmailContent</textarea>
+        <h3>@Strings.Admin.Settings.ConfirmationPageContent</h3>
+        <label for="pageContent">@Strings.Admin.Settings.Content</label>
+        <textarea class="wide" name="pageContent" rows="20">@Model.ConfirmationPageContent</textarea>
         <input type="submit" value="@Strings.Admin.Save" />
     }
-    <h3>@Strings.Admin.Settings.ConfirmationPageContent</h3>
-    @using (Html.BeginForm("UpdateConfirmationPageContent", "Admin", FormMethod.Post, new { @class = "big" }))
+    <h3>@Strings.Admin.Settings.DynamicContent</h3>
+    <p>@Strings.Admin.Settings.DynamicContentDescription</p>
+    <table>
+        <thead>
+            <tr>
+                <th class="align-left">@Strings.Admin.Settings.TextContentKey</th>
+                <th class="align-left">@Strings.Admin.Settings.TextContentValue</th>
+                <th class="align-left">@Strings.Admin.Settings.TextContentDisplayDay</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var content in Model.TextContent)
+            {
+                <tr>
+                    <td>@content.Key</td>
+                    <td>@content.Value</td>
+                    <td>@(content.DisplayDay.HasValue ? DateTimeFormatInfo.CurrentInfo.GetDayName(content.DisplayDay.Value) : Strings.Admin.Settings.DisplayAlways)</td>
+                    <td class="align-right">
+                        @Html.ActionLink(Strings.Admin.Delete, "DeleteTextContent", new { content.Id }, new { data_safety_message = Strings.Admin.SafetyMessage })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @using (Html.BeginForm("NewTextContent", "Admin", FormMethod.Post, new { @class = "big" }))
     {
-        <label for="content">@Strings.Admin.Settings.Html</label>
-        <textarea class="wide" name="content" rows="20">@Model.ConfirmationPageContent</textarea>
+        <label for="key">@Strings.Admin.Settings.TextContentKey</label>
+        <input type="text" name="key" />
+        <label for="value">@Strings.Admin.Settings.TextContentValue</label>
+        <textarea class="wide" name="value" rows="3"></textarea>
+        <label for="displayday">@Strings.Admin.Settings.TextContentDisplayDay</label>
+        @Html.DropDownList("displayday", Model.DisplayDayListItems)
+        <input type="submit" value="@Strings.Admin.Save" />
     }
 </div>

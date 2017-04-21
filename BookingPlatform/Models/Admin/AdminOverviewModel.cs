@@ -71,8 +71,12 @@ namespace BookingPlatform.Models
 		{
 			switch (warning)
 			{
-				case Warning.NO_EMAILS_CONFIGURED:
-					return Strings.Admin.Overview.WarningNoEmails;
+				case Warning.NO_CONFIRMATION_PAGE_CONTENT_CONFIGURED:
+					return Strings.Admin.Overview.WarningNoConfirmationContent;
+				case Warning.NO_EMAIL_CONTENT_CONFIGURED:
+					return Strings.Admin.Overview.WarningNoEmailContent;
+				case Warning.NO_EMAIL_RECIPIENTS_CONFIGURED:
+					return Strings.Admin.Overview.WarningNoEmailRecipients;
 				case Warning.NO_EVENTS_CONFIGURED:
 					return Strings.Admin.Overview.WarningNoEvents;
 				case Warning.NO_TIMES_CONFIGURED:
@@ -84,7 +88,9 @@ namespace BookingPlatform.Models
 
 		public enum Warning
 		{
-			NO_EMAILS_CONFIGURED,
+			NO_CONFIRMATION_PAGE_CONTENT_CONFIGURED,
+			NO_EMAIL_CONTENT_CONFIGURED,
+			NO_EMAIL_RECIPIENTS_CONFIGURED,
 			NO_EVENTS_CONFIGURED,
 			NO_TIMES_CONFIGURED
 		}

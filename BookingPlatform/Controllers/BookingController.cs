@@ -34,6 +34,8 @@ namespace BookingPlatform.Controllers
 	[RequireHttps]
 	public class BookingController : Controller
 	{
+		private const string BOOKING = "Booking";
+
 		[HttpGet]
 		public ActionResult Form(int? id)
 		{
@@ -63,10 +65,11 @@ namespace BookingPlatform.Controllers
 				model.MapToEntity(booking);
 
 				Database.Instance.SaveNew(booking);
+				Mailer.SendConfirmationMail(booking);
+				Mailer.SendNewBookingAlert(booking);
 
-				// TODO:
-				// - Send email
-				// - Return success page with most important booking information & note about email confirmation
+				Session[BOOKING] = booking;
+				
 				return RedirectToAction(nameof(Confirmation));
 			}
 
@@ -87,11 +90,12 @@ namespace BookingPlatform.Controllers
 		public ActionResult Confirmation()
 		{
 			var model = new BookingConfirmationModel();
+			var booking = Session[BOOKING] as Booking;
 			var settings = Database.Instance.GetSettings();
-			var contents = Database.Instance.GetTextContents();
+			var contents = Database.Instance.GetTextContent();
 			var pageContent = settings.ConfirmationPageContent;
 
-			pageContent = ContentParser.Replace(pageContent, contents);
+			pageContent = ContentParser.ReplacePlaceholders(pageContent, contents, booking);
 			model.PageContent = ContentParser.ToMarkup(pageContent);
 
 			return View(model);

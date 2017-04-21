@@ -35,7 +35,12 @@ namespace BookingPlatform.Backend.Emails
 		private const string HORIZONTAL_RULE = "---";
 		private const string NEW_LINE = @"\\";
 
-		public static string Replace(string text, IList<TextContent> contents)
+		public const string EventNamePlaceholder = "%%EventName%%";
+		public const string EventDatePlaceholder = "%%EventDate%%";
+		public const string FirstNamePlaceholder = "%%FirstName%%";
+		public const string LastNamePlaceholder = "%%LastName%%";
+
+		public static string ReplacePlaceholders(string text, IList<TextContent> contents, Booking booking = null)
 		{
 			var result = text ?? string.Empty;
 
@@ -43,7 +48,15 @@ namespace BookingPlatform.Backend.Emails
 			{
 				var value = !content.DisplayDay.HasValue || content.DisplayDay == DateTime.Today.DayOfWeek ? content.Value : string.Empty;
 
-				result.Replace(content.Key, value);
+				result = result.Replace(content.Key, value);
+			}
+
+			if (booking != null)
+			{
+				result = result.Replace(EventNamePlaceholder, booking.Event.Name);
+				result = result.Replace(EventDatePlaceholder, booking.Date.ToLongDateString() + " " + booking.Date.TimeOfDay.ToString("hh\\:mm"));
+				result = result.Replace(FirstNamePlaceholder, booking.FirstName);
+				result = result.Replace(LastNamePlaceholder, booking.LastName);
 			}
 
 			return result;
@@ -55,30 +68,51 @@ namespace BookingPlatform.Backend.Emails
 
 			var html = new StringBuilder();
 			var lines = markdown.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+			var paragraph = false;
+			Action closeParagraphIfNecessary = () => { if (paragraph) { html.Append("</p>"); paragraph = false; } };
 
 			foreach (var line in lines)
 			{
 				if (line.StartsWith(HEADING_1))
 				{
+					closeParagraphIfNecessary();
 					html.AppendFormat("<h1>{0}</h1>", line.Replace(HEADING_1, string.Empty));
 				}
 				else if (line.StartsWith(HEADING_2))
 				{
+					closeParagraphIfNecessary();
 					html.AppendFormat("<h2>{0}</h2>", line.Replace(HEADING_2, string.Empty));
 				}
 				else if (line == HORIZONTAL_RULE)
 				{
+					closeParagraphIfNecessary();
 					html.Append("<hr />");
 				}
 				else if (line == NEW_LINE)
 				{
+					closeParagraphIfNecessary();
 					html.Append("<br />");
 				}
-				else if (markdown.Length > 0)
+				else if (line.Length > 0)
 				{
-					html.AppendFormat("<p>{0}</p>", AutoReplaceLinks(line));
+					var isExistingParagraph = paragraph;
+					var htmlLine = AutoReplaceLinks(line).Replace(NEW_LINE, "<br />");
+
+					if (!paragraph)
+					{
+						html.Append("<p>");
+						paragraph = true;
+					}
+
+					html.AppendFormat("{0}{1}", isExistingParagraph ? " " : string.Empty, htmlLine);
+				}
+				else
+				{
+					closeParagraphIfNecessary();
 				}
 			}
+
+			closeParagraphIfNecessary();
 
 			return html.ToString();
 		}
@@ -90,18 +124,18 @@ namespace BookingPlatform.Backend.Emails
 			var plain = new StringBuilder();
 			var lines = markdown.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
 
-			foreach (var line in lines)
+			for (var index = 0; index < lines.Length; index++)
 			{
-				var textOnly = line;
+				var textOnly = lines[index];
 
 				textOnly = textOnly.Replace(HEADING_2, string.Empty);
 				textOnly = textOnly.Replace(HEADING_1, string.Empty);
-				textOnly = textOnly.Replace(HORIZONTAL_RULE, string.Empty);
+				textOnly = textOnly.Replace(HORIZONTAL_RULE, "---------------------------------------");
 				textOnly = textOnly.Replace(NEW_LINE, string.Empty);
 
-				if (markdown.Length > 0 && line != HORIZONTAL_RULE)
+				if (markdown.Length > 0)
 				{
-					plain.AppendFormat("{0}{1}", textOnly, Environment.NewLine);
+					plain.AppendFormat("{0}{1}", textOnly, index == lines.Length - 1 ? string.Empty : Environment.NewLine);
 				}
 			}
 
@@ -110,17 +144,18 @@ namespace BookingPlatform.Backend.Emails
 
 		private static string AutoReplaceLinks(string markdown)
 		{
-			var tokens = markdown.Split(' ');
+			var html = markdown ?? string.Empty;
+			var tokens = html.Split(' ');
 
 			foreach (var token in tokens)
 			{
 				if (Uri.IsWellFormedUriString(token, UriKind.Absolute))
 				{
-					markdown = markdown.Replace(token, String.Format("<a href=\"{0}\">{1}</a>", token, token));
+					html = html.Replace(token, String.Format("<a href=\"{0}\">{1}</a>", token, token));
 				}
 			}
 
-			return markdown;
+			return html;
 		}
 	}
 }
