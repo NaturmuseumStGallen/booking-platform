@@ -54,6 +54,8 @@ namespace BookingPlatform.Constants
 				{
 					case RuleType.DateRange:
 						return Settings.DateRangeRule;
+					case RuleType.EventDuration:
+						return Settings.EventDurationRule;
 					case RuleType.EventGroup:
 						return Settings.EventGroupRule;
 					case RuleType.MinimumDate:
@@ -215,7 +217,9 @@ namespace BookingPlatform.Constants
 				public const string InputErrorDate = "Bitte gültiges Datum eingeben (dd.mm.yyyy)!";
 				public const string InputErrorDays = "Bitte gültige Anzahl Tage eingeben (0 oder mehr)!";
 				public const string InputErrorDayOfWeek = "Bitte gültigen Wochentag auswählen!";
+				public const string InputErrorEvent = "Bitte Führung auswählen!";
 				public const string InputErrorEvents = "Bitte mindestens 2 Führungen auswählen!";
+				public const string InputErrorInvalidDateRange = "Ungültiger Datumsbereich, Startdatum muss kleiner sein als Enddatum!";
 				public const string InputErrorMaxLength100 = "Bitte maximal 100 Zeichen eingeben!";
 				public const string InputErrorName = "Bitte gültigen Namen eingeben!";
 				public const string InputErrorTime = "Bitte gültige Zeit eingeben (hh:mm)!";
@@ -225,6 +229,7 @@ namespace BookingPlatform.Constants
 				public const string InputLabelDayOfWeek = "Wochentag";
 				public const string InputLabelEndDate = "Enddatum";
 				public const string InputLabelEndTime = "Endzeit";
+				public const string InputLabelEvent = "Führung";
 				public const string InputLabelEvents = "Führungen";
 				public const string InputLabelName = "Name";
 				public const string InputLabelStartDate = "Startdatum";
@@ -239,44 +244,51 @@ namespace BookingPlatform.Constants
 
 				public static class Descriptions
 				{
-					public static readonly MvcHtmlString DateRangeRule = new MvcHtmlString(
-						@"Erstellt eine Regel für ein einzelnes Datum oder eine Zeitperiode. Es müssen mindestens ein Startdatum und ein
-						  Status gewählt werden. Folgende Eingabekombinationen sind möglich:
-						  <ul>
-							<li>Nur Startdatum: An dem angegebenen Datum wird für den ganzen Tag der gewählte Status angezeigt.</li>
-							<li>Startdatum und Startzeit: Für Führungen am angegebenen Datum zur angegebenen Zeit wird der gewählte Status angezeigt.</li>
-							<li>Startdatum und Enddatum: Für den Zeitraum vom angegebenen Startdatum um 00:00 Uhr bis zum angegebenen Enddatum um 00:00 Uhr wird der gewählte Status angezeigt.</li>
-							<li>Startdatum, Startzeit und Enddatum: Gleich wie vorangehender Punkt, einfach mit angegebener Startzeit statt 00:00 Uhr.</li>
-							<li>Startdatum, Startzeit, Enddatum und Endzeit: Gleich wie vorangehender Punkt, nun aber mit Start- und Endzeit wie eingegeben.</li>
-						  </ul>");
+					public const string Important = "WICHTIG:";
 
-					public static readonly MvcHtmlString EventGroupRule = new MvcHtmlString(
-						@"Erstellt eine Führungsgruppen-Regel. Eine Führungsgruppe kann eine oder mehrere Führungen beinhalten. Diese Regel
-						  bewirkt, dass zum gleichen Zeitpunkt nur eine Führung der Gruppe gebucht werden kann, dass also alle anderen " +
-						 "Führungen derselben Gruppe als \"" + RuleStatusBooked + "\" dargestellt werden.");
+					public static string DateRangeRule = @"Erstellt eine Regel für ein einzelnes Datum oder eine Zeitperiode. Es müssen
+						mindestens ein Startdatum und ein Status gewählt werden. Folgende Eingabekombinationen sind möglich:";
 
-					public static readonly MvcHtmlString MinimumDateRule = new MvcHtmlString(
-						@"Erstellt eine Regel für den ersten (frühsten) buchbaren Termin. Es sind zwei verschiedene Typen möglich:
-						  <ul>" +
-						   "<li>Fixes Datum: Alle vor dem angegebenen Datum (z.B. 3.4.2017 10:00) liegenden Termine werden als \"" + RuleStatusNotBookable + "\" dargestellt.</li>" +
-						   "<li>Anzahl Tage: Definiert eine gesperrte Zeitperiode ab jeweils dem aktuellen Datum eines Tages, z.B. heute + 5 Tage.</li>" +
-						 "</ul>");
+					public static string EventDurationRule = @"Erstellt eine Regel, welche den gültigen Buchungszeitraum für eine Führung
+						definiert. Das heisst, dass für die gewählte Führung alle Termine, die ausserhalb des gewählten Zeitraums liegen,
+						als " + "\"" + RuleStatusNotBookable + "\" dargestellt werden.";
 
-					public static readonly MvcHtmlString WeeklyRule = new MvcHtmlString(
-						@"Erstellt eine sich wöchentlich wiederholende Regel. Es müssen mindestens ein Wochentag und ein Status gewählt
-						  werden. Folgende Eingabekombinationen sind möglich:
-						  <ul>
-							<li>Nur Wochentag: An dem angegebenen Wochentag wird für den ganzen Tag der gewählte Status angezeigt.</li>
-							<li>Wochentag und Zeit: An dem angegebenen Wochentag wird zur eingegebenen Zeit der gewählte Status angezeigt.</li>
-							<li>Wochentag und Startdatum: Gleich wie beim ersten Punkt, einfach erst ab dem gewählten Startdatum.</li>
-							<li>Wochentag, Zeit und Startdatum: Wie beim zweiten Punkt, einfach erst ab dem gewählten Startdatum.</li>
-						  </ul>");
+					public const string EventGroupRule = @"Erstellt eine Führungsgruppen-Regel. Eine Führungsgruppe kann eine oder mehrere
+						Führungen beinhalten. Diese Regel bewirkt, dass zum gleichen Zeitpunkt nur eine Führung der Gruppe gebucht werden
+						kann, dass also alle anderen Führungen derselben Gruppe als " + "\"" + RuleStatusBooked + "\" dargestellt werden.";
 
-					public static readonly MvcHtmlString PriorityNote = new MvcHtmlString(
-						"WICHTIG:<br />" +
-						"Die Status haben eine prioritäre Gewichtung: \"" + RuleStatusFree + "\" ist stärker als \"" +
-						 RuleStatusNotBookable + "\" ist stärker als \"" + RuleStatusBooked + "\". " + @"Sollten also zwei oder mehrere
-						 Regeln für einen bestimmten Buchungstermin ansprechen, wird der Status mit der höchsten Priorität angezeigt.");
+					public const string MinimumDateRule = @"Erstellt eine Regel für den ersten (frühsten) buchbaren Termin. Es sind zwei
+						verschiedene Typen möglich:";
+
+					public const string PriorityNote = "Die Status haben eine prioritäre Gewichtung: \"" + RuleStatusFree + "\" ist stärker als \"" +
+						RuleStatusNotBookable + "\" ist stärker als \"" + RuleStatusBooked + "\". " + @"Sollten also zwei oder mehrere
+						Regeln für einen bestimmten Buchungstermin ansprechen, wird der Status mit der höchsten Priorität angezeigt.";
+
+					public const string WeeklyRule = @"Erstellt eine sich wöchentlich wiederholende Regel. Es müssen mindestens ein Wochentag
+						und ein Status gewählt werden. Folgende Eingabekombinationen sind möglich:";
+
+					public static readonly KeyValuePair<string, string>[] DateRangeOptions = new KeyValuePair<string, string>[]
+					{
+						new KeyValuePair<string, string>("Nur Startdatum:", "An dem angegebenen Datum wird für den ganzen Tag der gewählte Status angezeigt."),
+						new KeyValuePair<string, string>("Startdatum und Startzeit:", "Für Führungen am angegebenen Datum zur angegebenen Zeit wird der gewählte Status angezeigt."),
+						new KeyValuePair<string, string>("Startdatum und Enddatum:", "Für den Zeitraum vom angegebenen Startdatum um 00:00 Uhr bis zum angegebenen Enddatum um 00:00 Uhr wird der gewählte Status angezeigt."),
+						new KeyValuePair<string, string>("Startdatum, Startzeit und Enddatum:", "Gleich wie vorangehender Punkt, einfach mit angegebener Startzeit statt 00:00 Uhr."),
+						new KeyValuePair<string, string>("Startdatum, Startzeit, Enddatum und Endzeit:", "Gleich wie vorangehender Punkt, nun aber mit Start- und Endzeit wie eingegeben.")
+					};
+
+					public static readonly KeyValuePair<string, string>[] MinimumDateOptions = new KeyValuePair<string, string>[]
+					{
+						new KeyValuePair<string, string>("Fixes Datum:", "Alle vor dem angegebenen Datum (z.B. 03.04.2017 10:00) liegenden Termine werden als \"" + RuleStatusNotBookable + "\" dargestellt."),
+						new KeyValuePair<string, string>("Anzahl Tage:", "Definiert eine gesperrte Zeitperiode ab jeweils dem aktuellen Datum eines Tages, z.B. heute + 5 Tage.")
+					};
+
+					public static readonly KeyValuePair<string, string>[] WeeklyOptions = new KeyValuePair<string, string>[]
+					{
+						new KeyValuePair<string, string>("Nur Wochentag:", "An dem angegebenen Wochentag wird für den ganzen Tag der gewählte Status angezeigt."),
+						new KeyValuePair<string, string>("Wochentag und Zeit:", "An dem angegebenen Wochentag wird zur eingegebenen Zeit der gewählte Status angezeigt."),
+						new KeyValuePair<string, string>("Wochentag und Startdatum:", "Gleich wie beim ersten Punkt, einfach erst ab dem gewählten Startdatum."),
+						new KeyValuePair<string, string>("Wochentag, Zeit und Startdatum:", "Wie beim zweiten Punkt, einfach erst ab dem gewählten Startdatum.")
+					};
 				}
 			}
 
@@ -299,6 +311,7 @@ namespace BookingPlatform.Constants
 				public const string DisplayAlways = "An jedem Tag anzeigen";
 				public const string EmailConfiguration = "E-Mail Konfiguration";
 				public const string EmailSubject = "Betreff";
+				public const string EventDurationRule = "Buchungszeitraum";
 				public const string EventGroupRule = "Führungsgruppe";
 				public const string GlobalSettings = "Globale Einstellungen";
 				public const string MinimumDateRule = "Mindestdatum";

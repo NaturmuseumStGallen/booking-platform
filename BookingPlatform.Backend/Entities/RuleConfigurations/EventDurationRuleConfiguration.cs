@@ -21,17 +21,21 @@
  * along with BookingPlatform. If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace BookingPlatform.Backend.Constants
+using System;
+using BookingPlatform.Backend.Rules;
+
+namespace BookingPlatform.Backend.Entities.RuleConfigurations
 {
-	/// <summary>
-	/// IMPORTANT: Needs to be in sync with the corresponding table in the database!
-	/// </summary>
-	public enum RuleType
+	public class EventDurationRuleConfiguration : RuleConfiguration
 	{
-		DateRange = 1,
-		EventGroup = 2,
-		MinimumDate = 3,
-		Weekly = 4,
-		EventDuration = 5
+		public int Id { get; set; }
+		public int EventId { get; set; }
+		public DateTime StartDate { get; set; }
+		public DateTime EndDate { get; set; }
+
+		internal override IRule ToRule()
+		{
+			return new EventDurationRule(EventId, StartDate, EndDate);
+		}
 	}
 }

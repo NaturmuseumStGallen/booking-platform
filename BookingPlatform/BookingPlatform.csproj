@@ -126,6 +126,7 @@
     <Compile Include="Models\Admin\AdminRuleDetailsModel.cs" />
     <Compile Include="Models\Admin\AdminSettingsModel.cs" />
     <Compile Include="Models\Admin\RuleModels\DateRangeRuleModel.cs" />
+    <Compile Include="Models\Admin\RuleModels\EventDurationRuleModel.cs" />
     <Compile Include="Models\Admin\RuleModels\EventGroupRuleModel.cs" />
     <Compile Include="Models\Admin\RuleModels\MinimumDateRuleModel.cs" />
     <Compile Include="Models\Admin\RuleModels\WeeklyRuleModel.cs" />
@@ -161,6 +162,7 @@
     <Content Include="Views\Admin\EditorTemplates\WeeklyRuleModel.cshtml" />
     <Content Include="Views\Admin\Login.cshtml" />
     <Content Include="Views\Booking\Confirmation.cshtml" />
+    <Content Include="Views\Admin\EditorTemplates\EventDurationRuleModel.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

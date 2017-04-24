@@ -22,7 +22,9 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Web.Mvc;
 using BookingPlatform.Backend.Constants;
 using BookingPlatform.Constants;
@@ -31,32 +33,52 @@ using BookingPlatform.Utilities;
 namespace BookingPlatform.Models
 {
 	[ModelBinder(typeof(RuleModelBinder))]
-	public class AdminRuleDetailsModel
+	public abstract class AdminRuleDetailsModel
 	{
 		[Required(ErrorMessage = Strings.Admin.RuleDetails.InputErrorName)]
 		[MaxLength(100, ErrorMessage = Strings.Admin.RuleDetails.InputErrorMaxLength100)]
 		public string Name { get; set; }
 
 		public int? RuleId { get; set; }
-		public RuleType? Type { get; set; }
+		public abstract RuleType Type { get; }
 
 		public bool IsNew
 		{
 			get { return !RuleId.HasValue; }
 		}
 
-		public MvcHtmlString GetDescription()
+		public string GetDescription()
 		{
 			switch (Type)
 			{
 				case RuleType.DateRange:
 					return Strings.Admin.RuleDetails.Descriptions.DateRangeRule;
+				case RuleType.EventDuration:
+					return Strings.Admin.RuleDetails.Descriptions.EventDurationRule;
 				case RuleType.EventGroup:
 					return Strings.Admin.RuleDetails.Descriptions.EventGroupRule;
 				case RuleType.MinimumDate:
 					return Strings.Admin.RuleDetails.Descriptions.MinimumDateRule;
 				case RuleType.Weekly:
 					return Strings.Admin.RuleDetails.Descriptions.WeeklyRule;
+				default:
+					throw new InvalidOperationException(String.Format("Rule of type '{0}' not yet configured!", Type));
+			}
+		}
+
+		public IEnumerable<KeyValuePair<string, string>> GetConfigurationOptions()
+		{
+			switch (Type)
+			{
+				case RuleType.DateRange:
+					return Strings.Admin.RuleDetails.Descriptions.DateRangeOptions;
+				case RuleType.MinimumDate:
+					return Strings.Admin.RuleDetails.Descriptions.MinimumDateOptions;
+				case RuleType.Weekly:
+					return Strings.Admin.RuleDetails.Descriptions.WeeklyOptions;
+				case RuleType.EventDuration:
+				case RuleType.EventGroup:
+					return Enumerable.Empty<KeyValuePair<string, string>>();
 				default:
 					throw new InvalidOperationException(String.Format("Rule of type '{0}' not yet configured!", Type));
 			}

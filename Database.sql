@@ -26,6 +26,7 @@
 DROP TABLE IF EXISTS Booking
 DROP TABLE IF EXISTS DateRangeRule
 DROP TABLE IF EXISTS EmailRecipient
+DROP TABLE IF EXISTS EventDurationRule
 DROP TABLE IF EXISTS Event2EventGroupRule
 DROP TABLE IF EXISTS MinimumDateRule
 DROP TABLE IF EXISTS Settings
@@ -108,6 +109,15 @@ CREATE TABLE DateRangeRule
 	StartTime TIME,
 )
 
+CREATE TABLE EventDurationRule
+(
+	Id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	RuleId INT NOT NULL FOREIGN KEY REFERENCES [Rule](Id),
+	EventId INT NOT NULL FOREIGN KEY REFERENCES [Event](Id),
+	StartDate DATE NOT NULL,
+	EndDate DATE NOT NULL
+)
+
 CREATE TABLE EventGroupRule
 (
 	Id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
@@ -178,7 +188,8 @@ VALUES
 	(1, 'Date Range'),
 	(2, 'Event Group'),
 	(3, 'Minimum Date'),
-	(4, 'Weekly')
+	(4, 'Weekly'),
+	(5, 'Event Duration')
 
 INSERT INTO
 	Settings(PasswordHash, PasswordSalt, EmailSubject, EmailContent, ConfirmationPageContent)

@@ -141,7 +141,7 @@ namespace BookingPlatform.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				var ruleData = model.RuleId.HasValue ? Database.Instance.GetRuleData(model.RuleId.Value) : ModelMapper.NewEntityFor(model.Type.Value);
+				var ruleData = model.RuleId.HasValue ? Database.Instance.GetRuleData(model.RuleId.Value) : ModelMapper.NewEntityFor(model.Type);
 
 				model.MapToEntity(ruleData);
 
@@ -156,6 +156,8 @@ namespace BookingPlatform.Controllers
 
 				return RedirectToAction(nameof(Settings));
 			}
+
+			model.InitializeFor(model.Type);
 
 			return View(model);
 		}

@@ -24,84 +24,70 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
 using BookingPlatform.Backend.Constants;
+using BookingPlatform.Backend.Entities;
+using BookingPlatform.Backend.Scheduling;
 using BookingPlatform.Constants;
 
 namespace BookingPlatform.Models
 {
-	public class WeeklyRuleModel : AdminRuleDetailsModel, IValidatableObject
+	public class EventDurationRuleModel : AdminRuleDetailsModel, IValidatableObject
 	{
-		public override RuleType Type
+		public EventDurationRuleModel()
 		{
-			get { return RuleType.Weekly; }
+			AvailableEvents = new List<Event>();
 		}
 
-		[Required(ErrorMessage = Strings.Admin.RuleDetails.InputErrorDayOfWeek)]
-		public DayOfWeek? Day { get; set; }
+		public override RuleType Type
+		{
+			get { return RuleType.EventDuration; }
+		}
 
-		[Required(ErrorMessage = Strings.Admin.RuleDetails.InputErrorStatus)]
-		public AvailabilityStatus? Status { get; set; }
+		[Required(ErrorMessage = Strings.Admin.RuleDetails.InputErrorEvent)]
+		public int? EventId { get; set; }
 
-		[RegularExpression("^((0[0-9])|(1[0-9])|(2[0-3])):((0[0-9])|([1-5][0-9]))$", ErrorMessage = Strings.Admin.RuleDetails.InputErrorTime)]
-		public string Time { get; set; }
-
+		[Required(ErrorMessage = Strings.Admin.RuleDetails.InputErrorDate)]
 		[RegularExpression("^((0[1-9])|([1-2][0-9])|(3[0-1])).((0[1-9])|(1[0-2])).20[1-5][0-9]$", ErrorMessage = Strings.Admin.RuleDetails.InputErrorDate)]
 		public string StartDate { get; set; }
 
+		[Required(ErrorMessage = Strings.Admin.RuleDetails.InputErrorDate)]
+		[RegularExpression("^((0[1-9])|([1-2][0-9])|(3[0-1])).((0[1-9])|(1[0-2])).20[1-5][0-9]$", ErrorMessage = Strings.Admin.RuleDetails.InputErrorDate)]
+		public string EndDate { get; set; }
+
 		public int? Id { get; set; }
+		public IList<Event> AvailableEvents { get; set; }
 
-		public IEnumerable<SelectListItem> DayOfWeekListItems
+		public IEnumerable<SelectListItem> EventListItems
 		{
 			get
 			{
-				foreach (var day in Enumerable.Range(1, 6).Concat(Enumerable.Range(0, 1)).Cast<DayOfWeek>())
+				foreach (var @event in AvailableEvents)
 				{
-					yield return new SelectListItem
-					{
-						Text = DateTimeFormatInfo.CurrentInfo.GetDayName(day),
-						Value = day.ToString(),
-						Selected = Day == day
-					};
-				}
-			}
-		}
-
-		public IEnumerable<SelectListItem> StatusListItems
-		{
-			get
-			{
-				foreach (AvailabilityStatus status in Enum.GetValues(typeof(AvailabilityStatus)))
-				{
-					if (status != AvailabilityStatus.Undefined)
-					{
-						yield return new SelectListItem
-						{
-							Text = Strings.Admin.GetStatusName(status),
-							Value = status.ToString(),
-							Selected = Status == status
-						};
-					}
+					yield return new SelectListItem { Text = @event.Name,  Value = @event.Id.ToString(), Selected = @event.Id == EventId };
 				}
 			}
 		}
 
 		public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
 		{
-			DateTime startDate;
-			TimeSpan time;
+			DateTime startDate, endDate;
 			var results = new List<ValidationResult>();
 
-			if (!String.IsNullOrEmpty(StartDate) && !DateTime.TryParse(StartDate, out startDate))
+			if (!DateTime.TryParse(StartDate, out startDate))
 			{
 				results.Add(new ValidationResult(Strings.Admin.RuleDetails.InputErrorDate, new[] { nameof(StartDate) }));
 			}
 
-			if (!String.IsNullOrEmpty(Time) && !TimeSpan.TryParse(Time, out time))
+			if (!DateTime.TryParse(EndDate, out endDate))
 			{
-				results.Add(new ValidationResult(Strings.Admin.RuleDetails.InputErrorTime, new[] { nameof(Time) }));
+				results.Add(new ValidationResult(Strings.Admin.RuleDetails.InputErrorDate, new[] { nameof(EndDate) }));
+			}
+
+			if (!results.Any() && startDate.IsBiggerThan(endDate))
+			{
+				results.Add(new ValidationResult(Strings.Admin.RuleDetails.InputErrorInvalidDateRange, new[] { nameof(EndDate) }));
 			}
 
 			if (!results.Any())

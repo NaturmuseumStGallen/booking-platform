@@ -134,7 +134,7 @@ namespace BookingPlatform.Models
 				results.Add(new ValidationResult(Strings.Admin.BookingDetails.InputErrorTime, new[] { nameof(Time) }));
 			}
 
-			if (results.Any())
+			if (!results.Any())
 			{
 				results.Add(ValidationResult.Success);
 			}

@@ -89,6 +89,8 @@ namespace BookingPlatform.Models
 			{
 				case RuleType.DateRange:
 					return DateRangeDetails(rule as DateRangeRuleConfiguration);
+				case RuleType.EventDuration:
+					return EventDurationDetails(rule as EventDurationRuleConfiguration);
 				case RuleType.EventGroup:
 					return EventGroupDetails(rule as EventGroupRuleConfiguration);
 				case RuleType.MinimumDate:
@@ -109,6 +111,17 @@ namespace BookingPlatform.Models
 			builder.AppendFormat("{0}: {1}<br />", Strings.Admin.RuleDetails.InputLabelStartTime, config.StartTime.HasValue ? config.StartTime.Value.ToString("hh\\:mm") : "-");
 			builder.AppendFormat("{0}: {1}<br />", Strings.Admin.RuleDetails.InputLabelEndDate, config.EndDate.HasValue ? config.EndDate.Value.ToShortDateString() : "-");
 			builder.AppendFormat("{0}: {1}<br />", Strings.Admin.RuleDetails.InputLabelEndTime, config.EndTime.HasValue ? config.EndTime.Value.ToString("hh\\:mm") : "-");
+
+			return new MvcHtmlString(builder.ToString());
+		}
+
+		private MvcHtmlString EventDurationDetails(EventDurationRuleConfiguration config)
+		{
+			var builder = new StringBuilder();
+
+			builder.AppendFormat("{0}: {1}<br />", Strings.Admin.RuleDetails.InputLabelEvent, Events.First(e => e.Id == config.EventId).Name);
+			builder.AppendFormat("{0}: {1}<br />", Strings.Admin.RuleDetails.InputLabelStartDate, config.StartDate.ToShortDateString());
+			builder.AppendFormat("{0}: {1}<br />", Strings.Admin.RuleDetails.InputLabelEndDate, config.EndDate.ToShortDateString());
 
 			return new MvcHtmlString(builder.ToString());
 		}

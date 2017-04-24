@@ -44,6 +44,10 @@ namespace BookingPlatform.Backend.DataAccess
 				dr.EndTime AS dr_EndTime,
 				dr.StartDate AS dr_StartDate,
 				dr.StartTime AS dr_StartTime,
+				ed.Id AS ed_Id,
+				ed.EventId AS ed_EventId,
+				ed.StartDate AS ed_StartDate,
+				ed.EndDate AS ed_EndDate,
 				eg.Id AS eg_Id,
 				md.Id AS md_Id,
 				md.Date AS md_Date,
@@ -57,6 +61,8 @@ namespace BookingPlatform.Backend.DataAccess
 				[Rule] AS r
 			FULL OUTER JOIN
 				DateRangeRule AS dr ON r.Id = dr.RuleId
+			FULL OUTER JOIN
+				EventDurationRule AS ed ON r.Id = ed.RuleId
 			FULL OUTER JOIN
 				EventGroupRule AS eg ON r.Id = eg.RuleId
 			FULL OUTER JOIN
@@ -74,6 +80,9 @@ namespace BookingPlatform.Backend.DataAccess
 			{
 				case RuleType.DateRange:
 					DeleteDateRange(config as DateRangeRuleConfiguration);
+					break;
+				case RuleType.EventDuration:
+					DeleteEventDuration(config as EventDurationRuleConfiguration);
 					break;
 				case RuleType.EventGroup:
 					DeleteEventGroup(config as EventGroupRuleConfiguration);
@@ -169,6 +178,9 @@ namespace BookingPlatform.Backend.DataAccess
 				case RuleType.DateRange:
 					SaveDateRange(config as DateRangeRuleConfiguration);
 					break;
+				case RuleType.EventDuration:
+					SaveEventDuration(config as EventDurationRuleConfiguration);
+					break;
 				case RuleType.EventGroup:
 					SaveEventGroup(config as EventGroupRuleConfiguration);
 					break;
@@ -205,6 +217,9 @@ namespace BookingPlatform.Backend.DataAccess
 				case RuleType.DateRange:
 					UpdateDateRange(config as DateRangeRuleConfiguration);
 					break;
+				case RuleType.EventDuration:
+					UpdateEventDuration(config as EventDurationRuleConfiguration);
+					break;
 				case RuleType.EventGroup:
 					UpdateEventGroup(config as EventGroupRuleConfiguration);
 					break;
@@ -228,6 +243,9 @@ namespace BookingPlatform.Backend.DataAccess
 			{
 				case RuleType.DateRange:
 					config = MapDateRange(reader);
+					break;
+				case RuleType.EventDuration:
+					config = MapEventDuration(reader);
 					break;
 				case RuleType.EventGroup:
 					config = MapEventGroup(reader);

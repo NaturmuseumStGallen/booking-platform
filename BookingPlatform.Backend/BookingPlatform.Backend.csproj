@@ -58,6 +58,9 @@
     <Compile Include="DataAccess\DbEmailDao.cs" />
     <Compile Include="DataAccess\DbEventDao.cs" />
     <Compile Include="DataAccess\DbRuleDao.cs" />
+    <Compile Include="DataAccess\DbRuleDao.EventDuration.cs">
+      <DependentUpon>DbRuleDao.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataAccess\DbRuleDao.Weekly.cs">
       <DependentUpon>DbRuleDao.cs</DependentUpon>
     </Compile>
@@ -77,6 +80,7 @@
     <Compile Include="Emails\Mailer.cs" />
     <Compile Include="Entities\EmailRecipient.cs" />
     <Compile Include="Entities\RuleConfiguration.cs" />
+    <Compile Include="Entities\RuleConfigurations\EventDurationRuleConfiguration.cs" />
     <Compile Include="Entities\RuleConfigurations\WeeklyRuleConfiguration.cs" />
     <Compile Include="Entities\RuleConfigurations\MinimumDateRuleConfiguration.cs" />
     <Compile Include="Entities\RuleConfigurations\EventGroupRuleConfiguration.cs" />
@@ -85,6 +89,7 @@
     <Compile Include="Entities\TextContent.cs" />
     <Compile Include="Entities\TimeData.cs" />
     <Compile Include="Entities\EventGroup.cs" />
+    <Compile Include="Rules\EventDurationRule.cs" />
     <Compile Include="Rules\EventGroupRule.cs" />
     <Compile Include="Rules\DateRangeRule.cs" />
     <Compile Include="Rules\MinimumDateRule.cs" />

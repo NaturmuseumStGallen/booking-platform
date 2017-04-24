@@ -23,13 +23,13 @@
 
 using System.Threading;
 using System.Web.Mvc;
-using BookingPlatform.Backend.DataAccess;
 using BookingPlatform.Models;
 using BookingPlatform.Utilities;
 
 namespace BookingPlatform.Controllers
 {
 	[RequireHttps]
+	[OutputCache(NoStore = true, Duration = 0)]
 	public partial class AdminController : Controller
 	{
 		[HttpGet]

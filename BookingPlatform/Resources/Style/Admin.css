@@ -29,6 +29,10 @@
     font-weight: normal;
 }
 
+.bold {
+    font-weight: bold;
+}
+
 .center {
     margin-left: auto;
     margin-right: auto;
@@ -297,6 +301,10 @@ h1, h2, h3 {
     margin-top: 25px;
 }
 
+h2[data-slide-trigger] {
+    cursor: pointer;
+}
+
 h1 + h2 {
     font-size: 16pt;
     margin-top: 10px;
@@ -311,16 +319,16 @@ h3 {
     margin-top: 10px;
 }
 
-h3 {
-    font-size: 12pt;
-}
-
 hr {
     background-color: lightgray;
     border: none;
     height: 1px;
     margin: 50px auto;
     width: 25%;
+}
+
+hr.small {
+    margin: 30px auto;
 }
 
 input[type=submit] {
@@ -387,16 +395,8 @@ select {
     margin: 0 5px;
 }
 
-span.bold {
-    font-weight: bold;
-}
-
 span.field-validation-error {
     color: red;
-    font-style: italic;
-}
-
-span.italic {
     font-style: italic;
 }
 

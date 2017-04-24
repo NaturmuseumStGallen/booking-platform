@@ -142,7 +142,7 @@ namespace BookingPlatform.Models
 				results.Add(new ValidationResult(Strings.Public.InputErrorCaptcha, new[] { nameof(CaptchaResponse) }));
 			}
 
-			if (results.Any())
+			if (!results.Any())
 			{
 				results.Add(ValidationResult.Success);
 			}

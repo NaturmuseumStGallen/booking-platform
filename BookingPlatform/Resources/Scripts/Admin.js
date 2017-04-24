@@ -28,6 +28,7 @@ $(document).ready(function () {
     attachDatePickers();
     attachColorPreview();
     attachAutoColor();
+    attachSlideHandlers();
 
     function attachSafetyHandlers() {
         var elements = $('[data-safety-message]');
@@ -73,6 +74,25 @@ $(document).ready(function () {
             observer.observe(element, settings);
             autoColor(element);
         });
+    }
+
+    function attachSlideHandlers() {
+        var triggers = $('[data-slide-trigger]');
+
+        $.each(triggers, function (index, trigger) {
+            var originalText = $(trigger).text();
+            var open = true;
+
+            $(trigger).append(' ⮙');
+            $(trigger).click(function () {
+                var id = $(trigger).attr('data-slide-trigger');
+
+                open = !open;
+
+                $('[data-slide="' + id + '"]').slideToggle();
+                $(trigger).html(originalText + (open ? ' ⮙' : ' ⮛'));
+            })
+        })
     }
 
     function safetyHandler(element, onclick, event) {

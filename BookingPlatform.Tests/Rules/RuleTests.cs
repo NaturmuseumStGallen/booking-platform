@@ -44,6 +44,28 @@ namespace BookingPlatform.Tests
 		}
 
 		[TestMethod]
+		public void EventDurationRuleTest()
+		{
+			var @event = new Event { Id = 5 };
+			var other = new Event();
+			var rule = new EventDurationRule(@event.Id.Value, DateTime.Today, DateTime.Today.AddDays(7));
+
+			Assert.IsTrue(rule.GetStatus(DateTime.Today.AddDays(-1), @event) == AvailabilityStatus.NotBookable);
+			Assert.IsTrue(rule.GetStatus(DateTime.Today, @event) == AvailabilityStatus.Undefined);
+			Assert.IsTrue(rule.GetStatus(DateTime.Today.AddDays(3), @event) == AvailabilityStatus.Undefined);
+			Assert.IsTrue(rule.GetStatus(DateTime.Today.AddDays(7), @event) == AvailabilityStatus.Undefined);
+			Assert.IsTrue(rule.GetStatus(DateTime.Today.AddDays(8), @event) == AvailabilityStatus.NotBookable);
+			Assert.IsTrue(rule.GetStatus(DateTime.Today.AddMonths(1), @event) == AvailabilityStatus.NotBookable);
+
+			Assert.IsTrue(rule.GetStatus(DateTime.Today.AddDays(-1), other) == AvailabilityStatus.Undefined);
+			Assert.IsTrue(rule.GetStatus(DateTime.Today, other) == AvailabilityStatus.Undefined);
+			Assert.IsTrue(rule.GetStatus(DateTime.Today.AddDays(3), other) == AvailabilityStatus.Undefined);
+			Assert.IsTrue(rule.GetStatus(DateTime.Today.AddDays(7), other) == AvailabilityStatus.Undefined);
+			Assert.IsTrue(rule.GetStatus(DateTime.Today.AddDays(8), other) == AvailabilityStatus.Undefined);
+			Assert.IsTrue(rule.GetStatus(DateTime.Today.AddMonths(1), other) == AvailabilityStatus.Undefined);
+		}
+
+		[TestMethod]
 		public void MinimumDateRuleTest()
 		{
 			var rule = new MinimumDateRule(7);

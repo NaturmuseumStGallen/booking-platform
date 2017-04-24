@@ -38,7 +38,11 @@ namespace BookingPlatform.Models
 		{
 			AvailableEvents = new List<Event>();
 			SelectedEvents = new List<Event>();
-			Type = RuleType.EventGroup;
+		}
+
+		public override RuleType Type
+		{
+			get { return RuleType.EventGroup; }
 		}
 
 		[Required(ErrorMessage = Strings.Admin.RuleDetails.InputErrorEvents)]
@@ -62,7 +66,7 @@ namespace BookingPlatform.Models
 				results.Add(new ValidationResult(Strings.Admin.RuleDetails.InputErrorEvents, new[] { nameof(EventIds) }));
 			}
 
-			if (results.Any())
+			if (!results.Any())
 			{
 				results.Add(ValidationResult.Success);
 			}

@@ -32,9 +32,9 @@ namespace BookingPlatform.Models
 {
 	public class MinimumDateRuleModel : AdminRuleDetailsModel, IValidatableObject
 	{
-		public MinimumDateRuleModel()
+		public override RuleType Type
 		{
-			Type = RuleType.MinimumDate;
+			get { return RuleType.MinimumDate; }
 		}
 
 		[RegularExpression("^((0[1-9])|([1-2][0-9])|(3[0-1])).((0[1-9])|(1[0-2])).20[1-5][0-9]$", ErrorMessage = Strings.Admin.RuleDetails.InputErrorDate)]
@@ -55,7 +55,7 @@ namespace BookingPlatform.Models
 				results.Add(new ValidationResult(Strings.Admin.RuleDetails.InputErrorDate, new[] { nameof(Date) }));
 			}
 
-			if (results.Any())
+			if (!results.Any())
 			{
 				results.Add(ValidationResult.Success);
 			}

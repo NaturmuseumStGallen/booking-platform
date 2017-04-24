@@ -37,10 +37,19 @@
 }
 
 <div class="content-1000px">
-    <h2>@ViewBag.Title @Strings.Admin.GetRuleTypeName(Model.Type.Value)</h2>
+    <h2>@ViewBag.Title @Strings.Admin.GetRuleTypeName(Model.Type)</h2>
     <h3>@Strings.Admin.RuleDetails.Description</h3>
     <p>@Model.GetDescription()</p>
-    <p>@Strings.Admin.RuleDetails.Descriptions.PriorityNote</p>
+    <ul>
+        @foreach (var info in Model.GetConfigurationOptions())
+        {
+            <li><span class="bold">@info.Key</span><br />@info.Value</li>
+        }
+    </ul>
+    <p class="italic">
+        <span class="bold">@Strings.Admin.RuleDetails.Descriptions.Important</span><br />
+        @Strings.Admin.RuleDetails.Descriptions.PriorityNote
+    </p>
     <h3>@Strings.Admin.RuleDetails.Configuration</h3>
 
     @using (Html.BeginForm("RuleDetails", "Admin", FormMethod.Post, new { @class = "big" }))

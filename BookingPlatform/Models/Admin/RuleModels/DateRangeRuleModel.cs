@@ -33,9 +33,9 @@ namespace BookingPlatform.Models
 {
 	public class DateRangeRuleModel : AdminRuleDetailsModel, IValidatableObject
 	{
-		public DateRangeRuleModel()
+		public override RuleType Type
 		{
-			Type = RuleType.DateRange;
+			get { return RuleType.DateRange; }
 		}
 
 		[RegularExpression("^((0[1-9])|([1-2][0-9])|(3[0-1])).((0[1-9])|(1[0-2])).20[1-5][0-9]$", ErrorMessage = Strings.Admin.RuleDetails.InputErrorDate)]
@@ -101,7 +101,7 @@ namespace BookingPlatform.Models
 				results.Add(new ValidationResult(Strings.Admin.RuleDetails.InputErrorTime, new[] { nameof(EndTime) }));
 			}
 
-			if (results.Any())
+			if (!results.Any())
 			{
 				results.Add(ValidationResult.Success);
 			}

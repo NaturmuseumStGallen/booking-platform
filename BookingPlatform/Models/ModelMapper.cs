@@ -44,6 +44,9 @@ namespace BookingPlatform.Models
 				case RuleType.Weekly:
 					// Nothing to do here so far...
 					break;
+				case RuleType.EventDuration:
+					(model as EventDurationRuleModel).AvailableEvents = Database.Instance.GetActiveEvents();
+					break;
 				case RuleType.EventGroup:
 					(model as EventGroupRuleModel).AvailableEvents = Database.Instance.GetActiveEvents();
 					break;
@@ -164,12 +167,14 @@ namespace BookingPlatform.Models
 		{
 			model.RuleId = rule.RuleId;
 			model.Name = rule.Name;
-			model.Type = rule.Type;
 
 			switch (model.Type)
 			{
 				case RuleType.DateRange:
 					(model as DateRangeRuleModel).MapFromEntity(rule as DateRangeRuleConfiguration);
+					break;
+				case RuleType.EventDuration:
+					(model as EventDurationRuleModel).MapFromEntity(rule as EventDurationRuleConfiguration);
 					break;
 				case RuleType.EventGroup:
 					(model as EventGroupRuleModel).MapFromEntity(rule as EventGroupRuleConfiguration);
@@ -193,6 +198,14 @@ namespace BookingPlatform.Models
 			model.StartDate = rule.StartDate.ToString("dd.MM.yyyy");
 			model.StartTime = rule.StartTime.ToString("hh\\:mm");
 			model.Status = rule.AvailabilityStatus;
+		}
+
+		public static void MapFromEntity(this EventDurationRuleModel model, EventDurationRuleConfiguration rule)
+		{
+			model.Id = rule.Id;
+			model.EventId = rule.EventId;
+			model.EndDate = rule.EndDate.ToString("dd.MM.yyyy");
+			model.StartDate = rule.StartDate.ToString("dd.MM.yyyy");
 		}
 
 		public static void MapFromEntity(this EventGroupRuleModel model, EventGroupRuleConfiguration rule)
@@ -261,12 +274,15 @@ namespace BookingPlatform.Models
 			}
 
 			rule.Name = model.Name;
-			rule.Type = model.Type.Value;
+			rule.Type = model.Type;
 
 			switch (model.Type)
 			{
 				case RuleType.DateRange:
 					(model as DateRangeRuleModel).MapToEntity(rule as DateRangeRuleConfiguration);
+					break;
+				case RuleType.EventDuration:
+					(model as EventDurationRuleModel).MapToEntity(rule as EventDurationRuleConfiguration);
 					break;
 				case RuleType.EventGroup:
 					(model as EventGroupRuleModel).MapToEntity(rule as EventGroupRuleConfiguration);
@@ -294,6 +310,18 @@ namespace BookingPlatform.Models
 			rule.EndTime = DateTimeUtility.NullableTimeSpanFor(model.EndTime);
 			rule.StartDate = DateTime.Parse(model.StartDate);
 			rule.StartTime = DateTimeUtility.NullableTimeSpanFor(model.StartTime);
+		}
+
+		public static void MapToEntity(this EventDurationRuleModel model, EventDurationRuleConfiguration rule)
+		{
+			if (model.Id.HasValue)
+			{
+				rule.Id = model.Id.Value;
+			}
+
+			rule.EventId = model.EventId.Value;
+			rule.EndDate = DateTime.Parse(model.EndDate);
+			rule.StartDate = DateTime.Parse(model.StartDate);
 		}
 
 		public static void MapToEntity(this EventGroupRuleModel model, EventGroupRuleConfiguration rule)
@@ -356,6 +384,8 @@ namespace BookingPlatform.Models
 			{
 				case RuleType.DateRange:
 					return new DateRangeRuleConfiguration();
+				case RuleType.EventDuration:
+					return new EventDurationRuleConfiguration();
 				case RuleType.EventGroup:
 					return new EventGroupRuleConfiguration();
 				case RuleType.MinimumDate:
@@ -365,7 +395,6 @@ namespace BookingPlatform.Models
 				default:
 					throw new InvalidOperationException(String.Format("Rule of type '{0}' not yet configured!", type));
 			}
-
 		}
 
 		public static AdminRuleDetailsModel NewModelFor(RuleType type)
@@ -374,6 +403,8 @@ namespace BookingPlatform.Models
 			{
 				case RuleType.DateRange:
 					return new DateRangeRuleModel();
+				case RuleType.EventDuration:
+					return new EventDurationRuleModel();
 				case RuleType.EventGroup:
 					return new EventGroupRuleModel();
 				case RuleType.MinimumDate:
