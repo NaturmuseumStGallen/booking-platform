@@ -387,8 +387,16 @@ select {
     margin: 0 5px;
 }
 
+span.bold {
+    font-weight: bold;
+}
+
 span.field-validation-error {
     color: red;
+    font-style: italic;
+}
+
+span.italic {
     font-style: italic;
 }
 

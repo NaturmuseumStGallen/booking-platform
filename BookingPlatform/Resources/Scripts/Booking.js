@@ -29,7 +29,7 @@ $(document).ready(function () {
     function autoSelectOnPostFailure() {
         var ticks = $('[data-booking-date-ticks]').val();
 
-        if (ticks != undefined && ticks != null) {
+        if (ticks != undefined && ticks != null && ticks != 0) {
             var td = $('td[data-ticks="' + ticks + '"]');
 
             booking.selectDate(td);

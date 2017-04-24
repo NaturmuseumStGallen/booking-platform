@@ -131,7 +131,7 @@
     <ul>
         @foreach (var info in Strings.Admin.Settings.MarkdownInfos)
         {
-            <li>@info</li>
+            <li><span class="bold">@info.Key</span> &nbsp;&nbsp; → &nbsp;&nbsp; <span class="italic">@info.Value</span></li>
         }
     </ul>
     @using (Html.BeginForm("UpdateTextContent", "Admin", FormMethod.Post, new { @class = "big" }))
@@ -146,6 +146,7 @@
         <textarea class="wide" name="pageContent" rows="20">@Model.ConfirmationPageContent</textarea>
         <input type="submit" value="@Strings.Admin.Save" />
     }
+    <hr />
     <h3>@Strings.Admin.Settings.DynamicContent</h3>
     <p>@Strings.Admin.Settings.DynamicContentDescription</p>
     <table>

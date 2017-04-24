@@ -37,7 +37,7 @@ namespace BookingPlatform.Models
 
 		public bool CanNavigateToPreviousMonth { get; set; }
 		public bool CanNavigateToPreviousWeek { get; set; }
-		public long CurrentDateTicks { get; set; }
+		public long? CurrentDateTicks { get; set; }
 		public bool ShowEventSelectionMessage { get; set; }
 
 		public IList<BookingDate> Dates { get; set; }

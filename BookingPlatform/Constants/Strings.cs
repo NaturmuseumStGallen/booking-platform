@@ -22,6 +22,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 using BookingPlatform.Backend.Constants;
 using BookingPlatform.Backend.Emails;
@@ -315,17 +316,17 @@ namespace BookingPlatform.Constants
 				public const string Time = "Zeit";
 				public const string WeeklyRule = "Wöchentliche Regel";
 
-				public static readonly string[] MarkdownInfos = new string[]
+				public static readonly KeyValuePair<string, string>[] MarkdownInfos = new KeyValuePair<string, string>[]
 				{
-					"\"# Titel 1\" → Eine grosse Überschrift mit Text \"Titel 1\"",
-					"\"## Titel 2\" → Eine kleinere Überschrift mit Text \"Titel 2\"",
-					"\"---\" → Eine horizontale Linie",
-					"\"\\\\\" → Einen Zeilenumbruch",
-					"\"" + ContentParser.EventNamePlaceholder + "\" → Name der Führung",
-					"\"" + ContentParser.EventDatePlaceholder + "\" → Datum der Führung",
-					"\"" + ContentParser.FirstNamePlaceholder + "\" → Vorname der Person",
-					"\"" + ContentParser.LastNamePlaceholder + "\" → Nachname der Person",
-					"\"" + ContentParser.EmailPlaceholder + "\" → E-Mail-Adresse"
+					new KeyValuePair<string, string>("# Titel 1", "Eine grosse Überschrift mit Text \"Titel 1\""),
+					new KeyValuePair<string, string>("## Titel 2", "Eine kleinere Überschrift mit Text \"Titel 2\""),
+					new KeyValuePair<string, string>("---", "Eine horizontale Linie"),
+					new KeyValuePair<string, string>("\\\\", "Einen Zeilenumbruch"),
+					new KeyValuePair<string, string>(ContentParser.EventNamePlaceholder, "Name der Führung"),
+					new KeyValuePair<string, string>(ContentParser.EventDatePlaceholder, "Datum der Führung"),
+					new KeyValuePair<string, string>(ContentParser.FirstNamePlaceholder, "Vorname der Person"),
+					new KeyValuePair<string, string>(ContentParser.LastNamePlaceholder, "Nachname der Person"),
+					new KeyValuePair<string, string>(ContentParser.EmailPlaceholder, "E-Mail-Adresse")
 				};
 			}
 		}
@@ -378,7 +379,7 @@ namespace BookingPlatform.Constants
 			public const string NavigationPreviousWeek = "« Eine Woche zurück";
 			public const string NavigationNextWeek = "Eine Woche vor »";
 			public const string NavigationNextMonth = "Einen Monat vor »»";
-			public const string PageTitle = "Online-Buchung";
+			public const string PageTitle = "Buchungsportal für Führungen";
 			public const string PersonalInformation = "Persönliche Informationen";
 			public const string PleaseSelect = " - Bitte wählen - ";
 			public const string PleaseSelectEvent = "Bitte wählen Sie eine Führung aus!";

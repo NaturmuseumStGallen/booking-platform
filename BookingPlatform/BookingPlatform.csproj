@@ -90,6 +90,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
+    <Content Include="Resources\Images\Logo.jpg" />
     <Content Include="Resources\Scripts\Admin.js" />
     <Content Include="Resources\Scripts\Booking.js" />
     <Content Include="Resources\Style\Admin.css" />

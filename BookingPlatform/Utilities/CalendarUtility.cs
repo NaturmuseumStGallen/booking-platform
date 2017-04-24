@@ -23,6 +23,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using BookingPlatform.Backend.DataAccess;
 using BookingPlatform.Backend.Entities;
 using BookingPlatform.Backend.Scheduling;
@@ -39,6 +40,26 @@ namespace BookingPlatform.Utilities
 			var sunday = DateTimeUtility.GetSundayOfWeekFor(date);
 
 			return scheduler.GetBookingDateRange(monday, sunday, @event);
+		}
+
+		public static DateTime CalculateFirstFreeBookingDate(int eventId)
+		{
+			var date = DateTime.Today;
+			var searchLimit = DateTime.Today.AddMonths(1);
+			var dates = CalculateBookingDates(date, eventId);
+
+			while (dates.All(d => d.Status != AvailabilityStatus.Free))
+			{
+				date = date.AddDays(7);
+				dates = CalculateBookingDates(date, eventId);
+
+				if (date.IsBiggerThan(searchLimit))
+				{
+					break;
+				}
+			}
+
+			return date;
 		}
 
 		public static DateTime CalculateNewDate(DateTime current, Navigation? navigation)

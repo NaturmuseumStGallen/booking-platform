@@ -41,25 +41,22 @@ namespace BookingPlatform.Backend.Emails
 		public const string FirstNamePlaceholder = "%%FirstName%%";
 		public const string LastNamePlaceholder = "%%LastName%%";
 
-		public static string ReplacePlaceholders(string text, IList<TextContent> contents, Booking booking = null)
+		public static string ReplacePlaceholders(string text, IList<TextContent> contents, Booking booking)
 		{
 			var result = text ?? string.Empty;
 
 			foreach (var content in contents)
 			{
-				var value = !content.DisplayDay.HasValue || content.DisplayDay == DateTime.Today.DayOfWeek ? content.Value : string.Empty;
+				var value = !content.DisplayDay.HasValue || content.DisplayDay == booking.Date.DayOfWeek ? content.Value : string.Empty;
 
 				result = result.Replace(content.Key, value);
 			}
 
-			if (booking != null)
-			{
-				result = result.Replace(EmailPlaceholder, booking.Email);
-				result = result.Replace(EventNamePlaceholder, booking.Event.Name);
-				result = result.Replace(EventDatePlaceholder, booking.Date.ToLongDateString() + " " + booking.Date.TimeOfDay.ToString("hh\\:mm"));
-				result = result.Replace(FirstNamePlaceholder, booking.FirstName);
-				result = result.Replace(LastNamePlaceholder, booking.LastName);
-			}
+			result = result.Replace(EmailPlaceholder, booking.Email);
+			result = result.Replace(EventNamePlaceholder, booking.Event.Name);
+			result = result.Replace(EventDatePlaceholder, booking.Date.ToLongDateString() + " " + booking.Date.TimeOfDay.ToString("hh\\:mm"));
+			result = result.Replace(FirstNamePlaceholder, booking.FirstName);
+			result = result.Replace(LastNamePlaceholder, booking.LastName);
 
 			return result;
 		}

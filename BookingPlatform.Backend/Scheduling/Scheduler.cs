@@ -107,13 +107,15 @@ namespace BookingPlatform.Backend.Scheduling
 		private AvailabilityStatus DetermineStatus(DateTime date, TimeSpan time, Event @event)
 		{
 			var dateTime = new DateTime(date.Year, date.Month, date.Day, time.Hours, time.Minutes, 0);
-			var ruleResults = new List<AvailabilityStatus>();
+			var statusResults = new List<AvailabilityStatus>();
 
 			foreach (var booking in bookings)
 			{
 				if (booking.IsActive && booking.Event.Id == @event.Id && booking.Date.IsSameDateAndTimeAs(dateTime))
 				{
-					return AvailabilityStatus.Booked;
+					statusResults.Add(AvailabilityStatus.Booked);
+
+					break;
 				}
 			}
 
@@ -123,13 +125,13 @@ namespace BookingPlatform.Backend.Scheduling
 
 				if (status != AvailabilityStatus.Undefined)
 				{
-					ruleResults.Add(status);
+					statusResults.Add(status);
 				}
 			}
 
-			if (ruleResults.Count > 0)
+			if (statusResults.Count > 0)
 			{
-				return GetStrongestStatus(ruleResults);
+				return GetStrongestStatus(statusResults);
 			}
 
 			return AvailabilityStatus.Free;

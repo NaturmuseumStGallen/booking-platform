@@ -41,15 +41,8 @@ namespace BookingPlatform.Controllers
 		{
 			var model = new BookingModel();
 
-			model.Captcha = CaptchaUtility.GenerateAndStoreInSession();
-			model.Events = Database.Instance.GetActiveEvents();
-			model.CalendarModel.CurrentDateTicks = DateTime.Today.Ticks;
-			model.CalendarModel.ShowEventSelectionMessage = !id.HasValue;
-
-			if (id.HasValue && Database.Instance.IsValidEventId(id.Value))
-			{
-				model.CalendarModel.Dates = CalendarUtility.CalculateBookingDates(DateTime.Today, id.Value);
-			}
+			model.EventId = id;
+			model.InitializeFor(id);
 
 			return View(model);
 		}
@@ -73,15 +66,7 @@ namespace BookingPlatform.Controllers
 				return RedirectToAction(nameof(Confirmation));
 			}
 
-			model.Captcha = CaptchaUtility.GenerateAndStoreInSession();
-			model.Events = Database.Instance.GetActiveEvents();
-			model.CalendarModel.CurrentDateTicks = DateTime.Today.Ticks;
-			model.CalendarModel.ShowEventSelectionMessage = !model.EventId.HasValue;
-
-			if (model.EventId.HasValue && Database.Instance.IsValidEventId(model.EventId.Value))
-			{
-				model.CalendarModel.Dates = CalendarUtility.CalculateBookingDates(DateTime.Today, model.EventId.Value);
-			}
+			model.InitializeFor(model.EventId);
 
 			return View(model);
 		}
@@ -89,14 +74,15 @@ namespace BookingPlatform.Controllers
 		[HttpGet]
 		public ActionResult Confirmation()
 		{
-			var model = new BookingConfirmationModel();
 			var booking = Session[BOOKING] as Booking;
-			var settings = Database.Instance.GetSettings();
-			var contents = Database.Instance.GetTextContent();
-			var pageContent = settings.ConfirmationPageContent;
+			var model = new BookingConfirmationModel();
 
-			pageContent = ContentParser.ReplacePlaceholders(pageContent, contents, booking);
-			model.PageContent = ContentParser.ToHtml(pageContent);
+			if (booking == null)
+			{
+				return RedirectToAction(nameof(Form));
+			}
+
+			model.InitializeFor(booking);
 
 			return View(model);
 		}
@@ -104,21 +90,14 @@ namespace BookingPlatform.Controllers
 		[HttpGet]
 		public ActionResult UpdateCalendar(int? eventId, long? ticks, CalendarUtility.Navigation? navigation)
 		{
-			if (!ticks.HasValue)
-			{
-				return new HttpNotFoundResult();
-			}
-
 			var model = new BookingCalendarModel();
-			var current = CalendarUtility.CalculateNewDate(new DateTime(ticks.Value), navigation);
-
-			model.CurrentDateTicks = current.Ticks;
 
 			if (eventId.HasValue && Database.Instance.IsValidEventId(eventId.Value))
 			{
-				model.Dates = CalendarUtility.CalculateBookingDates(current, eventId.Value);
-				model.CanNavigateToPreviousWeek = CalendarUtility.CanNavigateToPreviousWeek(current);
-				model.CanNavigateToPreviousMonth = CalendarUtility.CanNavigateToPreviousMonth(current);
+				var current = ticks.HasValue ? new DateTime(ticks.Value) : CalendarUtility.CalculateFirstFreeBookingDate(eventId.Value);
+				var date = CalendarUtility.CalculateNewDate(current, navigation);
+
+				model.InitializeFor(date, eventId.Value);
 			}
 			else
 			{

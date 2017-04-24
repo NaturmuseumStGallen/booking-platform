@@ -25,6 +25,7 @@ using System;
 using System.Linq;
 using BookingPlatform.Backend.Constants;
 using BookingPlatform.Backend.DataAccess;
+using BookingPlatform.Backend.Emails;
 using BookingPlatform.Backend.Entities;
 using BookingPlatform.Backend.Entities.RuleConfigurations;
 using BookingPlatform.Backend.Scheduling;
@@ -49,6 +50,38 @@ namespace BookingPlatform.Models
 				default:
 					throw new InvalidOperationException(String.Format("Rule of type '{0}' not yet configured!", model.Type));
 			}
+		}
+
+		public static void InitializeFor(this BookingModel model, int? eventId)
+		{
+			model.Captcha = CaptchaUtility.GenerateAndStoreInSession();
+			model.Events = Database.Instance.GetActiveEvents();
+			model.CalendarModel.ShowEventSelectionMessage = !eventId.HasValue;
+
+			if (eventId.HasValue && Database.Instance.IsValidEventId(eventId.Value))
+			{
+				var date = CalendarUtility.CalculateFirstFreeBookingDate(eventId.Value);
+
+				model.CalendarModel.InitializeFor(date, eventId.Value);
+			}
+		}
+
+		public static void InitializeFor(this BookingCalendarModel model, DateTime date, int eventId)
+		{
+			model.CurrentDateTicks = date.Ticks;
+			model.Dates = CalendarUtility.CalculateBookingDates(date, eventId);
+			model.CanNavigateToPreviousWeek = CalendarUtility.CanNavigateToPreviousWeek(date);
+			model.CanNavigateToPreviousMonth = CalendarUtility.CanNavigateToPreviousMonth(date);
+		}
+
+		public static void InitializeFor(this BookingConfirmationModel model, Booking booking)
+		{
+			var settings = Database.Instance.GetSettings();
+			var contents = Database.Instance.GetTextContent();
+			var pageContent = settings.ConfirmationPageContent;
+
+			pageContent = ContentParser.ReplacePlaceholders(pageContent, contents, booking);
+			model.PageContent = ContentParser.ToHtml(pageContent);
 		}
 
 		public static void Initialize(this AdminOverviewModel model)
