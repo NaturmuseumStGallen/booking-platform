@@ -77,16 +77,16 @@
             }
 
             <div class="control @(Model.CanNavigateToPreviousMonth ? "active" : "inactive")" title="@previousMonthTitle" onclick="@previousMonthClick">
-                &laquo;&laquo;
+                &#x276E;&#x276E;
             </div>
             <div class="control @(Model.CanNavigateToPreviousWeek ? "active" : "inactive")" title="@previousWeekTitle" onclick="@previousWeekClick">
-                &laquo;
+                &#x276E;
             </div>
             <div class="control active" title="@Strings.Public.NavigationNextWeek" onclick="booking.updateCalendar('@CalendarUtility.Navigation.NextWeek')">
-                &raquo;
+                &#x276F;
             </div>
             <div class="control active" title="@Strings.Public.NavigationNextMonth" onclick="booking.updateCalendar('@CalendarUtility.Navigation.NextMonth')">
-                &raquo;&raquo;
+                &#x276F;&#x276F;
             </div>
         </div>
     }

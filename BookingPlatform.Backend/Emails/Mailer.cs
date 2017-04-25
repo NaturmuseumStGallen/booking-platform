@@ -25,6 +25,7 @@ using System;
 using System.Linq;
 using System.Text;
 using BookingPlatform.Backend.Configuration;
+using BookingPlatform.Backend.Constants;
 using BookingPlatform.Backend.DataAccess;
 using BookingPlatform.Backend.Entities;
 using SendGrid;
@@ -61,27 +62,11 @@ namespace BookingPlatform.Backend.Emails
 			var client = new SendGridClient(AppConfig.SendGridApiKey);
 			var message = new SendGridMessage();
 			var recipients = Database.Instance.GetEmailRecipients();
-			var plain = new StringBuilder();
-			var html = new StringBuilder();
-
-			foreach (var propertyInfo in typeof(Booking).GetProperties())
-			{
-				if (propertyInfo.CanRead)
-				{
-					var name = propertyInfo.Name;
-					var value = propertyInfo.GetValue(booking);
-
-					value = value is Event ? (value as Event).Name : value;
-
-					plain.AppendFormat("{0}: {1}{2}", name, value, Environment.NewLine);
-					html.AppendFormat("<p>{0}: {1}</p>", name, value);
-				}
-			}
 
 			message.From = new EmailAddress(AppConfig.EmailSenderAddress);
-			message.Subject = "New Booking";
-			message.PlainTextContent = plain.ToString();
-			message.HtmlContent = html.ToString();
+			message.Subject = I18n.SystemEmail.Subject;
+			message.PlainTextContent = BuildPlainTextContentFor(booking);
+			message.HtmlContent = BuildHtmlContentFor(booking);
 
 			foreach (var recipient in recipients)
 			{
@@ -92,6 +77,55 @@ namespace BookingPlatform.Backend.Emails
 			{
 				client.SendEmailAsync(message);
 			}
+		}
+
+		private static string BuildPlainTextContentFor(Booking booking)
+		{
+			var plain = new StringBuilder();
+
+			plain.Append(I18n.SystemEmail.NewBookingParagraph + Environment.NewLine);
+			plain.AppendFormat("{0}: {1}{2}", I18n.SystemEmail.BookingDate, booking.Date, Environment.NewLine);
+			plain.AppendFormat("{0}: {1}{2}", I18n.SystemEmail.Event, booking.Event.Name, Environment.NewLine);
+			plain.AppendFormat("{0}: {1}{2}", I18n.SystemEmail.Email, booking.Email, Environment.NewLine);
+			plain.AppendFormat("{0}: {1}{2}", I18n.SystemEmail.FirstName, booking.FirstName, Environment.NewLine);
+			plain.AppendFormat("{0}: {1}{2}", I18n.SystemEmail.LastName, booking.LastName, Environment.NewLine);
+			plain.AppendFormat("{0}: {1}{2}", I18n.SystemEmail.School, booking.School, Environment.NewLine);
+			plain.AppendFormat("{0}: {1}{2}", I18n.SystemEmail.Address, booking.Address, Environment.NewLine);
+			plain.AppendFormat("{0}: {1}{2}", I18n.SystemEmail.ZipCode, booking.ZipCode, Environment.NewLine);
+			plain.AppendFormat("{0}: {1}{2}", I18n.SystemEmail.Town, booking.Town, Environment.NewLine);
+			plain.AppendFormat("{0}: {1}{2}", I18n.SystemEmail.Canton, booking.Canton, Environment.NewLine);
+			plain.AppendFormat("{0}: {1}{2}", I18n.SystemEmail.Phone, booking.Phone, Environment.NewLine);
+			plain.AppendFormat("{0}: {1}{2}", I18n.SystemEmail.NumberOfKids, booking.NumberOfKids, Environment.NewLine);
+			plain.AppendFormat("{0}: {1}{2}", I18n.SystemEmail.Grade, booking.Grade, Environment.NewLine);
+			plain.Append(Environment.NewLine);
+			plain.AppendFormat("{0}:{1}{2}", I18n.SystemEmail.Notes, Environment.NewLine, booking.Notes);
+
+			return plain.ToString();
+		}
+
+		private static string BuildHtmlContentFor(Booking booking)
+		{
+			var html = new StringBuilder();
+
+			html.AppendFormat("<p>{0}</p>", I18n.SystemEmail.NewBookingParagraph + Environment.NewLine);
+			html.Append("<p>");
+			html.AppendFormat("{0}: {1}<br />", I18n.SystemEmail.BookingDate, booking.Date);
+			html.AppendFormat("{0}: {1}<br />", I18n.SystemEmail.Event, booking.Event.Name);
+			html.AppendFormat("{0}: {1}<br />", I18n.SystemEmail.Email, booking.Email);
+			html.AppendFormat("{0}: {1}<br />", I18n.SystemEmail.FirstName, booking.FirstName);
+			html.AppendFormat("{0}: {1}<br />", I18n.SystemEmail.LastName, booking.LastName);
+			html.AppendFormat("{0}: {1}<br />", I18n.SystemEmail.School, booking.School);
+			html.AppendFormat("{0}: {1}<br />", I18n.SystemEmail.Address, booking.Address);
+			html.AppendFormat("{0}: {1}<br />", I18n.SystemEmail.ZipCode, booking.ZipCode);
+			html.AppendFormat("{0}: {1}<br />", I18n.SystemEmail.Town, booking.Town);
+			html.AppendFormat("{0}: {1}<br />", I18n.SystemEmail.Canton, booking.Canton);
+			html.AppendFormat("{0}: {1}<br />", I18n.SystemEmail.Phone, booking.Phone);
+			html.AppendFormat("{0}: {1}<br />", I18n.SystemEmail.NumberOfKids, booking.NumberOfKids);
+			html.AppendFormat("{0}: {1}<br />", I18n.SystemEmail.Grade, booking.Grade);
+			html.Append("</p>");
+			html.AppendFormat("<p>{0}:<br />{1}</p>", I18n.SystemEmail.Notes, booking.Notes);
+
+			return html.ToString();
 		}
 	}
 }

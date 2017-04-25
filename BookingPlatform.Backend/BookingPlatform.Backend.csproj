@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\AppConfig.cs" />
+    <Compile Include="Constants\I18n.cs" />
     <Compile Include="Constants\RuleType.cs" />
     <Compile Include="DataAccess\Database.cs" />
     <Compile Include="DataAccess\DbBaseDao.cs" />

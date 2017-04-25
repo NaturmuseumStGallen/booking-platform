@@ -23,7 +23,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Web.Mvc;
 using BookingPlatform.Backend.Constants;
 using BookingPlatform.Backend.Emails;
 
@@ -349,15 +348,14 @@ namespace BookingPlatform.Constants
 		/// </summary>
 		public static class Public
 		{
-			public const string AdditionalInformation = "Zusätzliche Informationen";
+			public const string AdditionalInformation = "Zusätzliche Angaben";
 			public const string AvailabilityBooked = "Ausgebucht";
 			public const string AvailabilityNotBookable = "Nicht buchbar";
-			public const string BookingMessageGrade = "Bitte buchen Sie pro Klassenverband nur eine Führung. Für Ausnahmen benutzen Sie bitte das Kommentarfeld.";
+			public const string BookingMessageGrade = "Bitte buchen Sie pro Klassenverband eine Führung. Für Ausnahmen benutzen Sie bitte das Kommentarfeld.";
 			public const string ConfirmationPageTitle = "Buchung erfolgreich!";
-			public const string ContactInformation = "Kontaktinformationen";
 			public const string Date = "Datum";
 			public const string Event = "Führung";
-			public const string InputDescriptionDate = "Sie können ein Datum durch Anklicken eines freien Termins im untenstehenden Kalender reservieren. Bitte beachten Sie, dass die Verfügbarkeit je nach Führung variiert.";
+			public const string InputDescriptionDate = "Klicken Sie im untenstehenden Kalender einen freien Termin an. Bitte beachten Sie, dass die Verfügbarkeit je nach Führung variiert.";
 			public const string InputDescriptionGrade = "z.B. \"Mittelstufe, 5. + 6. Klasse\"";
 			public const string InputDescriptionNumberOfKids = "min. 5 bis max. 25";
 			public const string InputErrorCanton = "Bitte wählen Sie einen Kanton!";
@@ -388,12 +386,12 @@ namespace BookingPlatform.Constants
 			public const string InputLabelSchool = "Schule*";
 			public const string InputLabelTown = "Ortschaft*";
 			public const string InputLabelZipCode = "Postleitzahl";
-			public const string NavigationPreviousMonth = "«« Einen Monat zurück";
-			public const string NavigationPreviousWeek = "« Eine Woche zurück";
-			public const string NavigationNextWeek = "Eine Woche vor »";
-			public const string NavigationNextMonth = "Einen Monat vor »»";
+			public const string NavigationPreviousMonth = "❮❮ Einen Monat zurück";
+			public const string NavigationPreviousWeek = "❮ Eine Woche zurück";
+			public const string NavigationNextWeek = "Eine Woche vor ❯";
+			public const string NavigationNextMonth = "Einen Monat vor ❯❯";
 			public const string PageTitle = "Buchungsportal für Führungen";
-			public const string PersonalInformation = "Persönliche Informationen";
+			public const string PersonalInformation = "Persönliche Angaben";
 			public const string PleaseSelect = " - Bitte wählen - ";
 			public const string PleaseSelectEvent = "Bitte wählen Sie eine Führung aus!";
 			public const string Submit = "Abschicken";

@@ -29,6 +29,10 @@
     font-weight: normal;
 }
 
+.bold {
+    font-weight: bold;
+}
+
 /*** Element Styles ***/
 
 body {
@@ -57,7 +61,7 @@ div.control.active {
 }
 
 div.control.active:hover {
-    text-decoration: underline;
+    font-weight: bolder;
 }
 
 div.control.inactive {
@@ -200,15 +204,23 @@ textarea {
     }
 }
 
+@media (max-width: 700px) {
+    img.logo {
+        display: block;
+        position: initial;
+        margin: 5px auto;
+    }
+}
+
 /*** Styles for Small Screens ***/
 
 @media (max-width: 570px) {
-    table.calendar th, table.calendar td {
-        font-size: 6pt;
-    }
-    
     div.calendar-controls {
         max-width: 100%;
+    }
+
+    table.calendar th, table.calendar td {
+        font-size: 6pt;
     }
 
     textarea {

@@ -83,14 +83,14 @@ $(document).ready(function () {
             var originalText = $(trigger).text();
             var open = true;
 
-            $(trigger).append(' ⮙');
+            $(trigger).append(' ▴');
             $(trigger).click(function () {
                 var id = $(trigger).attr('data-slide-trigger');
 
                 open = !open;
 
                 $('[data-slide="' + id + '"]').slideToggle();
-                $(trigger).html(originalText + (open ? ' ⮙' : ' ⮛'));
+                $(trigger).html(originalText + (open ? ' ▴' : ' ▾'));
             })
         })
     }

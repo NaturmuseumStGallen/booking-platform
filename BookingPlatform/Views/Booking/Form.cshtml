@@ -90,8 +90,6 @@
     @Html.DropDownListFor(m => m.Canton, Model.CantonListItems)
     @Html.ValidationMessageFor(m => m.Canton)
 
-    <h2>@Strings.Public.ContactInformation</h2>
-
     @Html.LabelFor(m => m.Email, Strings.Public.InputLabelEmail)
     @Html.TextBoxFor(m => m.Email)
     @Html.ValidationMessageFor(m => m.Email)
@@ -121,5 +119,5 @@
     <input type="text" name="@Html.NameFor(m => m.CaptchaResponse)" />
     @Html.ValidationMessageFor(m => m.CaptchaResponse)
 
-    <input type="submit" value="@Strings.Public.Submit" />
+    <input class="bold" type="submit" value="@Strings.Public.Submit" />
 }
