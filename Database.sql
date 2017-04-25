@@ -35,10 +35,10 @@ DROP TABLE IF EXISTS [Time]
 DROP TABLE IF EXISTS WeeklyRule
 
 -- Tables which are referenced by foreign key constraints
-DROP TABLE IF EXISTS AvailabilityStatus
 DROP TABLE IF EXISTS EventGroupRule
 DROP TABLE IF EXISTS [Event]
 DROP TABLE IF EXISTS [Rule]
+DROP TABLE IF EXISTS AvailabilityStatus
 DROP TABLE IF EXISTS RuleType
 
 /* --- Table Creation --- */
@@ -103,6 +103,7 @@ CREATE TABLE DateRangeRule
 	Id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
 	RuleId INT NOT NULL FOREIGN KEY REFERENCES [Rule](Id),
 	AvailabilityStatusId INT NOT NULL FOREIGN KEY REFERENCES AvailabilityStatus(Id),
+	EventId INT NULL FOREIGN KEY REFERENCES [Event](Id),
 	EndDate DATE,
 	EndTime TIME,
 	StartDate DATE NOT NULL,

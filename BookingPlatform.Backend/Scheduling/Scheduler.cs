@@ -139,17 +139,17 @@ namespace BookingPlatform.Backend.Scheduling
 
 		private AvailabilityStatus GetStrongestStatus(IList<AvailabilityStatus> states)
 		{
+			if (states.Any(s => s == AvailabilityStatus.Booked))
+			{
+				return AvailabilityStatus.Booked;
+			}
+
 			if (states.Any(s => s == AvailabilityStatus.Free))
 			{
 				return AvailabilityStatus.Free;
 			}
 
-			if (states.Any(s => s == AvailabilityStatus.NotBookable))
-			{
-				return AvailabilityStatus.NotBookable;
-			}
-
-			return AvailabilityStatus.Booked;
+			return AvailabilityStatus.NotBookable;
 		}
 	}
 }

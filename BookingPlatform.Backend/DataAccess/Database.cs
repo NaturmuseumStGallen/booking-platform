@@ -71,6 +71,11 @@ namespace BookingPlatform.Backend.DataAccess
 			return new DbEventDao().GetActiveCount();
 		}
 
+		public IList<Event> GetAllEvents()
+		{
+			return new DbEventDao().GetAll();
+		}
+
 		public Booking GetBookingBy(int id)
 		{
 			var booking = new DbBookingDao().GetBy(id);
@@ -191,6 +196,11 @@ namespace BookingPlatform.Backend.DataAccess
 			}
 
 			return bookings;
+		}
+
+		public bool IsActiveEventId(int id)
+		{
+			return new DbEventDao().IsActive(id);
 		}
 
 		public bool IsValidBookingId(int id)

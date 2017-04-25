@@ -32,7 +32,15 @@
     @Html.HiddenFor(m => m.Id)
 }
 
-@Html.LabelFor(m => m.StartDate, Strings.Admin.RuleDetails.InputLabelStartDate)
+@Html.LabelFor(m => m.EventId, Strings.Admin.RuleDetails.InputLabelRuleScope + "*")
+@Html.DropDownListFor(m => m.EventId, Model.EventListItems)
+@Html.ValidationMessageFor(m => m.EventId)
+
+@Html.LabelFor(m => m.Status, Strings.Admin.RuleDetails.InputLabelStatus + "*")
+@Html.DropDownListFor(m => m.Status, Model.StatusListItems.OrderBy(s => s.Text))
+@Html.ValidationMessageFor(m => m.Status)
+
+@Html.LabelFor(m => m.StartDate, Strings.Admin.RuleDetails.InputLabelStartDate + "*")
 @Html.TextBoxFor(m => m.StartDate, new { data_date_picker = bool.TrueString })
 @Html.ValidationMessageFor(m => m.StartDate)
 
@@ -47,7 +55,3 @@
 @Html.LabelFor(m => m.EndTime, Strings.Admin.RuleDetails.InputLabelEndTime)
 @Html.TextBoxFor(m => m.EndTime)
 @Html.ValidationMessageFor(m => m.EndTime)
-
-@Html.LabelFor(m => m.Status, Strings.Admin.RuleDetails.InputLabelStatus)
-@Html.DropDownListFor(m => m.Status, Model.StatusListItems)
-@Html.ValidationMessageFor(m => m.Status)

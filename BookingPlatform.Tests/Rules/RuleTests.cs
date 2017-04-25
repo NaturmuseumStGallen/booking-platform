@@ -44,6 +44,24 @@ namespace BookingPlatform.Tests
 		}
 
 		[TestMethod]
+		public void DateRangeRuleWithEventTest()
+		{
+			var @event = new Event { Id = 10 };
+			var other = new Event { Id = 2 };
+			var rule = new DateRangeRule(DateTime.Today, DateTime.Today.AddDays(7), AvailabilityStatus.Free, @event.Id);
+
+			Assert.IsTrue(rule.GetStatus(DateTime.Today.AddDays(-1), @event) == AvailabilityStatus.Undefined);
+			Assert.IsTrue(rule.GetStatus(DateTime.Today, @event) == AvailabilityStatus.Free);
+			Assert.IsTrue(rule.GetStatus(DateTime.Today.AddDays(3), @event) == AvailabilityStatus.Free);
+			Assert.IsTrue(rule.GetStatus(DateTime.Today.AddMonths(1), @event) == AvailabilityStatus.Undefined);
+
+			Assert.IsTrue(rule.GetStatus(DateTime.Today.AddDays(-1), other) == AvailabilityStatus.Undefined);
+			Assert.IsTrue(rule.GetStatus(DateTime.Today, other) == AvailabilityStatus.Undefined);
+			Assert.IsTrue(rule.GetStatus(DateTime.Today.AddDays(3), other) == AvailabilityStatus.Undefined);
+			Assert.IsTrue(rule.GetStatus(DateTime.Today.AddMonths(1), other) == AvailabilityStatus.Undefined);
+		}
+
+		[TestMethod]
 		public void EventDurationRuleTest()
 		{
 			var @event = new Event { Id = 5 };

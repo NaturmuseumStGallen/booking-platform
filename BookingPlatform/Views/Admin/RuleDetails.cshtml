@@ -61,7 +61,7 @@
             @Html.HiddenFor(m => m.RuleId)
         }
 
-        @Html.LabelFor(m => m.Name, Strings.Admin.RuleDetails.InputLabelName)
+        @Html.LabelFor(m => m.Name, Strings.Admin.RuleDetails.InputLabelName + "*")
         @Html.TextBoxFor(m => m.Name)
         @Html.ValidationMessageFor(m => m.Name)
 

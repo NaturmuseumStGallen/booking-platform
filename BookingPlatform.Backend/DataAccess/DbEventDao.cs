@@ -54,6 +54,13 @@ namespace BookingPlatform.Backend.DataAccess
 			return Convert.ToInt32(ExecuteScalar(sql));
 		}
 
+		public IList<Event> GetAll()
+		{
+			var sql = "SELECT * FROM [Event]";
+
+			return ExecuteMultiQuery(sql);
+		}
+
 		public IList<Event> GetAllActive()
 		{
 			var sql = "SELECT * FROM [Event] WHERE IsActive = 1";
@@ -87,6 +94,14 @@ namespace BookingPlatform.Backend.DataAccess
 			sql = sql.Replace("%%PARAM_LIST%%", sqlParamList);
 
 			return ExecuteMultiQuery(sql, parameters.ToArray());
+		}
+
+		public bool IsActive(int id)
+		{
+			var sql = "SELECT COUNT(*) FROM [Event] WHERE IsActive = 1 AND Id = @Id";
+			var parameter = new SqlParameter("@Id", id);
+
+			return Convert.ToInt32(ExecuteScalar(sql, parameter)) == 1;
 		}
 
 		public void SaveNew(Event @event)

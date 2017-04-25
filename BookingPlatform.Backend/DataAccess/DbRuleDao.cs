@@ -40,6 +40,7 @@ namespace BookingPlatform.Backend.DataAccess
 				r.Name AS r_Name,
 				dr.Id AS dr_Id,
 				dr.AvailabilityStatusId AS dr_AvailabilityStatusId,
+				dr.EventId AS dr_EventId,
 				dr.EndDate AS dr_EndDate,
 				dr.EndTime AS dr_EndTime,
 				dr.StartDate AS dr_StartDate,

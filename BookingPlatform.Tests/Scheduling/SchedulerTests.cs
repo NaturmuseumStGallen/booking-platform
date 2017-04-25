@@ -238,14 +238,14 @@ namespace BookingPlatform.Tests
 
 			var dates = provider.GetBookingDateRange(date, date, @event);
 
-			Assert.IsTrue(dates.First().Status == AvailabilityStatus.Free);
+			Assert.IsTrue(dates.First().Status == AvailabilityStatus.Booked);
 		}
 
 		[TestMethod]
 		public void MustRespectSecondStrongestRuleStatus()
 		{
 			var bookings = new Mock<IBookingProvider>();
-			var bookedRule = new Mock<IRule>();
+			var freeRule = new Mock<IRule>();
 			var notBookableRule = new Mock<IRule>();
 			var rules = new Mock<IRuleProvider>();
 			var times = new Mock<ITimeProvider>();
@@ -254,14 +254,14 @@ namespace BookingPlatform.Tests
 			var provider = new Scheduler(bookings.Object, rules.Object, times.Object);
 
 			bookings.Setup(p => p.GetBookings(date, date)).Returns(new List<Booking>());
-			bookedRule.Setup(r => r.GetStatus(date, @event)).Returns(AvailabilityStatus.Booked);
+			freeRule.Setup(r => r.GetStatus(date, @event)).Returns(AvailabilityStatus.Free);
 			notBookableRule.Setup(r => r.GetStatus(date, @event)).Returns(AvailabilityStatus.NotBookable);
-			rules.Setup(r => r.GetRules()).Returns(new List<IRule> { bookedRule.Object, notBookableRule.Object });
+			rules.Setup(r => r.GetRules()).Returns(new List<IRule> { freeRule.Object, notBookableRule.Object });
 			times.Setup(t => t.GetTimes()).Returns(new List<TimeSpan> { date.TimeOfDay });
 
 			var dates = provider.GetBookingDateRange(date, date, @event);
 
-			Assert.IsTrue(dates.First().Status == AvailabilityStatus.NotBookable);
+			Assert.IsTrue(dates.First().Status == AvailabilityStatus.Free);
 		}
 	}
 }

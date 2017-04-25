@@ -40,8 +40,9 @@ namespace BookingPlatform.Backend.Rules
 		}
 
 		/// <summary>
-		/// Defines a new event duration rule for the specified date range,
-		/// i.e. all dates lying outside the date range will not be bookable.
+		/// Defines a new event duration rule for the specified date range, i.e. all dates lying
+		/// outside the date range will not be bookable for the given event. This rule regards only
+		/// the date aspect of the start and end values!
 		/// </summary>
 		public EventDurationRule(int eventId, DateTime start, DateTime end)
 		{
@@ -52,7 +53,7 @@ namespace BookingPlatform.Backend.Rules
 
 		public AvailabilityStatus GetStatus(DateTime date, Event @event)
 		{
-			if (eventId == @event.Id && (date.IsSmallerThan(start) || date.IsBiggerThan(end)))
+			if (eventId == @event.Id && (date.Date.IsSmallerThan(start.Date) || date.Date.IsBiggerThan(end.Date)))
 			{
 				return AvailabilityStatus.NotBookable;
 			}

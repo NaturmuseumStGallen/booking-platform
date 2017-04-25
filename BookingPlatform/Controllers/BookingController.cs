@@ -92,7 +92,7 @@ namespace BookingPlatform.Controllers
 		{
 			var model = new BookingCalendarModel();
 
-			if (eventId.HasValue && Database.Instance.IsValidEventId(eventId.Value))
+			if (eventId.HasValue && Database.Instance.IsActiveEventId(eventId.Value))
 			{
 				var current = ticks.HasValue ? new DateTime(ticks.Value) : CalendarUtility.CalculateFirstFreeBookingDate(eventId.Value);
 				var date = CalendarUtility.CalculateNewDate(current, navigation);

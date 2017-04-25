@@ -231,6 +231,7 @@ namespace BookingPlatform.Constants
 				public const string InputLabelEvent = "Führung";
 				public const string InputLabelEvents = "Führungen";
 				public const string InputLabelName = "Name";
+				public const string InputLabelRuleScope = "Gültig für";
 				public const string InputLabelStartDate = "Startdatum";
 				public const string InputLabelStartTime = "Startzeit";
 				public const string InputLabelStatus = "Buchungsstatus";
@@ -240,13 +241,15 @@ namespace BookingPlatform.Constants
 				public const string RuleStatusBooked = "Ausgebucht";
 				public const string RuleStatusFree = "Frei";
 				public const string RuleStatusNotBookable = "Nicht buchbar";
+				public const string ScopeAllEvents = "Alle Führungen";
 
 				public static class Descriptions
 				{
 					public const string Important = "WICHTIG:";
 
-					public static string DateRangeRule = @"Erstellt eine Regel für ein einzelnes Datum oder eine Zeitperiode. Es müssen
-						mindestens ein Startdatum und ein Status gewählt werden. Folgende Eingabekombinationen sind möglich:";
+					public static string DateRangeRule = @"Erstellt eine Regel für ein einzelnes Datum oder eine Zeitperiode. Der Gültigkeitsbereich
+						kann optional auf eine einzelne Führung beschränkt werden. Es müssen mindestens der Gültigkeitsbereich, ein Startdatum
+						und ein Status gewählt werden. Folgende Eingabekombinationen sind möglich:";
 
 					public static string EventDurationRule = @"Erstellt eine Regel, welche den gültigen Buchungszeitraum für eine Führung
 						definiert. Das heisst, dass für die gewählte Führung alle Termine, die ausserhalb des gewählten Zeitraums liegen,
@@ -259,8 +262,8 @@ namespace BookingPlatform.Constants
 					public const string MinimumDateRule = @"Erstellt eine Regel für den ersten (frühsten) buchbaren Termin. Es sind zwei
 						verschiedene Typen möglich:";
 
-					public const string PriorityNote = "Die Status haben eine prioritäre Gewichtung: \"" + RuleStatusFree + "\" ist stärker als \"" +
-						RuleStatusNotBookable + "\" ist stärker als \"" + RuleStatusBooked + "\". " + @"Sollten also zwei oder mehrere
+					public const string PriorityNote = "Die Status haben eine prioritäre Gewichtung: \"" + RuleStatusBooked + "\" ist stärker als \"" +
+						RuleStatusFree + "\" ist stärker als \"" + RuleStatusNotBookable + "\". " + @"Sollten also zwei oder mehrere
 						Regeln für einen bestimmten Buchungstermin ansprechen, wird der Status mit der höchsten Priorität angezeigt.";
 
 					public const string WeeklyRule = @"Erstellt eine sich wöchentlich wiederholende Regel. Es müssen mindestens ein Wochentag
@@ -301,6 +304,7 @@ namespace BookingPlatform.Constants
 				public const string ChangePassword = "Passwort ändern:";
 				public const string ConfirmationPageContent = "Inhalt der Bestätigungsseite";
 				public const string Content = "Inhalt";
+				public const string DeactivatedEvent = "[Deaktivierte Führung]";
 				public const string DynamicContent = "Dynamische Textinhalte";
 				public const string DynamicContentDescription = "Für alle Textinhalte können Platzhalter definiert werden, welche ggf. nur am gewünschten Tag angezeigt werden.";
 				public const string EmailContent = "Inhalt des Bestätigungsmails";

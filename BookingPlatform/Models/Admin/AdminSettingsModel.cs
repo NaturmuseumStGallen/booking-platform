@@ -105,8 +105,11 @@ namespace BookingPlatform.Models
 		private MvcHtmlString DateRangeDetails(DateRangeRuleConfiguration config)
 		{
 			var builder = new StringBuilder();
+			var eventName = Events.FirstOrDefault(e => e.Id == config.EventId)?.Name ?? Strings.Admin.Settings.DeactivatedEvent;
+			var scope = !config.EventId.HasValue ? Strings.Admin.RuleDetails.ScopeAllEvents : eventName;
 
 			builder.AppendFormat("{0}: {1}<br />", Strings.Admin.RuleDetails.InputLabelStatus, Strings.Admin.GetStatusName(config.AvailabilityStatus));
+			builder.AppendFormat("{0}: {1}<br />", Strings.Admin.RuleDetails.InputLabelRuleScope, scope);
 			builder.AppendFormat("{0}: {1}<br />", Strings.Admin.RuleDetails.InputLabelStartDate, config.StartDate.ToShortDateString());
 			builder.AppendFormat("{0}: {1}<br />", Strings.Admin.RuleDetails.InputLabelStartTime, config.StartTime.HasValue ? config.StartTime.Value.ToString("hh\\:mm") : "-");
 			builder.AppendFormat("{0}: {1}<br />", Strings.Admin.RuleDetails.InputLabelEndDate, config.EndDate.HasValue ? config.EndDate.Value.ToShortDateString() : "-");
@@ -118,8 +121,9 @@ namespace BookingPlatform.Models
 		private MvcHtmlString EventDurationDetails(EventDurationRuleConfiguration config)
 		{
 			var builder = new StringBuilder();
+			var eventName = Events.FirstOrDefault(e => e.Id == config.EventId)?.Name ?? Strings.Admin.Settings.DeactivatedEvent;
 
-			builder.AppendFormat("{0}: {1}<br />", Strings.Admin.RuleDetails.InputLabelEvent, Events.First(e => e.Id == config.EventId).Name);
+			builder.AppendFormat("{0}: {1}<br />", Strings.Admin.RuleDetails.InputLabelEvent, eventName);
 			builder.AppendFormat("{0}: {1}<br />", Strings.Admin.RuleDetails.InputLabelStartDate, config.StartDate.ToShortDateString());
 			builder.AppendFormat("{0}: {1}<br />", Strings.Admin.RuleDetails.InputLabelEndDate, config.EndDate.ToShortDateString());
 
@@ -132,7 +136,7 @@ namespace BookingPlatform.Models
 
 			foreach (var id in config.EventIds)
 			{
-				builder.AppendFormat("- {0}<br />", Events.First(e => e.Id == id).Name);
+				builder.AppendFormat("- {0}<br />", Events.FirstOrDefault(e => e.Id == id)?.Name ?? Strings.Admin.Settings.DeactivatedEvent);
 			}
 
 			return new MvcHtmlString(builder.ToString());

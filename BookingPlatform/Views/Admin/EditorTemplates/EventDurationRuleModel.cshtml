@@ -32,14 +32,14 @@
     @Html.HiddenFor(m => m.Id)
 }
 
-@Html.LabelFor(m => m.EventId, Strings.Admin.RuleDetails.InputLabelEvent)
+@Html.LabelFor(m => m.EventId, Strings.Admin.RuleDetails.InputLabelEvent + "*")
 @Html.DropDownListFor(m => m.EventId, Model.EventListItems)
 @Html.ValidationMessageFor(m => m.EventId)
 
-@Html.LabelFor(m => m.StartDate, Strings.Admin.RuleDetails.InputLabelStartDate)
+@Html.LabelFor(m => m.StartDate, Strings.Admin.RuleDetails.InputLabelStartDate + "*")
 @Html.TextBoxFor(m => m.StartDate, new { data_date_picker = bool.TrueString })
 @Html.ValidationMessageFor(m => m.StartDate)
 
-@Html.LabelFor(m => m.EndDate, Strings.Admin.RuleDetails.InputLabelEndDate)
+@Html.LabelFor(m => m.EndDate, Strings.Admin.RuleDetails.InputLabelEndDate + "*")
 @Html.TextBoxFor(m => m.EndDate, new { data_date_picker = bool.TrueString })
 @Html.ValidationMessageFor(m => m.EndDate)

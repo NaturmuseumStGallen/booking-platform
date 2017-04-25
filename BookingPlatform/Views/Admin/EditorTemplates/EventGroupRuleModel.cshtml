@@ -32,6 +32,6 @@
     @Html.HiddenFor(m => m.Id)
 }
 
-@Html.LabelFor(m => m.EventIds, Strings.Admin.RuleDetails.InputLabelEvents)
+@Html.LabelFor(m => m.EventIds, Strings.Admin.RuleDetails.InputLabelEvents + "*")
 @Html.ListBoxFor(m => m.EventIds, Model.Events, new { size = Model.AvailableEvents.Count })
 @Html.ValidationMessageFor(m => m.EventIds)

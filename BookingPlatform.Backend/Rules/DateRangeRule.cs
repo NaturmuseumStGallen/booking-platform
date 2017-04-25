@@ -30,6 +30,7 @@ namespace BookingPlatform.Backend.Rules
 {
 	public class DateRangeRule : IRule
 	{
+		private int? eventId;
 		private DateTime from;
 		private DateTime to;
 		private AvailabilityStatus status;
@@ -40,19 +41,21 @@ namespace BookingPlatform.Backend.Rules
 		}
 
 		/// <summary>
-		/// Defines a new date range rule that returns the specified status
-		/// for events lying in the defined date range.
+		/// Defines a new date range rule that returns the specified status for events lying in
+		/// the defined date range. If an event is specified, the rule applies only to dates for
+		/// that event.
 		/// </summary>
-		public DateRangeRule(DateTime from, DateTime to, AvailabilityStatus status)
+		public DateRangeRule(DateTime from, DateTime to, AvailabilityStatus status, int? eventId = null)
 		{
 			this.from = from;
 			this.to = to;
 			this.status = status;
+			this.eventId = eventId;
 		}
 
 		public AvailabilityStatus GetStatus(DateTime date, Event @event)
 		{
-			if (from.IsSmallerThanOrEqualAs(date) && date.IsSmallerThanOrEqualAs(to))
+			if ((!eventId.HasValue || eventId == @event.Id) && from.IsSmallerThanOrEqualAs(date) && date.IsSmallerThanOrEqualAs(to))
 			{
 				return status;
 			}

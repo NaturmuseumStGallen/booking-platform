@@ -39,10 +39,12 @@ namespace BookingPlatform.Models
 		{
 			switch (model.Type)
 			{
-				case RuleType.DateRange:
 				case RuleType.MinimumDate:
 				case RuleType.Weekly:
 					// Nothing to do here so far...
+					break;
+				case RuleType.DateRange:
+					(model as DateRangeRuleModel).AvailableEvents = Database.Instance.GetActiveEvents();
 					break;
 				case RuleType.EventDuration:
 					(model as EventDurationRuleModel).AvailableEvents = Database.Instance.GetActiveEvents();
@@ -57,11 +59,13 @@ namespace BookingPlatform.Models
 
 		public static void InitializeFor(this BookingModel model, int? eventId)
 		{
+			var isActiveEvent = eventId.HasValue && Database.Instance.IsActiveEventId(eventId.Value);
+
 			model.Captcha = CaptchaUtility.GenerateAndStoreInSession();
 			model.Events = Database.Instance.GetActiveEvents();
-			model.CalendarModel.ShowEventSelectionMessage = !eventId.HasValue;
+			model.CalendarModel.ShowEventSelectionMessage = !isActiveEvent;
 
-			if (eventId.HasValue && Database.Instance.IsValidEventId(eventId.Value))
+			if (isActiveEvent)
 			{
 				var date = CalendarUtility.CalculateFirstFreeBookingDate(eventId.Value);
 
@@ -193,6 +197,7 @@ namespace BookingPlatform.Models
 		public static void MapFromEntity(this DateRangeRuleModel model, DateRangeRuleConfiguration rule)
 		{
 			model.Id = rule.Id;
+			model.EventId = rule.EventId;
 			model.EndDate = rule.EndDate.ToString("dd.MM.yyyy");
 			model.EndTime = rule.EndTime.ToString("hh\\:mm");
 			model.StartDate = rule.StartDate.ToString("dd.MM.yyyy");
@@ -306,6 +311,7 @@ namespace BookingPlatform.Models
 			}
 
 			rule.AvailabilityStatus = model.Status.Value;
+			rule.EventId = model.EventId;
 			rule.EndDate = DateTimeUtility.NullableDateTimeFor(model.EndDate);
 			rule.EndTime = DateTimeUtility.NullableTimeSpanFor(model.EndTime);
 			rule.StartDate = DateTime.Parse(model.StartDate);

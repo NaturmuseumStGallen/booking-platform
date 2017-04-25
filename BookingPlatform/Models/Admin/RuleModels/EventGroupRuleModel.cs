@@ -37,7 +37,6 @@ namespace BookingPlatform.Models
 		public EventGroupRuleModel()
 		{
 			AvailableEvents = new List<Event>();
-			SelectedEvents = new List<Event>();
 		}
 
 		public override RuleType Type
@@ -50,11 +49,10 @@ namespace BookingPlatform.Models
 
 		public int? Id { get; set; }
 		public IList<Event> AvailableEvents { get; set; }
-		public IList<Event> SelectedEvents { get; set; }
 
 		public MultiSelectList Events
 		{
-			get { return new MultiSelectList(AvailableEvents, nameof(Event.Id), nameof(Event.Name), SelectedEvents); }
+			get { return new MultiSelectList(AvailableEvents, nameof(Event.Id), nameof(Event.Name)); }
 		}
 
 		public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

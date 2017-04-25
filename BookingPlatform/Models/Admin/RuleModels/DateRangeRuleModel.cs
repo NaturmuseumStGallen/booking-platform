@@ -27,6 +27,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web.Mvc;
 using BookingPlatform.Backend.Constants;
+using BookingPlatform.Backend.Entities;
 using BookingPlatform.Constants;
 
 namespace BookingPlatform.Models
@@ -37,6 +38,8 @@ namespace BookingPlatform.Models
 		{
 			get { return RuleType.DateRange; }
 		}
+
+		public int? EventId { get; set; }
 
 		[RegularExpression("^((0[1-9])|([1-2][0-9])|(3[0-1])).((0[1-9])|(1[0-2])).20[1-5][0-9]$", ErrorMessage = Strings.Admin.RuleDetails.InputErrorDate)]
 		public string EndDate { get; set; }
@@ -55,6 +58,20 @@ namespace BookingPlatform.Models
 		public AvailabilityStatus? Status { get; set; }
 
 		public int? Id { get; set; }
+		public IList<Event> AvailableEvents { get; set; }
+
+		public IEnumerable<SelectListItem> EventListItems
+		{
+			get
+			{
+				yield return new SelectListItem { Text = Strings.Admin.RuleDetails.ScopeAllEvents, Value = string.Empty, Selected = !EventId.HasValue };
+
+				foreach (var @event in AvailableEvents)
+				{
+					yield return new SelectListItem { Text = @event.Name, Value = @event.Id.ToString(), Selected = @event.Id == EventId };
+				}
+			}
+		}
 
 		public IEnumerable<SelectListItem> StatusListItems
 		{

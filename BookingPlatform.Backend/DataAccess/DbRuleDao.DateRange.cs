@@ -44,6 +44,7 @@ namespace BookingPlatform.Backend.DataAccess
 
 			config.Id = (int)reader["dr_Id"];
 			config.AvailabilityStatus = (AvailabilityStatus)reader["dr_AvailabilityStatusId"];
+			config.EventId = reader["dr_EventId"] as int?;
 			config.EndDate = reader["dr_EndDate"] as DateTime?;
 			config.EndTime = reader["dr_EndTime"] as TimeSpan?;
 			config.StartDate = (DateTime)reader["dr_StartDate"];
@@ -56,13 +57,14 @@ namespace BookingPlatform.Backend.DataAccess
 		{
 			var sql = @"
 			INSERT INTO
-				DateRangeRule(RuleId, AvailabilityStatusId, EndDate, EndTime, StartDate, StartTime)
+				DateRangeRule(RuleId, AvailabilityStatusId, EventId, EndDate, EndTime, StartDate, StartTime)
 			VALUES
-				(@RuleId, @AvailabilityStatusId, @EndDate, @EndTime, @StartDate, @StartTime)";
+				(@RuleId, @AvailabilityStatusId, @EventId, @EndDate, @EndTime, @StartDate, @StartTime)";
 			var parameters = new[]
 			{
 				new SqlParameter("@RuleId", config.RuleId),
 				new SqlParameter("@AvailabilityStatusId", config.AvailabilityStatus),
+				new SqlParameter("@EventId", (object) config.EventId ?? DBNull.Value),
 				new SqlParameter("@EndDate", (object) config.EndDate ?? DBNull.Value),
 				new SqlParameter("@EndTime", (object) config.EndTime ?? DBNull.Value),
 				new SqlParameter("@StartDate", config.StartDate),
@@ -80,6 +82,7 @@ namespace BookingPlatform.Backend.DataAccess
 				DateRangeRule
 			SET
 				AvailabilityStatusId = @AvailabilityStatusId,
+				EventId = @EventId,
 				EndDate = @EndDate,
 				EndTime = @EndTime,
 				StartDate = @StartDate,
@@ -90,6 +93,7 @@ namespace BookingPlatform.Backend.DataAccess
 			{
 				new SqlParameter("@Id", config.Id),
 				new SqlParameter("@AvailabilityStatusId", config.AvailabilityStatus),
+				new SqlParameter("@EventId", (object) config.EventId ?? DBNull.Value),
 				new SqlParameter("@EndDate", (object) config.EndDate ?? DBNull.Value),
 				new SqlParameter("@EndTime", (object) config.EndTime ?? DBNull.Value),
 				new SqlParameter("@StartDate", config.StartDate),
