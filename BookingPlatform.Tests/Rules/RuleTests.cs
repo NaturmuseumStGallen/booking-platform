@@ -62,6 +62,22 @@ namespace BookingPlatform.Tests
 		}
 
 		[TestMethod]
+		public void DateRangeRuleWithTimesTest()
+		{
+			var from = new DateTime(2017, 04, 01, 10, 0, 0);
+			var to = new DateTime(2017, 04, 01, 15, 30, 0);
+			var rule = new DateRangeRule(from, to, AvailabilityStatus.NotBookable);
+
+			Assert.IsTrue(rule.GetStatus(from.AddHours(-1), null) == AvailabilityStatus.Undefined);
+			Assert.IsTrue(rule.GetStatus(from.AddMinutes(-1), null) == AvailabilityStatus.Undefined);
+			Assert.IsTrue(rule.GetStatus(from, null) == AvailabilityStatus.NotBookable);
+			Assert.IsTrue(rule.GetStatus(from.AddHours(2), null) == AvailabilityStatus.NotBookable);
+			Assert.IsTrue(rule.GetStatus(to, null) == AvailabilityStatus.NotBookable);
+			Assert.IsTrue(rule.GetStatus(to.AddMinutes(1), null) == AvailabilityStatus.Undefined);
+			Assert.IsTrue(rule.GetStatus(to.AddHours(1), null) == AvailabilityStatus.Undefined);
+		}
+
+		[TestMethod]
 		public void EventDurationRuleTest()
 		{
 			var @event = new Event { Id = 5 };

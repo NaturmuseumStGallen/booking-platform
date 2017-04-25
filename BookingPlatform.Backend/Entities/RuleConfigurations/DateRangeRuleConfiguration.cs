@@ -46,9 +46,9 @@ namespace BookingPlatform.Backend.Entities.RuleConfigurations
 			{
 				to = DateTimeUtility.NewFor(EndDate.Value, EndTime);
 			}
-			else if (StartTime.HasValue)
+			else if (StartTime.HasValue || EndTime.HasValue)
 			{
-				to = from;
+				to = DateTimeUtility.NewFor(StartDate, EndTime ?? StartTime);
 			}
 			else
 			{

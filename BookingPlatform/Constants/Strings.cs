@@ -273,6 +273,7 @@ namespace BookingPlatform.Constants
 					{
 						new KeyValuePair<string, string>("Nur Startdatum:", "An dem angegebenen Datum wird für den ganzen Tag der gewählte Status angezeigt."),
 						new KeyValuePair<string, string>("Startdatum und Startzeit:", "Für Führungen am angegebenen Datum zur angegebenen Zeit wird der gewählte Status angezeigt."),
+						new KeyValuePair<string, string>("Startdatum, Startzeit und Endzeit:", "Für Führungen am angegebenen Datum innerhalb des definierten Zeitabschnitts wird der gewählte Status angezeigt."),
 						new KeyValuePair<string, string>("Startdatum und Enddatum:", "Für den Zeitraum vom angegebenen Startdatum um 00:00 Uhr bis zum angegebenen Enddatum um 00:00 Uhr wird der gewählte Status angezeigt."),
 						new KeyValuePair<string, string>("Startdatum, Startzeit und Enddatum:", "Gleich wie vorangehender Punkt, einfach mit angegebener Startzeit statt 00:00 Uhr."),
 						new KeyValuePair<string, string>("Startdatum, Startzeit, Enddatum und Endzeit:", "Gleich wie vorangehender Punkt, nun aber mit Start- und Endzeit wie eingegeben.")
