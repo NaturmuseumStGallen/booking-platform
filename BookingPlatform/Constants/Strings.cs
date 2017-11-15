@@ -304,8 +304,6 @@ namespace BookingPlatform.Constants
 
 					public static readonly KeyValuePair<string, string>[] WeeklyOptions = new KeyValuePair<string, string>[]
 					{
-                         new KeyValuePair<string, string>("Führungen:", "Wird keine Führung markiert ist die Regel für alle Führungen gültig, ansonsten nur für die markierten. " +
-                            "Einzelne Führungen können mit gedrückter [ctrl]-Taste markiert werden. Auf die gleiche Art können die Führungen auch wieder abgewählt werden. "),
                         new KeyValuePair<string, string>("Nur Wochentag:", "An dem angegebenen Wochentag wird für den ganzen Tag der gewählte Status angezeigt."),
 						new KeyValuePair<string, string>("Wochentag und Zeit:", "An dem angegebenen Wochentag wird zur eingegebenen Zeit der gewählte Status angezeigt."),
                         new KeyValuePair<string, string>("Wochentag, Zeit und Endzeit:", "An dem angegebenen Wochentag wird zur eingegebenen Zeit der gewählte Status bis zur Endzeit angezeigt."),
@@ -313,7 +311,9 @@ namespace BookingPlatform.Constants
                         new KeyValuePair<string, string>("Wochentag und Startdatum:", "Gleich wie beim ersten Punkt, einfach erst ab dem gewählten Startdatum."),
 						new KeyValuePair<string, string>("Wochentag, Zeit und Startdatum:", "Wie beim zweiten Punkt, einfach erst ab dem gewählten Startdatum."),
                         new KeyValuePair<string, string>("Wochentag, Zeit, Endzeit und Startdatum:", "Wie beim dritten Punkt, einfach erst ab dem gewählten Startdatum."),
-                        new KeyValuePair<string, string>("Wochentag, Endzeit und Startdatum:", "Wie beim vierten Punkt, einfach erst ab dem gewählten Startdatum.")
+                        new KeyValuePair<string, string>("Wochentag, Endzeit und Startdatum:", "Wie beim vierten Punkt, einfach erst ab dem gewählten Startdatum."),
+                        new KeyValuePair<string, string>("Führungen:", "Wird keine Führung markiert ist die Regel für alle Führungen gültig, ansonsten nur für die markierten. " +
+                            "Einzelne Führungen können mit gedrückter [ctrl]-Taste markiert werden. Auf die gleiche Art können die Führungen auch wieder abgewählt werden. ")
                     };
 				}
 			}
@@ -410,7 +410,7 @@ namespace BookingPlatform.Constants
 			public const string InputLabelFirstName = "Vorname*";
 			public const string InputLabelGrade = "Klassenbezeichnung*";
 			public const string InputLabelLastName = "Nachname*";
-			public const string InputLabelNotes = "Bemerkungen";
+			public const string InputLabelNotes = "Vorwissen, Bemerkungen";
 			public const string InputLabelNumberOfKids = "Anzahl Kinder*";
 			public const string InputLabelPhone = "Telefon*";
 			public const string InputLabelSchool = "Schule*";
