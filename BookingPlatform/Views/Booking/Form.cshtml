@@ -47,7 +47,8 @@
     @Html.DropDownListFor(m => m.EventId, Model.EventListItems, new
     {
         onchange = "booking.updateCalendar('" + CalendarUtility.Navigation.None + "')",
-        data_event_id = bool.TrueString
+        data_event_id = bool.TrueString,
+        id = "eventSelectDropdownList"
     })
     @Html.ValidationMessageFor(m => m.EventId)
 

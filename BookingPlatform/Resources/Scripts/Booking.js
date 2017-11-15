@@ -65,10 +65,12 @@ booking.updateCalendar = function (navigation) {
     var params = $.param({ eventId: eventId, ticks: ticks, navigation: navigation });
     var url = $('#calendar-update-url').val() + '?' + params;
 
+    $("#eventSelectDropdownList").prop("disabled", true);
+
     displayProgressBar();
 
     $('[data-booking-date-ticks]').val(null);
-    $.ajax(url).done(successHandler).fail(failureHandler);
+    $.ajax(url).done(successHandler).fail(failureHandler).always(function () { $("#eventSelectDropdownList").prop("disabled", false); });
 
     function displayProgressBar() {
         var height = $('#calendar-container').css('height');
@@ -94,5 +96,7 @@ booking.updateCalendar = function (navigation) {
         $('#calendar-container').html(container.replace('{0}', paragraph))
         alert(message);
     }
+
+
 }
 
