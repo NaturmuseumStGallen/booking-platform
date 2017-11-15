@@ -137,6 +137,11 @@ $(document).ready(function () {
     $("#js-add-booking-time").click(function () {
         var timeToAdd = $("#js-booking-time-to-add").val();
 
+        var timeFormatRegex = new RegExp("^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$");
+
+        if (!timeFormatRegex.test(timeToAdd))
+            return;
+
         var tdBookingTime = "<td><input readonly type='text' name='BookingTimes' value='" + timeToAdd + "' /></td>";
         var tdDeleteBookingTime = "<td class='align-right deletable-row'>X</td>";
 
