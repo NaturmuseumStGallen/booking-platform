@@ -110,5 +110,17 @@ namespace BookingPlatform.Tests
 
 			Assert.IsFalse(new DateTime(2017, 1, 1, 12, 0, 10).IsSmallerThanOrEqualAs(new DateTime(2016, 1, 1, 12, 0, 0)));
 		}
-	}
+
+        [TestMethod]
+        public void IsBetween_9h30mBetween9h30mAnd10h30m_True()
+        {
+            Assert.IsTrue(new TimeSpan(9, 30, 00).IsBetween(new TimeSpan(9, 30, 00), new TimeSpan(10, 00, 00)));
+        }
+
+        [TestMethod]
+        public void IsBetween_10h30mBetween9h30mAnd10h30m_False()
+        {
+            Assert.IsFalse(new TimeSpan(10, 30, 00).IsBetween(new TimeSpan(9, 30, 00), new TimeSpan(10, 00, 00)));
+        }
+    }
 }

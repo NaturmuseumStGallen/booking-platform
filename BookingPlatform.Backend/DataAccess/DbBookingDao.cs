@@ -111,9 +111,9 @@ namespace BookingPlatform.Backend.DataAccess
 		{
 			var sql = @"
 			INSERT INTO
-				Booking(EventId, IsActive, [Address], Canton, [Date], Email, FirstName, Grade, LastName, Notes, NumberOfKids, Phone, School, Town, ZipCode)
+				Booking(EventId, IsActive, [Address], Canton, [Date], Email, FirstName, Grade, LastName, Notes, NumberOfKids, Phone, School, Town, ZipCode, Created)
 			VALUES
-				(@EventId, @IsActive, @Address, @Canton, @Date, @Email, @FirstName, @Grade, @LastName, @Notes, @NumberOfKids, @Phone, @School, @Town, @ZipCode)";
+				(@EventId, @IsActive, @Address, @Canton, @Date, @Email, @FirstName, @Grade, @LastName, @Notes, @NumberOfKids, @Phone, @School, @Town, @ZipCode, @Created)";
 			var parameters = new[]
 			{
 				new SqlParameter("@EventId", booking.EventId),
@@ -130,8 +130,9 @@ namespace BookingPlatform.Backend.DataAccess
 				new SqlParameter("@Phone", booking.Phone),
 				new SqlParameter("@School", booking.School),
 				new SqlParameter("@Town", booking.Town),
-				new SqlParameter("@ZipCode", (object) booking.ZipCode ?? DBNull.Value)
-			};
+				new SqlParameter("@ZipCode", (object) booking.ZipCode ?? DBNull.Value),
+                new SqlParameter("@Created", (object) booking.Created ?? DBNull.Value)
+            };
 
 			ExecuteNonQuery(sql, parameters);
 		}
@@ -214,6 +215,7 @@ namespace BookingPlatform.Backend.DataAccess
 			booking.School = (string) reader[nameof(Booking.School)];
 			booking.Town = (string) reader[nameof(Booking.Town)];
 			booking.ZipCode = reader[nameof(Booking.ZipCode)] as int?;
+            booking.Created = reader[nameof(Booking.Created)] as DateTime?;
 
 			return booking;
 		}

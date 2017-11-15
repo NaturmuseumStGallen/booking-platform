@@ -63,7 +63,7 @@ namespace BookingPlatform.Backend.DataAccess
 
 		public IList<Event> GetAllActive()
 		{
-			var sql = "SELECT * FROM [Event] WHERE IsActive = 1";
+			var sql = "SELECT * FROM [Event] WHERE IsActive = 1 ORDER BY DisplayOrder";
 
 			return ExecuteMultiQuery(sql);
 		}
@@ -108,17 +108,19 @@ namespace BookingPlatform.Backend.DataAccess
 		{
 			var sql = @"
 			INSERT INTO
-				[Event](IsActive, Name, ColorComponentBlue, ColorComponentGreen, ColorComponentRed)
+				[Event](IsActive, Name, ColorComponentBlue, ColorComponentGreen, ColorComponentRed, DisplayOrder, Created)
 			VALUES
-				(@IsActive, @Name, @ColorComponentBlue, @ColorComponentGreen, @ColorComponentRed)";
+				(@IsActive, @Name, @ColorComponentBlue, @ColorComponentGreen, @ColorComponentRed, @DisplayOrder, @Created)";
 			var parameters = new[]
 			{
 				new SqlParameter("@IsActive", @event.IsActive),
 				new SqlParameter("@Name", @event.Name),
 				new SqlParameter("@ColorComponentBlue", @event.ColorComponentBlue),
 				new SqlParameter("@ColorComponentGreen", @event.ColorComponentGreen),
-				new SqlParameter("@ColorComponentRed", @event.ColorComponentRed)
-			};
+				new SqlParameter("@ColorComponentRed", @event.ColorComponentRed),
+                new SqlParameter("@DisplayOrder", int.MaxValue),
+                new SqlParameter("@Created", DateTime.Now)
+            };
 
 			ExecuteNonQuery(sql, parameters);
 		}
@@ -149,7 +151,29 @@ namespace BookingPlatform.Backend.DataAccess
 			ExecuteNonQuery(sql, parameters);
 		}
 
-		protected override Event MapFrom(SqlDataReader reader)
+        public void UpdateDisplayOrder(int[] orderedEventIds)
+        {
+            for(int i = 0; i < orderedEventIds.Length; i++)
+            {
+                var sql = @"
+			    UPDATE
+				    [Event]
+			    SET
+				   DisplayOrder = @DisplayOrder
+			    WHERE
+				    Id = @Id";
+
+                var parameters = new[]
+                {
+                    new SqlParameter("@Id", orderedEventIds[i]),
+                    new SqlParameter("@DisplayOrder", i),
+                };
+
+                ExecuteNonQuery(sql, parameters);
+            }
+        }
+
+        protected override Event MapFrom(SqlDataReader reader)
 		{
 			var @event = new Event();
 
@@ -159,8 +183,7 @@ namespace BookingPlatform.Backend.DataAccess
 			@event.ColorComponentBlue = (int) reader[nameof(Event.ColorComponentBlue)];
 			@event.ColorComponentGreen = (int) reader[nameof(Event.ColorComponentGreen)];
 			@event.ColorComponentRed = (int) reader[nameof(Event.ColorComponentRed)];
-
-			return @event;
+            return @event;
 		}
 	}
 }

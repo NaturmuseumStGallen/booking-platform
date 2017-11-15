@@ -50,22 +50,28 @@
     <div class="booking-overview">
         <div class="header">
             <div>@Strings.Admin.BookingOverview.TableHeadingDate</div>
+            <div>@Strings.Admin.BookingOverview.Day</div>
+            <div>@Strings.Admin.BookingOverview.Time</div>
             <div>@Strings.Admin.BookingOverview.TableHeadingEvent</div>
             <div>@Strings.Admin.BookingOverview.TableHeadingName</div>
             <div>@Strings.Admin.BookingOverview.TableHeadingSchool</div>
             <div>@Strings.Admin.BookingOverview.TableHeadingTown</div>
             <div>@Strings.Admin.BookingOverview.TableHeadingBookingState</div>
+            <div>@Strings.Admin.BookingOverview.Created</div>
             <div></div>
         </div>
         @foreach (var booking in Model.UpcomingBookings.OrderBy(b => b.Date))
         {
             <div class="booking">
-                <div>@booking.Date.ToString("ddd d. MMMM yyyy HH:mm")</div>
+                <div>@booking.Date.ToString("dd.MM.yy")</div>
+                <div>@booking.Date.ToString("ddd")</div>
+                <div>@booking.Date.ToString("HH:mm")</div>
                 <div>@booking.Event.Name</div>
                 <div>@(booking.LastName + ", " + booking.FirstName)</div>
                 <div>@booking.School</div>
                 <div>@booking.Town</div>
                 <div>@(booking.IsActive ? Strings.Admin.BookingOverview.Active : Strings.Admin.BookingOverview.Cancelled)</div>
+                <div>@(booking.Created.HasValue ? booking.Created.Value.ToString("dd.MM.yyyy") : Strings.Admin.BookingOverview.Unknown)</div>
                 <div>@Html.ActionLink(Strings.Admin.BookingOverview.EditBooking, "BookingDetails", new { booking.Id })</div>
             </div>
         }

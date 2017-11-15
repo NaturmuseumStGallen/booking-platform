@@ -57,7 +57,13 @@ namespace BookingPlatform.Backend.DataAccess
 				wr.AvailabilityStatusId AS wr_AvailabilityStatusId,
 				wr.DayOfWeek AS wr_DayOfWeek,
 				wr.StartDate AS wr_StartDate,
-				wr.Time AS wr_Time
+				wr.Time AS wr_Time,
+                wr.EndTime AS wr_EndTime,
+                bt.Id AS bt_Id,
+                bt.EventId AS bt_EventId,
+                mb.Id AS mb_Id,
+                mb.EventId AS mb_EventId,
+                mb.NumberOfParallelBookings AS mb_NumberOfParallelBookings
 			FROM
 				[Rule] AS r
 			FULL OUTER JOIN
@@ -69,9 +75,13 @@ namespace BookingPlatform.Backend.DataAccess
 			FULL OUTER JOIN
 				MinimumDateRule AS md ON r.Id = md.RuleId
 			FULL OUTER JOIN
-				WeeklyRule AS wr ON r.Id = wr.RuleId";
+				WeeklyRule AS wr ON r.Id = wr.RuleId
+            FULL OUTER JOIN
+				BookingTimeOverrideRule AS bt ON r.Id = bt.RuleId
+            FULL OUTER JOIN
+                MultipleBookingRule AS mb ON r.Id = mb.RuleId";
 
-		public void Delete(int id)
+        public void Delete(int id)
 		{
 			var config = GetConfigurationBy(id);
 			var sql = "DELETE FROM [Rule] WHERE Id = @Id";
@@ -94,7 +104,13 @@ namespace BookingPlatform.Backend.DataAccess
 				case RuleType.Weekly:
 					DeleteWeekly(config as WeeklyRuleConfiguration);
 					break;
-				default:
+                case RuleType.BookingTimeOverride:
+                    DeleteBookingTimeOverride(config as BookingTimeOverrideRuleConfiguration);
+                    break;
+                case RuleType.MultipleBooking:
+                    DeleteMultipleBooking(config as MultipleBookingRuleConfiguration);
+                    break;
+                default:
 					throw new InvalidOperationException(String.Format("Rule of type '{0}' not yet configured!", config.Type));
 			}
 
@@ -132,7 +148,15 @@ namespace BookingPlatform.Backend.DataAccess
 				{
 					LoadEventGroupData(config as EventGroupRuleConfiguration);
 				}
-			}
+                if (config is BookingTimeOverrideRuleConfiguration)
+                {
+                    LoadBookingTimeOverrideData(config as BookingTimeOverrideRuleConfiguration);
+                }
+                if (config is WeeklyRuleConfiguration)
+                {
+                    LoadEvents2Weekly(config as WeeklyRuleConfiguration);
+                }
+            }
 
 			return configs;
 		}
@@ -148,7 +172,17 @@ namespace BookingPlatform.Backend.DataAccess
 				LoadEventGroupData(config as EventGroupRuleConfiguration);
 			}
 
-			return config;
+            if (config is BookingTimeOverrideRuleConfiguration)
+            {
+                LoadBookingTimeOverrideData(config as BookingTimeOverrideRuleConfiguration);
+            }
+
+            if (config is WeeklyRuleConfiguration)
+            {
+                LoadEvents2Weekly(config as WeeklyRuleConfiguration);
+            }
+
+            return config;
 		}
 
 		public int GetTotalCount()
@@ -191,6 +225,12 @@ namespace BookingPlatform.Backend.DataAccess
 				case RuleType.Weekly:
 					SaveWeekly(config as WeeklyRuleConfiguration);
 					break;
+                case RuleType.BookingTimeOverride:
+                    SaveBookingTimeOverride(config as BookingTimeOverrideRuleConfiguration);
+                    break;
+                case RuleType.MultipleBooking:
+                    SaveMultipleBooking(config as MultipleBookingRuleConfiguration);
+                    break;
 				default:
 					throw new InvalidOperationException(String.Format("Rule of type '{0}' not yet configured!", config.Type));
 			}
@@ -230,7 +270,13 @@ namespace BookingPlatform.Backend.DataAccess
 				case RuleType.Weekly:
 					UpdateWeekly(config as WeeklyRuleConfiguration);
 					break;
-				default:
+                case RuleType.BookingTimeOverride:
+                    UpdateBookingTimeOverride(config as BookingTimeOverrideRuleConfiguration);
+                    break;
+                case RuleType.MultipleBooking:
+                    UpdateMultipleBooking(config as MultipleBookingRuleConfiguration);
+                    break;
+                default:
 					throw new InvalidOperationException(String.Format("Rule of type '{0}' not yet configured!", config.Type));
 			}
 		}
@@ -257,7 +303,13 @@ namespace BookingPlatform.Backend.DataAccess
 				case RuleType.Weekly:
 					config = MapWeekly(reader);
 					break;
-				default:
+                case RuleType.BookingTimeOverride:
+                    config = MapBookingTimeOverride(reader);
+                    break;
+                case RuleType.MultipleBooking:
+                    config = MapMultipleBooking(reader);
+                    break;
+                default:
 					throw new InvalidOperationException(String.Format("Rule of type '{0}' not yet configured!", type));
 			}
 

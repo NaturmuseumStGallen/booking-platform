@@ -31,12 +31,12 @@ using BookingPlatform.Utilities;
 
 namespace BookingPlatform.Controllers
 {
-	[RequireHttps]
-	public class BookingController : Controller
+    [RequireHttps]
+    public class BookingController : Controller
 	{
 		private const string BOOKING = "Booking";
 
-		[HttpGet]
+        [HttpGet]
 		public ActionResult Form(int? id)
 		{
 			var model = new BookingModel();
@@ -53,7 +53,7 @@ namespace BookingPlatform.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				var booking = new Booking();
+				var booking = Booking.CreateNew();
 
 				model.MapToEntity(booking);
 

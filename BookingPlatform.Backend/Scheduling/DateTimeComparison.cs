@@ -106,5 +106,20 @@ namespace BookingPlatform.Backend.Scheduling
 		{
 			return a.IsSmallerThan(b) || a.IsSameDateAndTimeAs(b);
 		}
-	}
+
+        /// <summary>
+        /// Determines whether the specified Timespan is Between two Timespans
+        /// </summary>
+        public static bool IsBetween(this TimeSpan time, TimeSpan startTime, TimeSpan endTime)
+        {
+            if (time.CompareTo(startTime) < 0)
+                return false;
+
+            if (time.CompareTo(endTime) >= 0)
+                return false;
+
+            return true;
+        }
+
+    }
 }

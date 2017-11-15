@@ -32,6 +32,8 @@ namespace BookingPlatform.Backend.Constants
 		EventGroup = 2,
 		MinimumDate = 3,
 		Weekly = 4,
-		EventDuration = 5
+		EventDuration = 5,
+        BookingTimeOverride = 6,
+        MultipleBooking = 7
 	}
 }

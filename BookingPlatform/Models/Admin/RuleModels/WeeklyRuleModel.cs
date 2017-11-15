@@ -29,6 +29,7 @@ using System.Linq;
 using System.Web.Mvc;
 using BookingPlatform.Backend.Constants;
 using BookingPlatform.Constants;
+using BookingPlatform.Backend.Entities;
 
 namespace BookingPlatform.Models
 {
@@ -48,10 +49,17 @@ namespace BookingPlatform.Models
 		[RegularExpression("^((0[0-9])|(1[0-9])|(2[0-3])):((0[0-9])|([1-5][0-9]))$", ErrorMessage = Strings.Admin.RuleDetails.InputErrorTime)]
 		public string Time { get; set; }
 
-		[RegularExpression("^((0[1-9])|([1-2][0-9])|(3[0-1])).((0[1-9])|(1[0-2])).20[1-5][0-9]$", ErrorMessage = Strings.Admin.RuleDetails.InputErrorDate)]
+        [RegularExpression("^((0[0-9])|(1[0-9])|(2[0-3])):((0[0-9])|([1-5][0-9]))$", ErrorMessage = Strings.Admin.RuleDetails.InputErrorTime)]
+        public string EndTime { get; set; }
+
+        [RegularExpression("^((0[1-9])|([1-2][0-9])|(3[0-1])).((0[1-9])|(1[0-2])).20[1-5][0-9]$", ErrorMessage = Strings.Admin.RuleDetails.InputErrorDate)]
 		public string StartDate { get; set; }
 
-		public int? Id { get; set; }
+        public string[] EventIds { get; set; }
+
+        public IList<Event> AvailableEvents { get; set; }
+
+        public int? Id { get; set; }
 
 		public IEnumerable<SelectListItem> DayOfWeekListItems
 		{
@@ -88,7 +96,12 @@ namespace BookingPlatform.Models
 			}
 		}
 
-		public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        public MultiSelectList Events
+        {
+            get { return new MultiSelectList(AvailableEvents, nameof(Event.Id), nameof(Event.Name)); }
+        }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
 		{
 			DateTime startDate;
 			TimeSpan time;
@@ -104,7 +117,12 @@ namespace BookingPlatform.Models
 				results.Add(new ValidationResult(Strings.Admin.RuleDetails.InputErrorTime, new[] { nameof(Time) }));
 			}
 
-			if (!results.Any())
+            if (!String.IsNullOrEmpty(EndTime) && !TimeSpan.TryParse(EndTime, out time))
+            {
+                results.Add(new ValidationResult(Strings.Admin.RuleDetails.InputErrorTime, new[] { nameof(EndTime) }));
+            }
+
+            if (!results.Any())
 			{
 				results.Add(ValidationResult.Success);
 			}

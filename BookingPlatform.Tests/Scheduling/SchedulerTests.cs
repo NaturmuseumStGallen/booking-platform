@@ -30,6 +30,7 @@ using BookingPlatform.Backend.Rules;
 using BookingPlatform.Backend.Scheduling;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using BookingPlatform.Utilities;
 
 namespace BookingPlatform.Tests
 {
@@ -199,7 +200,7 @@ namespace BookingPlatform.Tests
 		public void MustRespectConfiguredRules()
 		{
 			var bookings = new Mock<IBookingProvider>();
-			var rule = new Mock<IRule>();
+			var rule = new Mock<IStandardRule>();
 			var rules = new Mock<IRuleProvider>();
 			var times = new Mock<ITimeProvider>();
 			var @event = new Event();
@@ -220,9 +221,9 @@ namespace BookingPlatform.Tests
 		public void MustRespectStrongestRuleStatus()
 		{
 			var bookings = new Mock<IBookingProvider>();
-			var bookedRule = new Mock<IRule>();
-			var freeRule = new Mock<IRule>();
-			var notBookableRule = new Mock<IRule>();
+			var bookedRule = new Mock<IStandardRule>();
+			var freeRule = new Mock<IStandardRule>();
+			var notBookableRule = new Mock<IStandardRule>();
 			var rules = new Mock<IRuleProvider>();
 			var times = new Mock<ITimeProvider>();
 			var @event = new Event();
@@ -245,8 +246,8 @@ namespace BookingPlatform.Tests
 		public void MustRespectSecondStrongestRuleStatus()
 		{
 			var bookings = new Mock<IBookingProvider>();
-			var freeRule = new Mock<IRule>();
-			var notBookableRule = new Mock<IRule>();
+			var freeRule = new Mock<IStandardRule>();
+			var notBookableRule = new Mock<IStandardRule>();
 			var rules = new Mock<IRuleProvider>();
 			var times = new Mock<ITimeProvider>();
 			var @event = new Event();
@@ -263,5 +264,87 @@ namespace BookingPlatform.Tests
 
 			Assert.IsTrue(dates.First().Status == AvailabilityStatus.Free);
 		}
-	}
+
+        [TestMethod]
+        public void MustRespectMultipleBookingRule()
+        {
+            var bookings = new Mock<IBookingProvider>();
+            var rules = new Mock<IRuleProvider>();
+            var times = new Mock<ITimeProvider>();
+            var @event = new Event { Id = 3 };
+            var date = new DateTime(2017, 1, 1, 10, 0, 0);
+            var provider = new Scheduler(bookings.Object, rules.Object, times.Object);
+
+            bookings.Setup(p => p.GetBookings(date, date)).Returns(new List<Booking> { new Booking { IsActive = true, Date = date, Event = @event } });
+            rules.Setup(r => r.GetRules()).Returns(new List<IRule>() { new MultipleBookingRule(@event.Id.Value, 2) });
+            times.Setup(t => t.GetTimes()).Returns(new List<TimeSpan> { date.TimeOfDay });
+
+            var dates = provider.GetBookingDateRange(date, date, @event);
+
+            Assert.IsFalse(dates.First().Status == AvailabilityStatus.Booked);
+        }
+
+        [TestMethod]
+        public void MustRespectBookingTimeOverrideRule()
+        {
+            var @event = new Event { Id = 3 };
+
+            var bookings = new Mock<IBookingProvider>();
+            var rules = new Mock<IRuleProvider>();
+            var times = new BookingTimeOverrideTimeProvider(new List<BookingTimeOverrideRule> {
+                new BookingTimeOverrideRule(
+                @event.Id.Value, 
+                new List<TimeSpan>() {
+                    new TimeSpan(09,30,00),
+                    new TimeSpan(10,45,00)
+                })
+            });
+
+            var date = new DateTime(2017, 1, 1, 10, 0, 0);
+            var sheduler = new Scheduler(bookings.Object, rules.Object, times);
+
+            bookings.Setup(p => p.GetBookings(date, date)).Returns(new List<Booking> ());
+            rules.Setup(r => r.GetRules()).Returns(new List<IRule>());
+
+            var dates = sheduler.GetBookingDateRange(date, date, @event);
+
+            Assert.AreEqual(new TimeSpan(09, 30, 00), dates.ElementAt(0).Date.TimeOfDay);
+            Assert.AreEqual(new TimeSpan(10, 45, 00), dates.ElementAt(1).Date.TimeOfDay);
+        }
+
+        [TestMethod]
+        public void BookingTimeOverrideRule_2RulesForSameEventWithSameTime_MustDistinctIdenticalTime()
+        {
+            var @event = new Event { Id = 3 };
+
+            var bookings = new Mock<IBookingProvider>();
+            var rules = new Mock<IRuleProvider>();
+            var times = new BookingTimeOverrideTimeProvider(new List<BookingTimeOverrideRule> {
+                new BookingTimeOverrideRule(
+                @event.Id.Value,
+                new List<TimeSpan>() {
+                    new TimeSpan(09,30,00),
+                    new TimeSpan(10,45,00)
+                }),
+                 new BookingTimeOverrideRule(
+                @event.Id.Value,
+                new List<TimeSpan>() {
+                    new TimeSpan(09,30,00),
+                    new TimeSpan(11,50,00)
+                }),
+            });
+
+            var date = new DateTime(2017, 1, 1, 10, 0, 0);
+            var sheduler = new Scheduler(bookings.Object, rules.Object, times);
+
+            bookings.Setup(p => p.GetBookings(date, date)).Returns(new List<Booking>());
+            rules.Setup(r => r.GetRules()).Returns(new List<IRule>());
+
+            var dates = sheduler.GetBookingDateRange(date, date, @event);
+
+            Assert.AreEqual(new TimeSpan(09, 30, 00), dates.ElementAt(0).Date.TimeOfDay);
+            Assert.AreEqual(new TimeSpan(10, 45, 00), dates.ElementAt(1).Date.TimeOfDay);
+            Assert.AreEqual(new TimeSpan(11, 50, 00), dates.ElementAt(2).Date.TimeOfDay);
+        }
+    }
 }

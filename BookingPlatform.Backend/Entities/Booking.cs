@@ -45,5 +45,11 @@ namespace BookingPlatform.Backend.Entities
 		public string School { get; set; }
 		public string Town { get; set; }
 		public int? ZipCode { get; set; }
-	}
+        public DateTime? Created { get; set; }
+
+        public static Booking CreateNew()
+        {
+            return new Booking { Created = DateTime.Now };
+        }
+    }
 }

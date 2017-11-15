@@ -40,10 +40,12 @@ namespace BookingPlatform.Models
 			switch (model.Type)
 			{
 				case RuleType.MinimumDate:
-				case RuleType.Weekly:
-					// Nothing to do here so far...
-					break;
-				case RuleType.DateRange:
+                    // Nothing to do here so far...
+                    break;
+                case RuleType.Weekly:
+                    (model as WeeklyRuleModel).AvailableEvents = Database.Instance.GetActiveEvents();
+                    break;
+                case RuleType.DateRange:
 					(model as DateRangeRuleModel).AvailableEvents = Database.Instance.GetActiveEvents();
 					break;
 				case RuleType.EventDuration:
@@ -52,7 +54,13 @@ namespace BookingPlatform.Models
 				case RuleType.EventGroup:
 					(model as EventGroupRuleModel).AvailableEvents = Database.Instance.GetActiveEvents();
 					break;
-				default:
+                case RuleType.BookingTimeOverride:
+                    (model as BookingTimeOverrideRuleModel).AvailableEvents = Database.Instance.GetActiveEvents();
+                    break;
+                case RuleType.MultipleBooking:
+                    (model as MultipleBookingRuleModel).AvailableEvents = Database.Instance.GetActiveEvents();
+                    break;
+                default:
 					throw new InvalidOperationException(String.Format("Rule of type '{0}' not yet configured!", model.Type));
 			}
 		}
@@ -165,7 +173,7 @@ namespace BookingPlatform.Models
 			model.Blue = @event.ColorComponentBlue;
 			model.Green = @event.ColorComponentGreen;
 			model.Red = @event.ColorComponentRed;
-		}
+        }
 
 		public static void MapFromEntity(this AdminRuleDetailsModel model, RuleConfiguration rule)
 		{
@@ -189,7 +197,13 @@ namespace BookingPlatform.Models
 				case RuleType.Weekly:
 					(model as WeeklyRuleModel).MapFromEntity(rule as WeeklyRuleConfiguration);
 					break;
-				default:
+                case RuleType.BookingTimeOverride:
+                    (model as BookingTimeOverrideRuleModel).MapFromEntity(rule as BookingTimeOverrideRuleConfiguration);
+                    break;
+                case RuleType.MultipleBooking:
+                    (model as MultipleBookingRuleModel).MapFromEntity(rule as MultipleBookingRuleConfiguration);
+                    break;
+                default:
 					throw new InvalidOperationException(String.Format("Rule of type '{0}' not yet configured!", model.Type));
 			}
 		}
@@ -233,9 +247,25 @@ namespace BookingPlatform.Models
 			model.Day = rule.DayOfWeek;
 			model.StartDate = rule.StartDate.ToString("dd.MM.yyyy");
 			model.Time = rule.Time.ToString("hh\\:mm");
-		}
+            model.EndTime = rule.EndTime.ToString("hh\\:mm");
+            model.EventIds = rule.EventIds.Select(i => i.ToString()).ToArray();
+        }
 
-		public static void MapFromEntity(this AdminSettingsModel model, Settings settings)
+        public static void MapFromEntity(this BookingTimeOverrideRuleModel model, BookingTimeOverrideRuleConfiguration rule)
+        {
+            model.Id = rule.Id;
+            model.BookingTimes = rule.OverrideBookingTimes.Select(t => t.ToString("hh\\:mm")).ToList();
+            model.EventId = rule.EventId;
+        }
+
+        public static void MapFromEntity(this MultipleBookingRuleModel model, MultipleBookingRuleConfiguration rule)
+        {
+            model.Id = rule.Id;
+            model.EventId = rule.EventId;
+            model.NumberOfParallelBookings = rule.NumberOfParallelBookings;
+        }
+
+        public static void MapFromEntity(this AdminSettingsModel model, Settings settings)
 		{
 			model.EmailSubject = settings.EmailSubject;
 			model.EmailContent = settings.EmailContent;
@@ -297,8 +327,14 @@ namespace BookingPlatform.Models
 					break;
 				case RuleType.Weekly:
 					(model as WeeklyRuleModel).MapToEntity(rule as WeeklyRuleConfiguration);
+                    break;
+                case RuleType.BookingTimeOverride:
+                    (model as BookingTimeOverrideRuleModel).MapToEntity(rule as BookingTimeOverrideRuleConfiguration);
 					break;
-				default:
+                case RuleType.MultipleBooking:
+                    (model as MultipleBookingRuleModel).MapToEntity(rule as MultipleBookingRuleConfiguration);
+                    break;
+                default:
 					throw new InvalidOperationException(String.Format("Rule of type '{0}' not yet configured!", model.Type));
 			}
 		}
@@ -362,9 +398,33 @@ namespace BookingPlatform.Models
 			rule.DayOfWeek = model.Day.Value;
 			rule.StartDate = DateTimeUtility.NullableDateTimeFor(model.StartDate);
 			rule.Time = DateTimeUtility.NullableTimeSpanFor(model.Time);
-		}
+            rule.EndTime = DateTimeUtility.NullableTimeSpanFor(model.EndTime);
+            rule.EventIds = model.EventIds?.Select(i => int.Parse(i)).ToList();
+        }
 
-		public static void MapToEntity(this BookingModel model, Booking booking)
+        public static void MapToEntity(this BookingTimeOverrideRuleModel model, BookingTimeOverrideRuleConfiguration rule)
+        {
+            if (model.Id.HasValue)
+            {
+                rule.Id = model.Id.Value;
+            }
+
+            rule.EventId = model.EventId.Value;
+            rule.OverrideBookingTimes = model.BookingTimes.Select(t => TimeSpan.Parse(t)).ToList();
+        }
+
+        public static void MapToEntity(this MultipleBookingRuleModel model, MultipleBookingRuleConfiguration rule)
+        {
+            if (model.Id.HasValue)
+            {
+                rule.Id = model.Id.Value;
+            }
+
+            rule.EventId = model.EventId.Value;
+            rule.NumberOfParallelBookings = model.NumberOfParallelBookings.Value;
+        }
+
+        public static void MapToEntity(this BookingModel model, Booking booking)
 		{
 			booking.Address = model.Address;
 			booking.Canton = model.Canton;
@@ -398,6 +458,10 @@ namespace BookingPlatform.Models
 					return new MinimumDateRuleConfiguration();
 				case RuleType.Weekly:
 					return new WeeklyRuleConfiguration();
+                case RuleType.BookingTimeOverride:
+                    return new BookingTimeOverrideRuleConfiguration();
+                case RuleType.MultipleBooking:
+                    return new MultipleBookingRuleConfiguration();
 				default:
 					throw new InvalidOperationException(String.Format("Rule of type '{0}' not yet configured!", type));
 			}
@@ -417,7 +481,11 @@ namespace BookingPlatform.Models
 					return new MinimumDateRuleModel();
 				case RuleType.Weekly:
 					return new WeeklyRuleModel();
-				default:
+                case RuleType.BookingTimeOverride:
+                    return new BookingTimeOverrideRuleModel();
+                case RuleType.MultipleBooking:
+                    return new MultipleBookingRuleModel();
+                default:
 					throw new InvalidOperationException(String.Format("Rule of type '{0}' not yet configured!", type));
 			}
 		}

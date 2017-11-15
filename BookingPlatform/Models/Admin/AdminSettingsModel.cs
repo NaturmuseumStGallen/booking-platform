@@ -97,7 +97,11 @@ namespace BookingPlatform.Models
 					return MinimumDateDetails(rule as MinimumDateRuleConfiguration);
 				case RuleType.Weekly:
 					return WeeklyDetails(rule as WeeklyRuleConfiguration);
-				default:
+                case RuleType.BookingTimeOverride:
+                    return BookingTimeOverrideDetails(rule as BookingTimeOverrideRuleConfiguration);
+                case RuleType.MultipleBooking:
+                    return MultipleBookingDetails(rule as MultipleBookingRuleConfiguration);
+                default:
 					throw new InvalidOperationException(String.Format("Rule of type '{0}' not yet configured!", rule.Type));
 			}
 		}
@@ -159,9 +163,49 @@ namespace BookingPlatform.Models
 			builder.AppendFormat("{0}: {1}<br />", Strings.Admin.RuleDetails.InputLabelStatus, Strings.Admin.GetStatusName(config.AvailabilityStatus));
 			builder.AppendFormat("{0}: {1}<br />", Strings.Admin.RuleDetails.InputLabelDayOfWeek, DateTimeFormatInfo.CurrentInfo.GetDayName(config.DayOfWeek));
 			builder.AppendFormat("{0}: {1}<br />", Strings.Admin.RuleDetails.InputLabelTime, config.Time.HasValue ? config.Time.Value.ToString("hh\\:mm") : "-");
-			builder.AppendFormat("{0}: {1}<br />", Strings.Admin.RuleDetails.InputLabelStartDate, config.StartDate.HasValue ? config.StartDate.Value.ToShortDateString() : "-");
+            builder.AppendFormat("{0}: {1}<br />", Strings.Admin.RuleDetails.InputLabelEndTime, config.EndTime.HasValue ? config.EndTime.Value.ToString("hh\\:mm") : "-");
+            builder.AppendFormat("{0}: {1}<br />", Strings.Admin.RuleDetails.InputLabelStartDate, config.StartDate.HasValue ? config.StartDate.Value.ToShortDateString() : "-");
 
-			return new MvcHtmlString(builder.ToString());
+            if (config.EventIds.Any())
+            {
+                builder.AppendFormat("{0}: <br />", Strings.Admin.RuleDetails.InputLabelRuleScope);
+
+                foreach (var id in config.EventIds)
+                {
+                    builder.AppendFormat("- {0}<br />", Events.FirstOrDefault(e => e.Id == id)?.Name ?? Strings.Admin.Settings.DeactivatedEvent);
+                }
+            }
+            else
+            {
+                builder.AppendFormat("{0}: {1}<br />", Strings.Admin.RuleDetails.InputLabelRuleScope, Strings.Admin.RuleDetails.ScopeAllEvents);
+            }
+
+            return new MvcHtmlString(builder.ToString());
 		}
-	}
+
+        private MvcHtmlString BookingTimeOverrideDetails(BookingTimeOverrideRuleConfiguration config)
+        {
+            var builder = new StringBuilder();
+            var eventName = Events.FirstOrDefault(e => e.Id == config.EventId)?.Name ?? Strings.Admin.Settings.DeactivatedEvent;
+
+            builder.AppendFormat("{0}: {1}<br />", Strings.Admin.RuleDetails.InputLabelEvent, eventName);
+            foreach (var bookingTime in config.OverrideBookingTimes.OrderBy(t => t.Ticks))
+            {
+                builder.AppendFormat("- {0}<br />", bookingTime.ToString("hh\\:mm"));
+            }
+
+            return new MvcHtmlString(builder.ToString());
+        }
+
+        private MvcHtmlString MultipleBookingDetails(MultipleBookingRuleConfiguration config)
+        {
+            var builder = new StringBuilder();
+            var eventName = Events.FirstOrDefault(e => e.Id == config.EventId)?.Name ?? Strings.Admin.Settings.DeactivatedEvent;
+
+            builder.AppendFormat("{0}: {1}<br />", Strings.Admin.RuleDetails.InputLabelEvent, eventName);
+            builder.AppendFormat("{0}: {1}<br />", Strings.Admin.RuleDetails.InputLabelNumberOfParallelBookings, config.NumberOfParallelBookings);
+
+            return new MvcHtmlString(builder.ToString());
+        }
+    }
 }

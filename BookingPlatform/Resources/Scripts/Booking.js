@@ -95,3 +95,4 @@ booking.updateCalendar = function (navigation) {
         alert(message);
     }
 }
+

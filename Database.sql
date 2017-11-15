@@ -32,10 +32,14 @@ DROP TABLE IF EXISTS MinimumDateRule
 DROP TABLE IF EXISTS Settings
 DROP TABLE IF EXISTS TextContent
 DROP TABLE IF EXISTS [Time]
-DROP TABLE IF EXISTS WeeklyRule
+DROP TABLE IF EXISTS OverrideBookingTime
+DROP TABLE IF EXISTS MultipleBookingRule
+DROP TABLE IF EXISTS Event2WeeklyRule
 
 -- Tables which are referenced by foreign key constraints
 DROP TABLE IF EXISTS EventGroupRule
+DROP TABLE IF EXISTS WeeklyRule
+DROP TABLE IF EXISTS BookingTimeOverrideRule
 DROP TABLE IF EXISTS [Event]
 DROP TABLE IF EXISTS [Rule]
 DROP TABLE IF EXISTS AvailabilityStatus
@@ -56,7 +60,8 @@ CREATE TABLE [Event]
 	Name VARCHAR(100) NOT NULL,
 	ColorComponentBlue INT NOT NULL,
 	ColorComponentGreen INT NOT NULL,
-	ColorComponentRed INT NOT NULL
+	ColorComponentRed INT NOT NULL,
+	DisplayOrder Int
 )
 
 CREATE TABLE Booking
@@ -76,7 +81,8 @@ CREATE TABLE Booking
 	Phone VARCHAR(100) NOT NULL,
 	School VARCHAR(100) NOT NULL,
 	Town VARCHAR(100) NOT NULL,
-	ZipCode INT
+	ZipCode INT,
+	Created DateTime
 )
 
 CREATE TABLE EmailRecipient
@@ -148,7 +154,8 @@ CREATE TABLE WeeklyRule
 	AvailabilityStatusId INT NOT NULL FOREIGN KEY REFERENCES AvailabilityStatus(Id),
 	[DayOfWeek] INT NOT NULL,
 	StartDate DATE,
-	[Time] TIME
+	[Time] TIME,
+	EndTime TIME
 )
 
 CREATE TABLE Settings
@@ -174,6 +181,36 @@ CREATE TABLE [Time]
 	[Value] TIME NOT NULL
 )
 
+CREATE TABLE BookingTimeOverrideRule
+(
+	Id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	RuleId INT NOT NULL FOREIGN KEY REFERENCES [Rule](Id),
+	EventId INT NOT NULL FOREIGN KEY REFERENCES [Event](Id)
+)
+
+CREATE TABLE OverrideBookingTime
+(
+	Id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	[Value] TIME NOT NULL,
+	BookingTimeOverrideRuleId INT NOT NULL FOREIGN KEY REFERENCES BookingTimeOverrideRule(Id)
+)
+
+CREATE TABLE MultipleBookingRule
+(
+	Id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	RuleId INT NOT NULL FOREIGN KEY REFERENCES [Rule](Id),
+	EventId INT NOT NULL FOREIGN KEY REFERENCES [Event](Id),
+	NumberOfParallelBookings INT NOT NULL
+)
+
+CREATE TABLE Event2WeeklyRule
+(
+	EventId INT NOT NULL FOREIGN KEY REFERENCES [Event](Id),
+	WeeklyRuleId INT NOT NULL FOREIGN KEY REFERENCES WeeklyRule(Id),
+
+	CONSTRAINT PK_Event2WeeklyRule PRIMARY KEY (EventId, WeeklyRuleId)
+)
+
 /* --- Default Values --- */
 
 INSERT INTO
@@ -190,7 +227,9 @@ VALUES
 	(2, 'Event Group'),
 	(3, 'Minimum Date'),
 	(4, 'Weekly'),
-	(5, 'Event Duration')
+	(5, 'Event Duration'),
+	(6, 'Booking Time Override'),
+	(7, 'Multiple Booking')
 
 INSERT INTO
 	Settings(PasswordHash, PasswordSalt, EmailSubject, EmailContent, ConfirmationPageContent)

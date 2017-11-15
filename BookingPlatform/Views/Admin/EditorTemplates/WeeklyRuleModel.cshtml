@@ -32,6 +32,10 @@
     @Html.HiddenFor(m => m.Id)
 }
 
+@Html.LabelFor(m => m.EventIds, Strings.Admin.RuleDetails.InputLabelEvents)
+@Html.ListBoxFor(m => m.EventIds, Model.Events, new { size = Model.AvailableEvents.Count })
+@Html.ValidationMessageFor(m => m.EventIds)
+
 @Html.LabelFor(m => m.Day, Strings.Admin.RuleDetails.InputLabelDayOfWeek + "*")
 @Html.DropDownListFor(m => m.Day, Model.DayOfWeekListItems)
 @Html.ValidationMessageFor(m => m.Day)
@@ -41,8 +45,12 @@
 @Html.ValidationMessageFor(m => m.Status)
 
 @Html.LabelFor(m => m.Time, Strings.Admin.RuleDetails.InputLabelTime)
-@Html.TextBoxFor(m => m.Time)
+@Html.TextBoxFor(m => m.Time, new { type = "time" })
 @Html.ValidationMessageFor(m => m.Time)
+
+@Html.LabelFor(m => m.EndTime, Strings.Admin.RuleDetails.InputLabelEndTime)
+@Html.TextBoxFor(m => m.EndTime, new { type = "time" })
+@Html.ValidationMessageFor(m => m.EndTime)
 
 @Html.LabelFor(m => m.StartDate, Strings.Admin.RuleDetails.InputLabelStartDate)
 @Html.TextBoxFor(m => m.StartDate, new { data_date_picker = bool.TrueString })

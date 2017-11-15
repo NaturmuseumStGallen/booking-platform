@@ -24,6 +24,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -95,7 +96,9 @@
     <Content Include="Resources\Scripts\Booking.js" />
     <Content Include="Resources\Style\Admin.css" />
     <Content Include="Resources\Style\Booking.css" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -125,10 +128,12 @@
     <Compile Include="Models\Admin\AdminOverviewModel.cs" />
     <Compile Include="Models\Admin\AdminRuleDetailsModel.cs" />
     <Compile Include="Models\Admin\AdminSettingsModel.cs" />
+    <Compile Include="Models\Admin\RuleModels\BookingTimeOverrideRuleModel.cs" />
     <Compile Include="Models\Admin\RuleModels\DateRangeRuleModel.cs" />
     <Compile Include="Models\Admin\RuleModels\EventDurationRuleModel.cs" />
     <Compile Include="Models\Admin\RuleModels\EventGroupRuleModel.cs" />
     <Compile Include="Models\Admin\RuleModels\MinimumDateRuleModel.cs" />
+    <Compile Include="Models\Admin\RuleModels\MultipleBookingRuleModel.cs" />
     <Compile Include="Models\Admin\RuleModels\WeeklyRuleModel.cs" />
     <Compile Include="Models\Booking\BookingCalendarModel.cs" />
     <Compile Include="Models\Booking\BookingConfirmationModel.cs" />
@@ -163,11 +168,18 @@
     <Content Include="Views\Admin\Login.cshtml" />
     <Content Include="Views\Booking\Confirmation.cshtml" />
     <Content Include="Views\Admin\EditorTemplates\EventDurationRuleModel.cshtml" />
+    <None Include="Properties\PublishProfiles\developnaturmuseumsg - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\developnaturmuseumsg - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <Content Include="Views\Admin\EditorTemplates\BookingTimeOverrideRuleModel.cshtml" />
+    <Content Include="Views\Admin\EditorTemplates\MultipleBookingRuleModel.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </None>
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup />
@@ -192,7 +204,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>51134</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:51134/</IISUrl>
+          <IISUrl>http://localhost:45134/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

@@ -2,9 +2,6 @@
  * Copyright (C) 2017 Naturmuseum St. Gallen
  *  > https://github.com/NaturmuseumStGallen
  *
- * Designed and engineered by Phantasus Software Systems
- *  > http://www.phantasus.ch
- *
  * This file is part of BookingPlatform.
  *
  * BookingPlatform is free software: you can redistribute it and/or modify
@@ -22,37 +19,25 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
-using BookingPlatform.Backend.Constants;
-using BookingPlatform.Backend.Entities;
-using BookingPlatform.Backend.Scheduling;
+using System.Text;
+using System.Threading.Tasks;
+using BookingPlatform.Backend.Rules;
 
-namespace BookingPlatform.Backend.Rules
+namespace BookingPlatform.Backend.Entities.RuleConfigurations
 {
-	public class EventGroupRule : IStandardRule
+    public class MultipleBookingRuleConfiguration : RuleConfiguration
     {
-		private EventGroup group;
-		private AvailabilityStatus status;
+        public int Id { get; set; }
 
-		public RuleType Type
-		{
-			get { return RuleType.EventGroup; }
-		}
+        public int EventId { get; set; }
 
-		public EventGroupRule(EventGroup group, AvailabilityStatus status)
-		{
-			this.group = group;
-			this.status = status;
-		}
+        public int NumberOfParallelBookings { get; set; }
 
-		public AvailabilityStatus GetStatus(DateTime date, Event @event)
-		{
-			if (group.Events.Any(e => e.Id == @event.Id) && group.Bookings.Any(b => b.Date.IsSameDateAndTimeAs(date)))
-			{
-				return status;
-			}
-
-			return AvailabilityStatus.Undefined;
-		}
-	}
+        internal override IRule ToRule()
+        {
+            return new MultipleBookingRule(EventId, NumberOfParallelBookings);
+        }
+    }
 }

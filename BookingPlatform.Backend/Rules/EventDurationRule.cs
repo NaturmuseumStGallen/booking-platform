@@ -28,8 +28,8 @@ using BookingPlatform.Backend.Scheduling;
 
 namespace BookingPlatform.Backend.Rules
 {
-	public class EventDurationRule : IRule
-	{
+	public class EventDurationRule : IStandardRule
+    {
 		private int eventId;
 		private DateTime start;
 		private DateTime end;

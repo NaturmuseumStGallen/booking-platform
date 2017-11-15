@@ -52,8 +52,8 @@ $(document).ready(function () {
         $.each(inputs, function (index, input) {
             $(input).change(function () {
                 colorPreview();
-            })
-        })
+            });
+        });
 
         colorPreview();
     }
@@ -91,8 +91,8 @@ $(document).ready(function () {
 
                 $('[data-slide="' + id + '"]').slideToggle();
                 $(trigger).html(originalText + (open ? ' ▴' : ' ▾'));
-            })
-        })
+            });
+        });
     }
 
     function safetyHandler(element, onclick, event) {
@@ -133,4 +133,42 @@ $(document).ready(function () {
 
         $(element).css('color', brightness < 150 ? 'white' : 'black');
     }
+
+    $("#js-add-booking-time").click(function () {
+        var timeToAdd = $("#js-booking-time-to-add").val();
+
+        var tdBookingTime = "<td><input readonly type='text' name='BookingTimes' value='" + timeToAdd + "' /></td>";
+        var tdDeleteBookingTime = "<td class='align-right deletable-row'>X</td>";
+
+        var newRowContent = "<tr>" + tdBookingTime + tdDeleteBookingTime + "</tr>";
+        $("#override-bookingtimes tbody").append(newRowContent);
+    });
+
+    $("#override-bookingtimes tbody").on("click", "td.deletable-row", function () {
+        $(this).closest('tr').remove();
+    });
+
+    $("#sortable-events").sortable();
+    $("#sortable-events").disableSelection();
+
+    $("#js-submitEventDisplayOrder").click(function () {
+        var eventIds = $("#sortable-events").sortable("toArray");
+
+        var url = $('#display-order-update-url').val()
+
+        $.post(url, $.param({ data: eventIds }, true)).fail(failureHandler);
+
+        function failureHandler(jqXHR, textStatus, errorThrown) {
+            var message = "An error occurred!\n\n";
+
+            message += "Status:\t\t\t" + textStatus + "\n";
+            message += "Error Details:\t" + errorThrown;
+  
+            alert(message);
+        }
+    });
 });
+
+
+
+

@@ -89,5 +89,13 @@ namespace BookingPlatform.Controllers
 
 			return View(model);
 		}
-	}
+
+        [HttpPost]
+        public ActionResult SaveEventDisplayOrder(int[] data)
+        {
+            Database.Instance.UpdateEventDisplayOrder(data);
+
+            return RedirectToAction(nameof(EventOverview));
+        }
+    }
 }

@@ -24,6 +24,7 @@
 using System;
 using BookingPlatform.Backend.Constants;
 using BookingPlatform.Backend.Entities;
+using System.Collections.Generic;
 
 namespace BookingPlatform.Backend.Rules
 {
@@ -34,10 +35,14 @@ namespace BookingPlatform.Backend.Rules
 		/// </summary>
 		RuleType Type { get; }
 
-		/// <summary>
-		/// Returns the availability status according to the specified date and event. Should return
-		/// <c>AvailabilityStatus.Undefined</c> if the rule is not relevant for the given parameters.
-		/// </summary>
-		AvailabilityStatus GetStatus(DateTime date, Event @event);
 	}
+
+    public interface IStandardRule : IRule
+    {
+        /// <summary>
+        /// Returns the availability status according to the specified date and event. Should return
+        /// <c>AvailabilityStatus.Undefined</c> if the rule is not relevant for the given parameters.
+        /// </summary>
+        AvailabilityStatus GetStatus(DateTime date, Event @event);
+    }
 }

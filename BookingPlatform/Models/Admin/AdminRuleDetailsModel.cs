@@ -61,7 +61,11 @@ namespace BookingPlatform.Models
 					return Strings.Admin.RuleDetails.Descriptions.MinimumDateRule;
 				case RuleType.Weekly:
 					return Strings.Admin.RuleDetails.Descriptions.WeeklyRule;
-				default:
+                case RuleType.BookingTimeOverride:
+                    return Strings.Admin.RuleDetails.Descriptions.BookingTimeOverrideRule;
+                case RuleType.MultipleBooking:
+                    return Strings.Admin.RuleDetails.Descriptions.MultipleBookingRule;
+                default:
 					throw new InvalidOperationException(String.Format("Rule of type '{0}' not yet configured!", Type));
 			}
 		}
@@ -78,7 +82,9 @@ namespace BookingPlatform.Models
 					return Strings.Admin.RuleDetails.Descriptions.WeeklyOptions;
 				case RuleType.EventDuration:
 				case RuleType.EventGroup:
-					return Enumerable.Empty<KeyValuePair<string, string>>();
+                case RuleType.BookingTimeOverride:
+                case RuleType.MultipleBooking:
+                    return Enumerable.Empty<KeyValuePair<string, string>>();
 				default:
 					throw new InvalidOperationException(String.Format("Rule of type '{0}' not yet configured!", Type));
 			}

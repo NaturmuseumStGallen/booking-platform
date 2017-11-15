@@ -28,8 +28,8 @@ using BookingPlatform.Backend.Scheduling;
 
 namespace BookingPlatform.Backend.Rules
 {
-	public class MinimumDateRule : IRule
-	{
+	public class MinimumDateRule : IStandardRule
+    {
 		private DateTime minimum;
 
 		public RuleType Type

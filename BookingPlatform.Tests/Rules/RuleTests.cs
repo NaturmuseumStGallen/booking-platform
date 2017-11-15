@@ -170,5 +170,110 @@ namespace BookingPlatform.Tests
 			Assert.IsTrue(rule.GetStatus(new DateTime(2017, 4, 1, 12, 0, 0), new Event { Id = 4 }) == AvailabilityStatus.Undefined);
 			Assert.IsTrue(rule.GetStatus(new DateTime(2017, 4, 1, 12, 0, 0), new Event { Id = 5 }) == AvailabilityStatus.Undefined);
 		}
-	}
+
+        [TestMethod]
+        public void MultipleBookingRuleStatus_2BookingAlreadyExist3Allowed_NotBooked()
+        {
+            var dateTime = new DateTime(2017, 4, 1, 12, 30, 0);
+            var @event = new Event { Id = 5 };
+
+            var rule = new MultipleBookingRule(@event.Id.Value, 3);
+
+            var bookings = new List<Booking>()
+            {
+                new Booking { Event = new Event{ Id = 5}, Date = dateTime, IsActive = true },
+                new Booking { Event = new Event{ Id = 5}, Date = dateTime, IsActive = true }
+            };
+
+            Assert.IsFalse(rule.GetStatus(dateTime, @event, bookings) == AvailabilityStatus.Booked);
+        }
+
+        [TestMethod]
+        public void MultipleBookingRuleStatus_2BookingAlreadyExist2Allowed_Booked()
+        {
+            var dateTime = new DateTime(2017, 4, 1, 12, 30, 0);
+            var @event = new Event { Id = 5 };
+
+            var rule = new MultipleBookingRule(@event.Id.Value, 2);
+
+            var bookings = new List<Booking>()
+            {
+                new Booking { Event = new Event{ Id = 5}, Date = dateTime, IsActive = true },
+                new Booking { Event = new Event{ Id = 5}, Date = dateTime, IsActive = true }
+            };
+
+            Assert.IsTrue(rule.GetStatus(dateTime, @event, bookings) == AvailabilityStatus.Booked);
+        }
+
+        [TestMethod]
+        public void WeeklyRule_OnlyTime_MustHaveSpecifiedStatusOnlyAtThisTime()
+        {
+            var rule = new WeeklyRule(DayOfWeek.Tuesday, AvailabilityStatus.Booked, time: new TimeSpan(10, 30, 00));
+
+            Assert.IsTrue(rule.GetStatus(new DateTime(2017, 11, 14, 10, 30, 00), null) == AvailabilityStatus.Booked);
+            Assert.IsTrue(rule.GetStatus(new DateTime(2017, 11, 14, 09, 00, 00), null) == AvailabilityStatus.Undefined);
+            Assert.IsTrue(rule.GetStatus(new DateTime(2017, 11, 14, 10, 31, 00), null) == AvailabilityStatus.Undefined);
+        }
+
+        [TestMethod]
+        public void WeeklyRule_OnlyEndTime_MustHaveSpecifiedStatusFromMidnightToEndTime()
+        {
+            var rule = new WeeklyRule(DayOfWeek.Tuesday, AvailabilityStatus.Booked, endTime: new TimeSpan(10,30,00));
+
+            Assert.IsTrue(rule.GetStatus(new DateTime(2017, 11, 14, 00, 00, 00), null) == AvailabilityStatus.Booked);
+            Assert.IsTrue(rule.GetStatus(new DateTime(2017, 11, 14, 08, 00, 00), null) == AvailabilityStatus.Booked);
+            Assert.IsTrue(rule.GetStatus(new DateTime(2017, 11, 14, 10, 30, 00), null) == AvailabilityStatus.Undefined);
+        }
+
+        [TestMethod]
+        public void WeeklyRule_TimeAndEndTime_MustHaveSpecifiedStatusBetweenThisTimes()
+        {
+            var startTime = new TimeSpan(08, 30, 00);
+            var endTime = new TimeSpan(10, 45, 00);
+
+            var rule = new WeeklyRule(DayOfWeek.Tuesday, AvailabilityStatus.Free, time: startTime , endTime: endTime);
+
+            Assert.IsTrue(rule.GetStatus(new DateTime(2017, 11, 14, 08, 30, 00), null) == AvailabilityStatus.Free);
+            Assert.IsTrue(rule.GetStatus(new DateTime(2017, 11, 14, 09, 45, 00), null) == AvailabilityStatus.Free);
+            Assert.IsTrue(rule.GetStatus(new DateTime(2017, 11, 14, 10, 45, 00), null) == AvailabilityStatus.Undefined);
+        }
+
+        [TestMethod]
+        public void WeeklyRule_2EventIds_MustHaveSpecifiedStatusOnlyAtTheseEvents()
+        {
+            var eventIds = new List<int> { 3, 4 };
+
+            var rule = new WeeklyRule(DayOfWeek.Tuesday, AvailabilityStatus.Free, eventIds: eventIds);
+
+            Assert.IsTrue(rule.GetStatus(new DateTime(2017, 11, 14), new Event { Id = 3 }) == AvailabilityStatus.Free);
+            Assert.IsTrue(rule.GetStatus(new DateTime(2017, 11, 14), new Event { Id = 4 }) == AvailabilityStatus.Free);
+            Assert.IsTrue(rule.GetStatus(new DateTime(2017, 11, 14), new Event { Id = 5 }) == AvailabilityStatus.Undefined);
+            Assert.IsTrue(rule.GetStatus(new DateTime(2017, 11, 14), new Event { Id = 2 }) == AvailabilityStatus.Undefined);
+        }
+
+        [TestMethod]
+        public void WeeklyRule_NoEventIdsSpecified_MustHaveSpecifiedStatusAtAllEvents()
+        {
+            var rule = new WeeklyRule(DayOfWeek.Tuesday, AvailabilityStatus.Free, eventIds: null);
+
+            Assert.IsTrue(rule.GetStatus(new DateTime(2017, 11, 14), new Event { Id = 3 }) == AvailabilityStatus.Free);
+            Assert.IsTrue(rule.GetStatus(new DateTime(2017, 11, 14), new Event { Id = 4 }) == AvailabilityStatus.Free);
+            Assert.IsTrue(rule.GetStatus(new DateTime(2017, 11, 14), new Event { Id = 5 }) == AvailabilityStatus.Free);
+            Assert.IsTrue(rule.GetStatus(new DateTime(2017, 11, 14), new Event { Id = 2 }) == AvailabilityStatus.Free);
+        }
+
+        [TestMethod]
+        public void WeeklyRule_EmptyEventIdList_MustHaveSpecifiedStatusAtAllEvents()
+        {
+            var eventIds = new List<int> { };
+
+            var rule = new WeeklyRule(DayOfWeek.Tuesday, AvailabilityStatus.Free, eventIds: eventIds);
+
+            Assert.IsTrue(rule.GetStatus(new DateTime(2017, 11, 14), new Event { Id = 3 }) == AvailabilityStatus.Free);
+            Assert.IsTrue(rule.GetStatus(new DateTime(2017, 11, 14), new Event { Id = 4 }) == AvailabilityStatus.Free);
+            Assert.IsTrue(rule.GetStatus(new DateTime(2017, 11, 14), new Event { Id = 5 }) == AvailabilityStatus.Free);
+            Assert.IsTrue(rule.GetStatus(new DateTime(2017, 11, 14), new Event { Id = 2 }) == AvailabilityStatus.Free);
+        }
+
+    }
 }

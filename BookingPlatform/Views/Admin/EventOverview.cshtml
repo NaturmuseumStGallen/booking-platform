@@ -34,6 +34,7 @@
 }
 
 <div class="content-1000px">
+    @Html.Hidden("display-order-update-url", Url.Action("SaveEventDisplayOrder"))
     <h2>@Strings.Admin.EventOverview.Events</h2>
     <div class="event-overview">
         <div class="header">
@@ -41,18 +42,23 @@
             <div>@Strings.Admin.EventOverview.Name</div>
             <div></div>
         </div>
-        @foreach (var @event in Model.Events)
-        {
-            <div class="event">
-                <div>@(@event.Id)</div>
-                <div>@(@event.Name)</div>
-                <div>@Html.ActionLink(Strings.Admin.Edit, "EventDetails", new { @event.Id })</div>
-            </div>
-        }
+        <ul id="sortable-events">
+            @foreach (var @event in Model.Events)
+            {
+                <li class="ui-state-default event" id="@(@event.Id)">
+                    <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+                    <div>
+                        <div>@(@event.Id)</div>
+                        <div>@(@event.Name)</div>
+                        <div>@Html.ActionLink(Strings.Admin.Edit, "EventDetails", new { @event.Id })</div>
+                    </div>
+                </li>
+            }
+        </ul>
     </div>
-
     <h2>@Strings.Admin.ActionsTitle</h2>
     <ul>
         <li>@Html.ActionLink(Strings.Admin.EventOverview.NewEvent, "EventDetails")</li>
+        <li><a id="js-submitEventDisplayOrder" href="#">@Strings.Admin.EventOverview.DisplayOrder</a></li>
     </ul>
 </div>

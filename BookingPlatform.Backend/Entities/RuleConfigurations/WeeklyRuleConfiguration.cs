@@ -23,20 +23,28 @@
 
 using System;
 using BookingPlatform.Backend.Rules;
+using System.Collections.Generic;
 
 namespace BookingPlatform.Backend.Entities.RuleConfigurations
 {
-	public class WeeklyRuleConfiguration : RuleConfiguration
-	{
+    public class WeeklyRuleConfiguration : RuleConfiguration
+    {
 		public int Id { get; set; }
 		public AvailabilityStatus AvailabilityStatus { get; set; }
 		public DayOfWeek DayOfWeek { get; set; }
 		public DateTime? StartDate { get; set; }
 		public TimeSpan? Time { get; set; }
+        public TimeSpan? EndTime { get; set; }
+        public IList<int> EventIds { get; set; }
 
-		internal override IRule ToRule()
+        public WeeklyRuleConfiguration()
+        {
+            EventIds = new List<int>();
+        }
+
+        internal override IRule ToRule()
 		{
-			return new WeeklyRule(DayOfWeek, AvailabilityStatus, Time, StartDate);
+			return new WeeklyRule(DayOfWeek, AvailabilityStatus, Time, EndTime, StartDate, EventIds);
 		}
 	}
 }

@@ -2,9 +2,6 @@
  * Copyright (C) 2017 Naturmuseum St. Gallen
  *  > https://github.com/NaturmuseumStGallen
  *
- * Designed and engineered by Phantasus Software Systems
- *  > http://www.phantasus.ch
- *
  * This file is part of BookingPlatform.
  *
  * BookingPlatform is free software: you can redistribute it and/or modify
@@ -21,18 +18,26 @@
  * along with BookingPlatform. If not, see <http://www.gnu.org/licenses/>.
  */
 
+using BookingPlatform.Backend.Rules;
 using System;
+using System.Collections.Generic;
 
-namespace BookingPlatform.Backend.Entities
+namespace BookingPlatform.Backend.Entities.RuleConfigurations
 {
-	[Serializable]
-	public class Event
-	{
-		public int? Id { get; set; }
-		public bool IsActive { get; set; }
-		public string Name { get; set; }
-		public int ColorComponentBlue { get; set; }
-		public int ColorComponentGreen { get; set; }
-		public int ColorComponentRed { get; set; }
+    public class BookingTimeOverrideRuleConfiguration : RuleConfiguration
+    {
+        public BookingTimeOverrideRuleConfiguration()
+        {
+            OverrideBookingTimes = new List<TimeSpan>();
+        }
+
+        public int Id { get; set; }
+        public IList<TimeSpan> OverrideBookingTimes { get; set; }
+        public int EventId { get; set; }
+
+        internal override IRule ToRule()
+        {
+            return new BookingTimeOverrideRule(EventId, OverrideBookingTimes);
+        }
     }
 }

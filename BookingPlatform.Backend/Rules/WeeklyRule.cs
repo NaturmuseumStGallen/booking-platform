@@ -25,17 +25,20 @@ using System;
 using BookingPlatform.Backend.Constants;
 using BookingPlatform.Backend.Entities;
 using BookingPlatform.Backend.Scheduling;
+using System.Collections.Generic;
 
 namespace BookingPlatform.Backend.Rules
 {
-	public class WeeklyRule : IRule
-	{
+	public class WeeklyRule : IStandardRule
+    {
 		private DayOfWeek day;
 		private AvailabilityStatus status;
 		private TimeSpan? time;
-		private DateTime? startDate;
+        private TimeSpan? endTime;
+        private DateTime? startDate;
+        private IList<int> eventIds;
 
-		public RuleType Type
+        public RuleType Type
 		{
 			get { return RuleType.Weekly; }
 		}
@@ -45,30 +48,45 @@ namespace BookingPlatform.Backend.Rules
 		/// on the defined day of week. If no time is defined, the rule will apply for the whole day.
 		/// Optionally, a start date may be configured to define from when on the rule should be in effect.
 		/// </summary>
-		public WeeklyRule(DayOfWeek day, AvailabilityStatus status, TimeSpan? time = null, DateTime? startDate = null)
+		public WeeklyRule(DayOfWeek day, AvailabilityStatus status, TimeSpan? time = null, TimeSpan? endTime = null, DateTime? startDate = null, IList<int> eventIds = null)
 		{
 			this.day = day;
 			this.status = status;
 			this.time = time;
+            this.endTime = endTime;
 			this.startDate = startDate;
+            this.eventIds = eventIds;
 		}
 
 		public AvailabilityStatus GetStatus(DateTime date, Event @event)
 		{
+            if (eventIds != null && eventIds.Count > 0 && !eventIds.Contains(@event.Id.Value))
+                return AvailabilityStatus.Undefined;
+
 			if (!startDate.HasValue || (startDate.HasValue && startDate.Value.IsSmallerThanOrEqualAs(date)))
 			{
 				if (date.DayOfWeek == day)
 				{
-					if (!time.HasValue)
+					if (!time.HasValue && !endTime.HasValue)
 					{
 						return status;
 					}
 
-					if (time.Value.Hours == date.Hour && time.Value.Minutes == date.Minute)
+					if (!endTime.HasValue && time.Value.Hours == date.Hour && time.Value.Minutes == date.Minute)
 					{
 						return status;
 					}
-				}
+
+                    if (!time.HasValue && date.TimeOfDay.CompareTo(endTime.Value) < 0)
+                    {
+                        return status;
+                    }
+
+                    if (time.HasValue && endTime.HasValue && date.TimeOfDay.IsBetween(time.Value, endTime.Value))
+                    {
+                        return status;
+                    }
+                }
 			}
 
 			return AvailabilityStatus.Undefined;

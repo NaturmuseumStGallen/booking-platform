@@ -27,6 +27,7 @@ using System.Linq;
 using BookingPlatform.Backend.DataAccess;
 using BookingPlatform.Backend.Entities;
 using BookingPlatform.Backend.Rules;
+using BookingPlatform.Backend.Constants;
 
 namespace BookingPlatform.Backend.Scheduling
 {
@@ -109,17 +110,29 @@ namespace BookingPlatform.Backend.Scheduling
 			var dateTime = new DateTime(date.Year, date.Month, date.Day, time.Hours, time.Minutes, 0);
 			var statusResults = new List<AvailabilityStatus>();
 
-			foreach (var booking in bookings)
-			{
-				if (booking.IsActive && booking.Event.Id == @event.Id && booking.Date.IsSameDateAndTimeAs(dateTime))
-				{
-					statusResults.Add(AvailabilityStatus.Booked);
+            var multipleBookingRule = GetStrongestMultipleBookingRuleIfExist(@event.Id);
 
-					break;
-				}
-			}
+            if(multipleBookingRule != null)
+            {
+                if(multipleBookingRule.GetStatus(dateTime, @event, bookings) == AvailabilityStatus.Booked)
+                {
+                    statusResults.Add(AvailabilityStatus.Booked);
+                }
+            }
+            else
+            {
+                foreach (var booking in bookings)
+                {
+                    if (booking.IsActive && booking.Event.Id == @event.Id && booking.Date.IsSameDateAndTimeAs(dateTime))
+                    {
+                        statusResults.Add(AvailabilityStatus.Booked);
 
-			foreach (var rule in rules)
+                        break;
+                    }
+                }
+            }
+
+			foreach (var rule in rules.OfType<IStandardRule>())
 			{
 				var status = rule.GetStatus(dateTime, @event);
 
@@ -151,5 +164,13 @@ namespace BookingPlatform.Backend.Scheduling
 
 			return AvailabilityStatus.NotBookable;
 		}
-	}
+
+        private MultipleBookingRule GetStrongestMultipleBookingRuleIfExist(int? eventId)
+        {
+            return rules.OfType<MultipleBookingRule>()
+                .Where(r => r.EventId == eventId)
+                .OrderByDescending(r => r.NumberOfParallelBookings)
+                .FirstOrDefault();
+        }
+    }
 }

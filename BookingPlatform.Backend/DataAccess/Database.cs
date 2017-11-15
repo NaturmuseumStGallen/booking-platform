@@ -218,7 +218,12 @@ namespace BookingPlatform.Backend.DataAccess
 			return new DbRuleDao().Exists(id);
 		}
 
-		public void SaveNew(Booking booking)
+        public bool HasBookingTimeOverride(int id)
+        {
+            return new DbRuleDao().HasBookingTimeOverride(id);
+        }
+
+        public void SaveNew(Booking booking)
 		{
 			new DbBookingDao().SaveNew(booking);
 		}
@@ -257,8 +262,12 @@ namespace BookingPlatform.Backend.DataAccess
 		{
 			new DbEventDao().Update(@event);
 		}
+        public void UpdateEventDisplayOrder(int[] orderedEventIds)
+        {
+            new DbEventDao().UpdateDisplayOrder(orderedEventIds);
+        }
 
-		public void Update(RuleConfiguration ruleData)
+        public void Update(RuleConfiguration ruleData)
 		{
 			new DbRuleDao().Update(ruleData);
 		}

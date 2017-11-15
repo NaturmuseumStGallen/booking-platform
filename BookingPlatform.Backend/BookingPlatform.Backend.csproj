@@ -53,13 +53,20 @@
     <Compile Include="Configuration\AppConfig.cs" />
     <Compile Include="Constants\I18n.cs" />
     <Compile Include="Constants\RuleType.cs" />
+    <Compile Include="DataAccess\BookingTimeOverrideTimeProvider.cs" />
     <Compile Include="DataAccess\Database.cs" />
     <Compile Include="DataAccess\DbBaseDao.cs" />
     <Compile Include="DataAccess\DbBookingDao.cs" />
     <Compile Include="DataAccess\DbEmailDao.cs" />
     <Compile Include="DataAccess\DbEventDao.cs" />
     <Compile Include="DataAccess\DbRuleDao.cs" />
+    <Compile Include="DataAccess\DbRuleDao.BookingTimeOverride.cs">
+      <DependentUpon>DbRuleDao.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataAccess\DbRuleDao.EventDuration.cs">
+      <DependentUpon>DbRuleDao.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\DbRuleDao.MultipleBooking.cs">
       <DependentUpon>DbRuleDao.cs</DependentUpon>
     </Compile>
     <Compile Include="DataAccess\DbRuleDao.Weekly.cs">
@@ -81,7 +88,9 @@
     <Compile Include="Emails\Mailer.cs" />
     <Compile Include="Entities\EmailRecipient.cs" />
     <Compile Include="Entities\RuleConfiguration.cs" />
+    <Compile Include="Entities\RuleConfigurations\BookingTimeOverrideRuleConfiguration.cs" />
     <Compile Include="Entities\RuleConfigurations\EventDurationRuleConfiguration.cs" />
+    <Compile Include="Entities\RuleConfigurations\MultipleBookingRuleConfiguration.cs" />
     <Compile Include="Entities\RuleConfigurations\WeeklyRuleConfiguration.cs" />
     <Compile Include="Entities\RuleConfigurations\MinimumDateRuleConfiguration.cs" />
     <Compile Include="Entities\RuleConfigurations\EventGroupRuleConfiguration.cs" />
@@ -90,10 +99,12 @@
     <Compile Include="Entities\TextContent.cs" />
     <Compile Include="Entities\TimeData.cs" />
     <Compile Include="Entities\EventGroup.cs" />
+    <Compile Include="Rules\BookingTimeOverrideRule.cs" />
     <Compile Include="Rules\EventDurationRule.cs" />
     <Compile Include="Rules\EventGroupRule.cs" />
     <Compile Include="Rules\DateRangeRule.cs" />
     <Compile Include="Rules\MinimumDateRule.cs" />
+    <Compile Include="Rules\MultipleBookingRule.cs" />
     <Compile Include="Rules\WeeklyRule.cs" />
     <Compile Include="Scheduling\DateTimeComparison.cs" />
     <Compile Include="Scheduling\DateTimeUtility.cs" />
@@ -110,7 +121,9 @@
     <Compile Include="Security\Password.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

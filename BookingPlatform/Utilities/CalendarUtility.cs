@@ -27,6 +27,7 @@ using System.Linq;
 using BookingPlatform.Backend.DataAccess;
 using BookingPlatform.Backend.Entities;
 using BookingPlatform.Backend.Scheduling;
+using BookingPlatform.Backend.Rules;
 
 namespace BookingPlatform.Utilities
 {
@@ -34,7 +35,20 @@ namespace BookingPlatform.Utilities
 	{
 		public static IList<BookingDate> CalculateBookingDates(DateTime date, int eventId)
 		{
-			var scheduler = Scheduler.CreateNew(Database.Instance);
+            Scheduler scheduler;
+
+            var bookingTimeOverrideRules = Database.Instance.GetRules().OfType<BookingTimeOverrideRule>().Where(r => r.EventId == eventId);
+
+            if (bookingTimeOverrideRules.Any())
+            {
+                var timeProvider = new BookingTimeOverrideTimeProvider(bookingTimeOverrideRules);
+                scheduler = new Scheduler(Database.Instance, Database.Instance, timeProvider);
+            }
+            else
+            {
+                scheduler = Scheduler.CreateNew(Database.Instance);
+            }
+               
 			var @event = Database.Instance.GetEventBy(eventId);
 			var monday = DateTimeUtility.GetMondayOfWeekFor(date);
 			var sunday = DateTimeUtility.GetSundayOfWeekFor(date);

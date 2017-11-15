@@ -1,0 +1,65 @@
+﻿@*
+    /*
+     * Copyright (C) 2017 Naturmuseum St. Gallen
+     *  > https://github.com/NaturmuseumStGallen
+     *
+     * This file is part of BookingPlatform.
+     *
+     * BookingPlatform is free software: you can redistribute it and/or modify
+     * it under the terms of the GNU General Public License as published by
+     * the Free Software Foundation, either version 3 of the License, or
+     * (at your option) any later version.
+     *
+     * BookingPlatform is distributed in the hope that it will be useful,
+     * but WITHOUT ANY WARRANTY; without even the implied warranty of
+     * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+     * GNU General Public License for more details.
+     *
+     * You should have received a copy of the GNU General Public License
+     * along with BookingPlatform. If not, see <http://www.gnu.org/licenses/>.
+     */
+*@
+
+@model BookingTimeOverrideRuleModel
+@using BookingPlatform.Models;
+@using BookingPlatform.Constants;
+@using BookingPlatform.Backend.Entities;
+@using BookingPlatform.Utilities;
+
+@if (!Model.IsNew)
+{
+    @Html.HiddenFor(m => m.Id)
+}
+
+@Html.LabelFor(m => m.EventId, Strings.Admin.RuleDetails.InputLabelRuleScope + "*")
+@Html.DropDownListFor(m => m.EventId, Model.EventListItems)
+@Html.ValidationMessageFor(m => m.EventId)
+
+
+<h3>@Strings.Admin.Settings.BookingTimes</h3>
+<table id="override-bookingtimes">
+    <thead>
+        <tr>
+            <th class="align-left">@Strings.Admin.Settings.Time</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var time in Model.BookingTimes)
+        {
+            <tr>
+                <td><input readonly type="text" name="BookingTimes" value="@time" /></td>
+                <td class="align-right deletable-row">X</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<br/>
+<div>
+    <div>@Strings.Admin.Settings.AddNewTime</div>
+    <input type="time" id="js-booking-time-to-add" />
+    <input type="button" id="js-add-booking-time" value="@Strings.Admin.Add" />
+</div>
+
+
+

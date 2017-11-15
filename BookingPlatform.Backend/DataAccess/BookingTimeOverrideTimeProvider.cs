@@ -2,9 +2,6 @@
  * Copyright (C) 2017 Naturmuseum St. Gallen
  *  > https://github.com/NaturmuseumStGallen
  *
- * Designed and engineered by Phantasus Software Systems
- *  > http://www.phantasus.ch
- *
  * This file is part of BookingPlatform.
  *
  * BookingPlatform is free software: you can redistribute it and/or modify
@@ -21,38 +18,30 @@
  * along with BookingPlatform. If not, see <http://www.gnu.org/licenses/>.
  */
 
+using BookingPlatform.Backend.Rules;
 using System;
+using System.Collections.Generic;
 using System.Linq;
-using BookingPlatform.Backend.Constants;
-using BookingPlatform.Backend.Entities;
-using BookingPlatform.Backend.Scheduling;
 
-namespace BookingPlatform.Backend.Rules
+namespace BookingPlatform.Backend.DataAccess
 {
-	public class EventGroupRule : IStandardRule
+    public class BookingTimeOverrideTimeProvider : ITimeProvider
     {
-		private EventGroup group;
-		private AvailabilityStatus status;
+        private IList<TimeSpan> overrideBookingTimes;
 
-		public RuleType Type
-		{
-			get { return RuleType.EventGroup; }
-		}
+        public BookingTimeOverrideTimeProvider(IEnumerable<BookingTimeOverrideRule> bookingTimeOverrideRules)
+        {
+            overrideBookingTimes = new List<TimeSpan>();
 
-		public EventGroupRule(EventGroup group, AvailabilityStatus status)
-		{
-			this.group = group;
-			this.status = status;
-		}
+            foreach (var time in bookingTimeOverrideRules.SelectMany(t => t.OverrideBookingTimes).Distinct())
+            {
+                overrideBookingTimes.Add(time);
+            }
+        }
 
-		public AvailabilityStatus GetStatus(DateTime date, Event @event)
-		{
-			if (group.Events.Any(e => e.Id == @event.Id) && group.Bookings.Any(b => b.Date.IsSameDateAndTimeAs(date)))
-			{
-				return status;
-			}
-
-			return AvailabilityStatus.Undefined;
-		}
-	}
+        public IList<TimeSpan> GetTimes()
+        {
+            return overrideBookingTimes;
+        }
+    }
 }

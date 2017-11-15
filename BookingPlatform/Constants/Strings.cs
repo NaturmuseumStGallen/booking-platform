@@ -39,15 +39,16 @@ namespace BookingPlatform.Constants
 		public static class Admin
 		{
 			public const string ActionsTitle = "Aktionen";
-			public const string BookingPlatform = "Buchungsplattform";
+            public const string Add = "Hinzufügen";
+            public const string BookingPlatform = "Buchungsplattform";
 			public const string Create = "Erstellen";
 			public const string Delete = "Löschen";
 			public const string Edit = "Bearbeiten";
 			public const string Refresh = "Aktualisieren";
 			public const string SafetyMessage = "Sicher? Aktion kann nicht rückgängig gemacht werden...";
 			public const string Save = "Speichern";
-
-			public static string GetRuleTypeName(RuleType type)
+            
+            public static string GetRuleTypeName(RuleType type)
 			{
 				switch (type)
 				{
@@ -61,7 +62,11 @@ namespace BookingPlatform.Constants
 						return Settings.MinimumDateRule;
 					case RuleType.Weekly:
 						return Settings.WeeklyRule;
-					default:
+                    case RuleType.BookingTimeOverride:
+                        return Settings.BookingTimeOverrideRule;
+                    case RuleType.MultipleBooking:
+                        return Settings.MultipleBookingRule;
+                    default:
 						throw new InvalidOperationException(String.Format("Rule of type '{0}' not yet configured!", type));
 				}
 			}
@@ -129,8 +134,10 @@ namespace BookingPlatform.Constants
 			public static class BookingOverview
 			{
 				public const string Active = "Aktiv";
-				public const string Cancelled = "Storniert";
-				public const string EditBooking = "Details";
+                public const string Cancelled = "Storniert";
+                public const string Created = "Erstellt";
+                public const string Day = "Tag";
+                public const string EditBooking = "Details";
 				public const string NewBooking = "Neue Buchung erfassen";
 				public const string Overview = "Übersicht";
 				public const string PageTitle = "Buchungen";
@@ -140,7 +147,9 @@ namespace BookingPlatform.Constants
 				public const string TableHeadingName = "Nachname, Vorname";
 				public const string TableHeadingSchool = "Schule";
 				public const string TableHeadingTown = "Ortschaft";
-			}
+                public const string Time = "Zeit";
+                public const string Unknown = "unbekannt";
+            }
 
 			public static class Calendar
 			{
@@ -174,7 +183,8 @@ namespace BookingPlatform.Constants
 				public const string Id = "ID";
 				public const string Name = "Name";
 				public const string NewEvent = "Neue Führung erfassen";
-				public const string PageTitle = "Führungen";
+                public const string DisplayOrder = "Anzeige Reihenfolge speichern";
+                public const string PageTitle = "Führungen";
 			}
 
 			public static class Login
@@ -223,7 +233,9 @@ namespace BookingPlatform.Constants
 				public const string InputErrorName = "Bitte gültigen Namen eingeben!";
 				public const string InputErrorTime = "Bitte gültige Zeit eingeben (hh:mm)!";
 				public const string InputErrorStatus = "Bitte gültigen Status auswählen!";
-				public const string InputLabelDate = "Datum";
+                public const string InputErrorOverrideTimes = "Bitte Zeiten auswählen !";
+                public const string InputErrorNumberOfParallelBookings = "Bitte gültige Anzahl gleichzeitige Führungen eingeben!";
+                public const string InputLabelDate = "Datum";
 				public const string InputLabelDays = "Anzahl Tage";
 				public const string InputLabelDayOfWeek = "Wochentag";
 				public const string InputLabelEndDate = "Enddatum";
@@ -236,14 +248,15 @@ namespace BookingPlatform.Constants
 				public const string InputLabelStartTime = "Startzeit";
 				public const string InputLabelStatus = "Buchungsstatus";
 				public const string InputLabelTime = "Zeit";
-				public const string PageTitleEdit = "Regel bearbeiten:";
+                public const string InputLabelNumberOfParallelBookings = "Anzahl gleichzeitiger Führungen";
+                public const string PageTitleEdit = "Regel bearbeiten:";
 				public const string PageTitleNew = "Neue Regel erfassen:";
 				public const string RuleStatusBooked = "Ausgebucht";
 				public const string RuleStatusFree = "Frei";
 				public const string RuleStatusNotBookable = "Nicht buchbar";
 				public const string ScopeAllEvents = "Alle Führungen";
 
-				public static class Descriptions
+                public static class Descriptions
 				{
 					public const string Important = "WICHTIG:";
 
@@ -269,7 +282,11 @@ namespace BookingPlatform.Constants
 					public const string WeeklyRule = @"Erstellt eine sich wöchentlich wiederholende Regel. Es müssen mindestens ein Wochentag
 						und ein Status gewählt werden. Folgende Eingabekombinationen sind möglich:";
 
-					public static readonly KeyValuePair<string, string>[] DateRangeOptions = new KeyValuePair<string, string>[]
+                    public const string BookingTimeOverrideRule = @"Erstellt eine Regel, welche die global definierten Buchungszeiten für die ausgewählte Führung übersteuert.";
+
+                    public const string MultipleBookingRule = @"Erstellt eine Regel, welche festlegt wie viele Führungen parallel zu einem Zeitpunkt gebucht werden können.";
+
+                    public static readonly KeyValuePair<string, string>[] DateRangeOptions = new KeyValuePair<string, string>[]
 					{
 						new KeyValuePair<string, string>("Nur Startdatum:", "An dem angegebenen Datum wird für den ganzen Tag der gewählte Status angezeigt."),
 						new KeyValuePair<string, string>("Startdatum und Startzeit:", "Für Führungen am angegebenen Datum zur angegebenen Zeit wird der gewählte Status angezeigt."),
@@ -287,11 +304,17 @@ namespace BookingPlatform.Constants
 
 					public static readonly KeyValuePair<string, string>[] WeeklyOptions = new KeyValuePair<string, string>[]
 					{
-						new KeyValuePair<string, string>("Nur Wochentag:", "An dem angegebenen Wochentag wird für den ganzen Tag der gewählte Status angezeigt."),
+                         new KeyValuePair<string, string>("Führungen:", "Wird keine Führung markiert ist die Regel für alle Führungen gültig, ansonsten nur für die markierten. " +
+                            "Einzelne Führungen können mit gedrückter [ctrl]-Taste markiert werden. Auf die gleiche Art können die Führungen auch wieder abgewählt werden. "),
+                        new KeyValuePair<string, string>("Nur Wochentag:", "An dem angegebenen Wochentag wird für den ganzen Tag der gewählte Status angezeigt."),
 						new KeyValuePair<string, string>("Wochentag und Zeit:", "An dem angegebenen Wochentag wird zur eingegebenen Zeit der gewählte Status angezeigt."),
-						new KeyValuePair<string, string>("Wochentag und Startdatum:", "Gleich wie beim ersten Punkt, einfach erst ab dem gewählten Startdatum."),
-						new KeyValuePair<string, string>("Wochentag, Zeit und Startdatum:", "Wie beim zweiten Punkt, einfach erst ab dem gewählten Startdatum.")
-					};
+                        new KeyValuePair<string, string>("Wochentag, Zeit und Endzeit:", "An dem angegebenen Wochentag wird zur eingegebenen Zeit der gewählte Status bis zur Endzeit angezeigt."),
+                        new KeyValuePair<string, string>("Wochentag und Endzeit:", "An dem angegebenen Wochentag wird der gewählte Status von Mitternacht bis zur Endzeit angezeigt."),
+                        new KeyValuePair<string, string>("Wochentag und Startdatum:", "Gleich wie beim ersten Punkt, einfach erst ab dem gewählten Startdatum."),
+						new KeyValuePair<string, string>("Wochentag, Zeit und Startdatum:", "Wie beim zweiten Punkt, einfach erst ab dem gewählten Startdatum."),
+                        new KeyValuePair<string, string>("Wochentag, Zeit, Endzeit und Startdatum:", "Wie beim dritten Punkt, einfach erst ab dem gewählten Startdatum."),
+                        new KeyValuePair<string, string>("Wochentag, Endzeit und Startdatum:", "Wie beim vierten Punkt, einfach erst ab dem gewählten Startdatum.")
+                    };
 				}
 			}
 
@@ -302,7 +325,8 @@ namespace BookingPlatform.Constants
 				public const string AddNewTime = "Zeit hinzufügen (Eingabe in hh:mm, z.B. \"09:15\"):";
 				public const string AdminPassword = "Admin-Passwort";
 				public const string BookingTimes = "Buchungszeiten";
-				public const string ChangePassword = "Passwort ändern:";
+                public const string BookingTimeOverrideRule = "Buchungszeiten übersteuern";
+                public const string ChangePassword = "Passwort ändern:";
 				public const string ConfirmationPageContent = "Inhalt der Bestätigungsseite";
 				public const string Content = "Inhalt";
 				public const string DeactivatedEvent = "[Deaktivierte Führung]";
@@ -319,7 +343,8 @@ namespace BookingPlatform.Constants
 				public const string EventGroupRule = "Führungsgruppe";
 				public const string GlobalSettings = "Globale Einstellungen";
 				public const string MinimumDateRule = "Mindestdatum";
-				public const string PageTitle = "Einstellungen";
+                public const string MultipleBookingRule = "Mehrfach Buchung";
+                public const string PageTitle = "Einstellungen";
 				public const string Recipients = "EmpfängerInnen von System-Meldungen";
 				public const string RuleName = "Name";
 				public const string RuleOverview = "Übersicht Buchungsregeln";
@@ -356,7 +381,7 @@ namespace BookingPlatform.Constants
 			public const string AdditionalInformation = "Zusätzliche Angaben";
 			public const string AvailabilityBooked = "Ausgebucht";
 			public const string AvailabilityNotBookable = "Nicht buchbar";
-			public const string BookingMessageGrade = "Bitte buchen Sie pro Klassenverband eine Führung. Für Ausnahmen benutzen Sie bitte das Kommentarfeld.";
+			public const string BookingMessageGrade = "Bitte buchen Sie pro Klassenverband eine Führung.";
 			public const string ConfirmationPageTitle = "Buchung erfolgreich!";
 			public const string Date = "Datum";
 			public const string Event = "Führung";
