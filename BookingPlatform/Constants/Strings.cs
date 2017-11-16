@@ -284,7 +284,9 @@ namespace BookingPlatform.Constants
 
                     public const string BookingTimeOverrideRule = @"Erstellt eine Regel, welche die global definierten Buchungszeiten für die ausgewählte Führung übersteuert.";
 
-                    public const string MultipleBookingRule = @"Erstellt eine Regel, welche festlegt wie viele Führungen parallel zu einem Zeitpunkt gebucht werden können.";
+                    public const string MultipleBookingRule = @"Erstellt eine Regel, welche festlegt wie viele Führungen parallel zu einem Zeitpunkt gebucht werden können.
+                    Die Anzahl paralleler Führungen muss grösser als 1 sein.
+                    Beispiel: Wenn bei 'Anzahl gleichzeitiger Führungen' 2 eingegeben wird, können zur gleichen Zeit am gleichen Tag 2 Führungen gebucht werden.";
 
                     public static readonly KeyValuePair<string, string>[] DateRangeOptions = new KeyValuePair<string, string>[]
 					{

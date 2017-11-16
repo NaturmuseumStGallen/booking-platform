@@ -38,7 +38,7 @@ namespace BookingPlatform.Models
         public int? EventId { get; set; }
 
         [Required(ErrorMessage = Strings.Admin.RuleDetails.InputErrorNumberOfParallelBookings)]
-        [Range(0, int.MaxValue, ErrorMessage = Strings.Admin.RuleDetails.InputErrorNumberOfParallelBookings)]
+        [Range(2, int.MaxValue, ErrorMessage = Strings.Admin.RuleDetails.InputErrorNumberOfParallelBookings)]
         public int? NumberOfParallelBookings { get; set; }
 
         public IList<Event> AvailableEvents { get; set; }
@@ -58,7 +58,7 @@ namespace BookingPlatform.Models
         {
             var results = new List<ValidationResult>();
 
-            if (!NumberOfParallelBookings.HasValue)
+            if (!NumberOfParallelBookings.HasValue || NumberOfParallelBookings.Value < 2)
             {
                 results.Add(new ValidationResult(Strings.Admin.RuleDetails.InputErrorNumberOfParallelBookings, new[] { nameof(NumberOfParallelBookings) }));
             }
