@@ -108,9 +108,9 @@ namespace BookingPlatform.Backend.DataAccess
 		{
 			var sql = @"
 			INSERT INTO
-				[Event](IsActive, Name, ColorComponentBlue, ColorComponentGreen, ColorComponentRed, DisplayOrder, Created)
+				[Event](IsActive, Name, ColorComponentBlue, ColorComponentGreen, ColorComponentRed, DisplayOrder)
 			VALUES
-				(@IsActive, @Name, @ColorComponentBlue, @ColorComponentGreen, @ColorComponentRed, @DisplayOrder, @Created)";
+				(@IsActive, @Name, @ColorComponentBlue, @ColorComponentGreen, @ColorComponentRed, @DisplayOrder)";
 			var parameters = new[]
 			{
 				new SqlParameter("@IsActive", @event.IsActive),
@@ -118,8 +118,7 @@ namespace BookingPlatform.Backend.DataAccess
 				new SqlParameter("@ColorComponentBlue", @event.ColorComponentBlue),
 				new SqlParameter("@ColorComponentGreen", @event.ColorComponentGreen),
 				new SqlParameter("@ColorComponentRed", @event.ColorComponentRed),
-                new SqlParameter("@DisplayOrder", int.MaxValue),
-                new SqlParameter("@Created", DateTime.Now)
+                new SqlParameter("@DisplayOrder", int.MaxValue)
             };
 
 			ExecuteNonQuery(sql, parameters);
