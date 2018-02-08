@@ -388,7 +388,7 @@ namespace BookingPlatform.Constants
 			public const string Date = "Datum";
 			public const string Event = "Führung";
 			public const string InputDescriptionDate = "Klicken Sie im untenstehenden Kalender einen freien Termin an. Bitte beachten Sie, dass die Verfügbarkeit je nach Führung variiert.";
-			public const string InputDescriptionGrade = "z.B. \"Mittelstufe, 5. + 6. Klasse\"";
+			public const string InputDescriptionGrade = "z.B. \"Kindergarten, 5. Klasse\"";
 			public const string InputDescriptionNumberOfKids = "min. 5 bis max. 25";
 			public const string InputErrorCanton = "Bitte wählen Sie einen Kanton!";
 			public const string InputErrorCaptcha = "Die eingegebene Antwort war nicht korrekt. Bitte versuchen Sie es erneut!";
